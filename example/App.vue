@@ -8,8 +8,10 @@
 <template>
     <div>
         <div style="font-size: 24px;">
-            <picker-group>
-                <Picker :options="options0" @input="change" />
+            <picker-group class="flex">
+                <picker :options="options0" @input="change" />
+                <picker :options="options0" @input="change" />
+                <picker :options="options0" @input="change" />
             </picker-group>
         </div>
         <div style="font-size: 16px;">

@@ -1,4 +1,7 @@
 <style lang="scss" scoped>
+    .picker-group.flex {
+        display: flex;
+    }
     .picker-group {
         &:after {
              clear: both;
