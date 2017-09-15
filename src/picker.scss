@@ -1,3 +1,19 @@
+.picker-group {
+    &.after {
+        display: flex;
+    }
+    &:after {
+        clear: both;
+        display: table;
+        content: '';
+    }
+    @for $i from 1 through 12 {
+        > .picker-#{$i} {
+            float: left;
+            width: 100% / 12 * $i;
+        }
+    }
+}
 .picker {
     position: relative;
     width: 100%;
@@ -26,9 +42,6 @@
     text-align: center;
     height: 1.2em;
     line-height: 1.2em;
-    /* position: absolute;
-    top: 50%;
-    left: 50%; */
 }
 .picker-item-placeholder {
     color: #aaa;
@@ -38,7 +51,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 0px;
+    top: 0;
     bottom: 0;
 }
 .picker-layer .top,

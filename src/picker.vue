@@ -1,4 +1,4 @@
-<style src="./picker.css" scoped></style>
+<style lang="scss" src="./picker.scss"></style>
 <template>
     <div class="picker">
         <div class="picker-list">
@@ -30,9 +30,6 @@
     export default {
         props: {
             value: null,
-            height: {
-                type: Number,
-            },
             options: {
                 type: Array,
                 "default": () => [],
