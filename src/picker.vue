@@ -28,8 +28,8 @@
     const isTouchable = typeof window !== 'undefined' && 'ontouchstart' in window;
     
     export default {
-        name :"Picker",
         props: {
+            value: null,
             height: {
                 type: Number,
             },
@@ -40,21 +40,26 @@
             placeholder: String,
         },
         data() {
+            var lastIndex = this.placeholder ? -1 : 0;
+            if (this.value) {
+                this.options.forEach(function(option, index) {
+                    if (option == this.value || option.value == this.value) {
+                        lastIndex = index;
+                    }
+                }.bind(this));
+            }
             return {
                 top: 0,
                 pivots: null,
-                tween: null,
-                lastIndex: this.placeholder ? -1 : 0,
+                lastIndex: lastIndex,
                 transitioning: false,
                 transitionTO: null,
-                draggingInfo: {
-                    startTop: null,
-                    isMouseDown: false,
-                    isDragging: false,
-                    isScrolling: false,
-                    startPageY: null,
-                    maxScroll: null,
-                },
+                startTop: null,
+                isMouseDown: false,
+                isDragging: false,
+                isScrolling: false,
+                startY: null,
+                scrollMax: null,
             };
         },
         mounted() {
@@ -76,7 +81,13 @@
                 var rect = item.getBoundingClientRect();
                 return Math.round(((rect.top + rect.bottom) / 2 - med) * 10) / 10;
             });
-            this.draggingInfo.maxScroll = this.pivots[this.pivots.length - 1] * (-1);
+            this.scrollMax = this.pivots[this.pivots.length - 1] * (-1);
+            if (this.lastIndex > 0) {
+                this.top = this.pivots[this.lastIndex] * (-1);
+            }
+            if (!this.value && this.sanitizedOptions[this.lastIndex]) {
+                this.$emit('input', this.sanitizedOptions[this.lastIndex].value);
+            }
         },
         destroyed() {
             if (isTouchable) {
@@ -92,8 +103,6 @@
                 this.$el.removeEventListener('mouseleave', this.handleCancel);
             }
         },
-        watch: {
-        },
         computed: {
             sanitizedOptions() {
                 return this.options.map((option) => {
@@ -107,16 +116,27 @@
                 });
             },
         },
+        watch: {
+            value(newValue, oldValue) {
+                var foundIndex = -1;
+                this.sanitizedOptions.forEach(function (option, index) {
+                    if (option.value == newValue) foundIndex = index;
+                });
+                if (this.lastIndex !== foundIndex) {
+                    this.correction(foundIndex);
+                }
+            },
+        },
         methods: {
             handleWheel(e) {
                 if (this.top >= 0 && e.deltaY < 0) return;
-                if (this.top <= this.draggingInfo.maxScroll && e.deltaY > 0) return;
+                if (this.top <= this.scrollMax && e.deltaY > 0) return;
 
                 e.preventDefault();
                 e.stopPropagation();
 
-                if (this.draggingInfo.isScrolling) return;
-                this.draggingInfo.isScrolling = true;
+                if (this.isScrolling) return;
+                this.isScrolling = true;
                 
                 if (e.deltaY < 0) {
                     this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 30 + 1));
@@ -124,7 +144,7 @@
                     this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 30 + 1));
                 }
                 setTimeout(function () {
-                    this.draggingInfo.isScrolling = false;
+                    this.isScrolling = false;
                 }.bind(this), 80);
             },
             getTouchInfo (e) {
@@ -136,41 +156,41 @@
                     e.stopPropagation();
                 }
                 const touchInfo = this.getTouchInfo(e);
-                this.draggingInfo.startTop = this.top;
-                this.draggingInfo.startPageY = touchInfo.pageY;
+                this.startTop = this.top;
+                this.startY = touchInfo.pageY;
                 if (!isTouchable) {
-                    this.draggingInfo.isMouseDown = true
+                    this.isMouseDown = true
                 }
             },
             handleMove(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (isTouchable || this.draggingInfo.isMouseDown) {
-                    this.draggingInfo.isDragging = true;
+                if (isTouchable || this.isMouseDown) {
+                    this.isDragging = true;
                     const touchInfo = this.getTouchInfo(e);
-                    this.top = this.draggingInfo.startTop + touchInfo.pageY - this.draggingInfo.startPageY;
+                    this.top = this.startTop + touchInfo.pageY - this.startY;
                 }
             },
             handleEnd(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (!this.draggingInfo.isDragging) {
-                    this.draggingInfo.isDragging = false;
-                    this.draggingInfo.isMouseDown = false;
+                if (!this.isDragging) {
+                    this.isDragging = false;
+                    this.isMouseDown = false;
                     this.handleClick(e);
                     return;
                 }
-                this.draggingInfo.isDragging = false;
-                this.draggingInfo.isMouseDown = false;
+                this.isDragging = false;
+                this.isMouseDown = false;
                 this.correctionAfterDragging();
             },
             handleCancel(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (isTouchable || this.draggingInfo.isMouseDown) {
+                if (isTouchable || this.isMouseDown) {
                     this.correctionAfterDragging();
-                    this.draggingInfo.isMouseDown = false
-                    this.draggingInfo.isDragging = false
+                    this.isMouseDown = false
+                    this.isDragging = false
                 }
             },
             handleClick(e) {
