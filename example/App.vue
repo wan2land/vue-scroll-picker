@@ -8,13 +8,18 @@
 <template>
     <div>
         <div style="font-size: 24px;">
-            <Picker :options="options0" @input="change" />
+            <picker-group>
+                <Picker :options="options0" @input="change" />
+            </picker-group>
         </div>
         <div style="font-size: 16px;">
             <Picker :options="options0" @input="change" placeholder="Select One" />
         </div>
         <div style="font-size: 12px;">
-            <Picker :options="options1" @input="change" />
+            <PickerGroup>
+                <Picker class="picker-8" :options="options1" @input="change" />
+                <Picker class="picker-4" :options="options1" @input="change" />
+            </PickerGroup>
         </div>
     </div>
 </template>

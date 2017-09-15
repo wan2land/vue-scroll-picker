@@ -25,7 +25,6 @@
 </template>
 <script>
 
-    import TWEEN from 'tween.js';
     const isTouchable = typeof window !== 'undefined' && 'ontouchstart' in window;
     
     export default {
