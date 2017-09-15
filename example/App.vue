@@ -8,13 +8,13 @@
 <template>
     <div>
         <div style="font-size: 24px;">
-            <Picker :options="options" @input="change" />
+            <Picker :options="options0" @input="change" />
         </div>
         <div style="font-size: 16px;">
-            <Picker :options="options" @input="change" placeholder="아마도" />
+            <Picker :options="options0" @input="change" placeholder="Select One" />
         </div>
         <div style="font-size: 12px;">
-            <Picker :options="options" />
+            <Picker :options="options1" @input="change" />
         </div>
     </div>
 </template>
@@ -22,7 +22,14 @@
     export default {
         data() {
             return {
-                options: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                options0: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.".split(' '),
+                options1: [
+                    {value: 10, name: "10KG"},
+                    {value: 20, name: "20KG"},
+                    {value: 30, name: "30KG"},
+                    {value: 40, name: "40KG"},
+                    {value: 50, name: "50KG"},
+                ]
             };
         },
         methods: {

@@ -2,7 +2,7 @@
 <template>
     <div class="picker">
         <div class="picker-list">
-            <div class="picker-list-rotator" :style="{top: animatedTop + 'px'}">
+            <div class="picker-list-rotator" :style="{top: top + 'px'}" :class="{'transition': transitioning}">
                 <div
                     class="picker-item-placeholder"
                     ref="placeholder"
@@ -11,7 +11,7 @@
                 <div
                     class="picker-item"
                     v-for="(option, index) in sanitizedOptions"
-                    :key="option.key"
+                    :key="option.value"
                     ref="items"
                 >{{ option.name }}</div>
             </div>
@@ -43,10 +43,11 @@
         data() {
             return {
                 top: 0,
-                animatedTop: 0,
                 pivots: null,
                 tween: null,
                 lastIndex: this.placeholder ? -1 : 0,
+                transitioning: false,
+                transitionTO: null,
                 draggingInfo: {
                     startTop: null,
                     isMouseDown: false,
@@ -93,36 +94,15 @@
             }
         },
         watch: {
-            top(top) {
-                if (this.animatedTop == this.top) return;
-                function animate(time) {
-                    requestAnimationFrame(animate);
-                    TWEEN.update(time);
-                }
-
-                requestAnimationFrame(animate);
-                
-                if (this.tween) {
-                    this.tween.stop();
-                }
-                var vm = this;
-                this.tween = new TWEEN.Tween({top: this.animatedTop})
-                    .easing(TWEEN.Easing.Cubic.InOut)
-                    .to({top: top}, 300)
-                    .onUpdate(function () {
-                        vm.animatedTop = this.top;
-                    })
-                    .start();
-            },
         },
         computed: {
             sanitizedOptions() {
                 return this.options.map((option) => {
-                    if (option.key && option.name) {
+                    if (option.value && option.name) {
                         return option;
                     }
                     return {
-                        key: option,
+                        value: option,
                         name: option,
                     };
                 });
@@ -130,23 +110,23 @@
         },
         methods: {
             handleWheel(e) {
-                if (this.animatedTop > 0) return;
-                if (this < this.draggingInfo.maxScroll) return;
+                if (this.top >= 0 && e.deltaY < 0) return;
+                if (this.top <= this.draggingInfo.maxScroll && e.deltaY > 0) return;
 
                 e.preventDefault();
                 e.stopPropagation();
+
                 if (this.draggingInfo.isScrolling) return;
                 this.draggingInfo.isScrolling = true;
+                
                 if (e.deltaY < 0) {
-                    console.log(Math.floor(Math.abs(e.deltaY) / 10 + 1));
-                    this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 10 + 1));
+                    this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 30 + 1));
                 } else if (e.deltaY > 0) {
-                    console.log((Math.abs(e.deltaY) / 10 + 1));
-                    this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 10 + 1));
+                    this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 30 + 1));
                 }
                 setTimeout(function () {
                     this.draggingInfo.isScrolling = false;
-                }.bind(this), 100);
+                }.bind(this), 80);
             },
             getTouchInfo (e) {
                 return isTouchable ? e.changedTouches[0] || e.touches[0] : e;
@@ -169,8 +149,7 @@
                 if (isTouchable || this.draggingInfo.isMouseDown) {
                     this.draggingInfo.isDragging = true;
                     const touchInfo = this.getTouchInfo(e);
-                    this.animatedTop = this.top = this.draggingInfo.startTop + touchInfo.pageY - this.draggingInfo.startPageY;
-                } else {
+                    this.top = this.draggingInfo.startTop + touchInfo.pageY - this.draggingInfo.startPageY;
                 }
             },
             handleEnd(e) {
@@ -196,16 +175,20 @@
                 }
             },
             handleClick(e) {
-                if (e.target == this.$refs.top) {
+                var x = e.x;
+                var y = e.y;
+                var topRect = this.$refs.top.getBoundingClientRect();
+                var bottomRect = this.$refs.bottom.getBoundingClientRect();
+                if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
                     this.correction(this.lastIndex - 1);
-                } else if (e.target == this.$refs.bottom) {
+                } else if (bottomRect.left <= x && x <= bottomRect.right && bottomRect.top <= y && y <= bottomRect.bottom) {
                     this.correction(this.lastIndex + 1);
                 }
             },
             correctionAfterDragging () {
                 var index = null;
                 var diff = null;
-                var top = this.animatedTop;
+                var top = this.top;
                 if (this.placeholder) {
                     index = -1;
                     diff = 0 + top;
@@ -225,7 +208,7 @@
                     this.lastIndex = index;
                     var value = null;
                     if (index > -1) {
-                        value = this.options[index];
+                        value = this.sanitizedOptions[index].value;
                     }
                     this.$emit('input', value);
                 }
@@ -234,6 +217,16 @@
                     top = this.pivots[index] * (-1);
                 }
                 this.top = top;
+
+                this.transitioning = true;
+                if (this.transitionTO) {
+                    clearTimeout(this.transitionTO);
+                    this.transitionTO = null;
+                }
+                this.transitionTO = setTimeout(function () {
+                    this.transitioning = false;
+                    this.transitionTO = null;
+                }.bind(this), 100);
             },
         },
     };

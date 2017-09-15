@@ -18,6 +18,9 @@
     top: 0;
     padding-top: 4.4em;
 }
+.picker-list-rotator.transition {
+    transition: top ease 200ms;
+}
 .picker-item-placeholder,
 .picker-item {
     text-align: center;
