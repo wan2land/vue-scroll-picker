@@ -45,7 +45,7 @@ new Vue({
 </head>
 <body>
   <div id="app">
-    <scroll-picker></scroll-picker>
+    <scroll-picker :options="[1, 2, 3, 4, 5]"></scroll-picker>
   </div>
 
   <script src="path/to/vue.js"></script>
@@ -58,3 +58,19 @@ new Vue({
 </body>
 </html>
 ```
+
+### Example
+
+ - [Demo](http://wan2land.github.io/vue-scroll-picker/)
+ - [Sources](./example-src/App.vue)
+
+## Options
+
+### Props
+
+| Props       | Type          | Default  | Description  |
+| ----------- |:--------------| ---------|--------------|
+| value       | mixed         | null     | set value    |
+| placeholder | String        | null     | placeholder  |
+| options     | Array         | []       | options of value |
+
