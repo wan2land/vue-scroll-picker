@@ -28,7 +28,7 @@ module.exports = {
     ]
   },
   externals: {
-    vue: 'vue',
+    vue: 'Vue',
     "vue-scroll-picker": 'VueScrollPicker',
   },
   resolve: {
