@@ -1,5 +1,6 @@
 {
   "name": "vue-scroll-picker",
+  "version": "0.0.1",
   "scripts": {
     "build": "node-sass src/picker.scss src/picker.css"
   },
