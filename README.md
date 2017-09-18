@@ -74,3 +74,6 @@ new Vue({
 | placeholder | String        | null     | placeholder  |
 | options     | Array         | []       | options of value. example, `["10KG", "20KG", "30KG"]` or `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
 
+### Event
+
+ - `@input` : you can use `v-model` :-)
