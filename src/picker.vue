@@ -1,3 +1,4 @@
+<style src="./picker.scss" lang="scss"></style>
 <template>
     <div class="vue-scroll-picker">
         <div class="vue-scroll-picker-list">
