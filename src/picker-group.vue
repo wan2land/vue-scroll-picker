@@ -1,5 +1,5 @@
 <template>
-    <div class="picker-group">
+    <div class="vue-scroll-picker-group">
         <slot></slot>
     </div>
 </template>

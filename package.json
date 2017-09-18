@@ -1,8 +1,14 @@
 {
   "name": "vue-scroll-picker",
-  "devDependencies": {
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6"
+  "scripts": {
+    "build": "node-sass src/picker.scss src/picker.css"
   },
-  "dependencies": {}
+  "main": "src/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "vue": "^2.4.4"
+  }
 }

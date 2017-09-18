@@ -1,5 +1,5 @@
-.picker-group {
-    &.after {
+.vue-scroll-picker-group {
+    &.flex {
         display: flex;
     }
     &:after {
@@ -8,58 +8,55 @@
         content: '';
     }
     @for $i from 1 through 12 {
-        > .picker-#{$i} {
+        > .vue-scroll-picker-#{$i} {
             float: left;
             width: 100% / 12 * $i;
         }
     }
 }
-.picker {
+.vue-scroll-picker {
     position: relative;
     width: 100%;
     height: 10em;
     overflow: hidden;
 }
-.picker-list {
+.vue-scroll-picker-list {
     position: absolute;
     left:0; right:0; top: 0; bottom: 0;
-    /* perspective: 1000px;
-    perspective-origin: 50% 50%;
-    transform-style: preserve-3d; */
 }
-.picker-list-rotator {
+.vue-scroll-picker-list-rotator {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     padding-top: 4.4em;
 }
-.picker-list-rotator.transition {
+.vue-scroll-picker-list-rotator.transition {
     transition: top ease 200ms;
 }
-.picker-item-placeholder,
-.picker-item {
+.vue-scroll-picker-item-placeholder,
+.vue-scroll-picker-item {
     text-align: center;
     height: 1.2em;
     line-height: 1.2em;
 }
-.picker-item-placeholder {
+.vue-scroll-picker-item-placeholder {
     color: #aaa;
 }
 
-.picker-layer {
+.vue-scroll-picker-layer {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
 }
-.picker-layer .top,
-.picker-layer .middle,
-.picker-layer .bottom {
+.vue-scroll-picker-layer .top,
+.vue-scroll-picker-layer .middle,
+.vue-scroll-picker-layer .bottom {
     position: absolute;
 }    
-.picker-layer .top {
+.vue-scroll-picker-layer .top {
     box-sizing: border-box;
     border-bottom: 1px solid #c8c7cc;
     background: linear-gradient(180deg,#fff 10%,hsla(0,0%,100%,.7));
@@ -68,13 +65,13 @@
     right: 0;
     height: 40%;
 }
-.picker-layer .middle {
+.vue-scroll-picker-layer .middle {
     top: 40%;
     left: 0;
     right: 0;
     bottom: 40%;
 }
-.picker-layer .bottom {
+.vue-scroll-picker-layer .bottom {
     border-top: 1px solid #c8c7cc;
     background: linear-gradient(0deg,#fff 10%,hsla(0,0%,100%,.7));
     bottom: 0;

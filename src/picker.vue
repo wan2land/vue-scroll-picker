@@ -1,22 +1,21 @@
-<style lang="scss" src="./picker.scss"></style>
 <template>
-    <div class="picker">
-        <div class="picker-list">
-            <div class="picker-list-rotator" :style="{top: top + 'px'}" :class="{'transition': transitioning}">
+    <div class="vue-scroll-picker">
+        <div class="vue-scroll-picker-list">
+            <div class="vue-scroll-picker-list-rotator" :style="{top: top + 'px'}" :class="{'transition': transitioning}">
                 <div
-                    class="picker-item-placeholder"
+                    class="vue-scroll-picker-item-placeholder"
                     ref="placeholder"
                     v-if="placeholder"
                 >{{ placeholder }}</div>
                 <div
-                    class="picker-item"
+                    class="vue-scroll-picker-item"
                     v-for="(option, index) in sanitizedOptions"
                     :key="option.value"
                     ref="items"
                 >{{ option.name }}</div>
             </div>
         </div>
-        <div class="picker-layer">
+        <div class="vue-scroll-picker-layer">
             <div class="top" ref="top"></div>
             <div class="middle" ref="selection"></div>
             <div class="bottom" ref="bottom"></div>

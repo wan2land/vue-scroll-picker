@@ -18,28 +18,31 @@
 </style>
 <template>
     <div>
-        <!--<h1>Big Size</h1>-->
-        <!--<div style="font-size: 24px;">-->
-            <!--<picker-group class="flex">-->
-                <!--<picker :options="options0" @input="change" />-->
-                <!--<picker :options="options0" @input="change" />-->
-                <!--<picker :options="options0" @input="change" />-->
-            <!--</picker-group>-->
-        <!--</div>-->
+        <h2>Support All Font Size</h2>
+        <div>
+            <h3>Font Size 24px</h3>
+            <div style="font-size: 24px;">
+                <scroll-picker-group class="flex">
+                    <scroll-picker :options="stringOptions" @input="change" />
+                    <scroll-picker :options="stringOptions" @input="change" />
+                    <scroll-picker :options="stringOptions" @input="change" />
+                </scroll-picker-group>
+            </div>
 
-        <!--<h2>Small Size</h2>-->
-        <!--<div style="font-size: 12px;">-->
-            <!--<picker-group>-->
-                <!--<picker class="picker-8" :options="options" @input="change" />-->
-                <!--<picker class="picker-4" :options="options" @input="change" />-->
-            <!--</picker-group>-->
-        <!--</div>-->
-        <!---->
+            <h3>Font Size 12px</h3>
+            <div style="font-size: 12px;">
+                <scroll-picker-group>
+                    <scroll-picker class="vue-scroll-picker-8" :options="options" @input="change" />
+                    <scroll-picker class="vue-scroll-picker-4" :options="options" @input="change" />
+                </scroll-picker-group>
+            </div>
+
+        </div>
         <h2>Binding Tests</h2>
         <div>
             <h4>start value is null (current value = {{ dataBindingTest1 }})</h4>
             <div>
-                <picker :options="options" v-model="dataBindingTest1" />
+                <scroll-picker :options="options" v-model="dataBindingTest1" />
                 <div style="text-align: center;">
                     <a
                             v-for="option in options"
@@ -51,7 +54,7 @@
 
             <h4>start value is 20 (current value = {{ dataBindingTest2 }})</h4>
             <div>
-                <picker :options="options" v-model="dataBindingTest2" />
+                <scroll-picker :options="options" v-model="dataBindingTest2" />
                 <div style="text-align: center;">
                     <a
                             v-for="option in options"
@@ -63,7 +66,7 @@
 
             <h4>start value is null with placeholder (current value = {{ dataBindingTest3 }})</h4>
             <div>
-                <picker :options="options" v-model="dataBindingTest3" placeholder="Select One" />
+                <scroll-picker :options="options" v-model="dataBindingTest3" placeholder="Select One" />
                 <div style="text-align: center;">
                     <a :class="{active: dataBindingTest3 === null}" @click="dataBindingTest3 = null">None</a>
                     <a
@@ -76,7 +79,7 @@
 
             <h4>start value is 20 with placeholder (current value = {{ dataBindingTest4 }})</h4>
             <div>
-                <picker :options="options" v-model="dataBindingTest4" placeholder="Select One" />
+                <scroll-picker :options="options" v-model="dataBindingTest4" placeholder="Select One" />
                 <div style="text-align: center;">
                     <a :class="{active: dataBindingTest4 === null}" @click="dataBindingTest4 = null">None</a>
                     <a
@@ -93,7 +96,7 @@
     export default {
         data() {
             return {
-                options0: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.".split(' '),
+                stringOptions: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.".split(' '),
                 options: [
                     {value: 10, name: "10KG"},
                     {value: 20, name: "20KG"},
