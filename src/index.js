@@ -1,10 +1,10 @@
 
-import Picker from "./picker.vue";
-import PickerGroup from "./picker-group.vue";
+import ScrollPicker from "./picker.vue";
+import ScrollPickerGroup from "./picker-group.vue";
 
 export function install(Vue) {
-    Vue.component("ScrollPicker", Picker);
-    Vue.component("ScrollPickerGroup", PickerGroup);
+    Vue.component("ScrollPicker", ScrollPicker);
+    Vue.component("ScrollPickerGroup", ScrollPickerGroup);
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
@@ -12,8 +12,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export {
-    Picker,
-    PickerGroup,
+    ScrollPicker,
+    ScrollPickerGroup,
 };
 
 export default {

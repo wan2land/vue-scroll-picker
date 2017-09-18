@@ -26,12 +26,12 @@ or
 
 ```js
 import Vue from 'vue'
-import {Picker, PickerGroup} from 'vue-scroll-picker'
+import {ScrollPicker, ScrollPickerGroup} from 'vue-scroll-picker'
 
 new Vue({
     components: {
-        Picker,
-        PickerGroup
+        ScrollPicker,
+        ScrollPickerGroup
     }
 })
 ```
