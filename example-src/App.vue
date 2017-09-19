@@ -15,6 +15,13 @@
     a.active {
         background: #333;
     }
+    .vue-scroll-picker-item-placeholder.-selected {
+        color: #17A2B8;
+    }
+    .vue-scroll-picker-item.-selected {
+        color: #007BFF;
+    }
+
 </style>
 <template>
     <div>

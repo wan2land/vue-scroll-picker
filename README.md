@@ -77,3 +77,12 @@ new Vue({
 ### Event
 
  - `@input` : you can use `v-model` :-)
+
+### Styling
+
+- [rscss](http://rscss.io/index.html)
+- [Vue Loader Deep Selector](https://vue-loader.vuejs.org/en/features/scoped-css.html) : if you want to override css style, use deep selector in vue-loader!
+
+### License
+
+MIT

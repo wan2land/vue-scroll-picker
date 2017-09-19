@@ -2,14 +2,16 @@
 <template>
     <div class="vue-scroll-picker">
         <div class="vue-scroll-picker-list">
-            <div class="vue-scroll-picker-list-rotator" :style="{top: top + 'px'}" :class="{'transition': transitioning}">
+            <div class="vue-scroll-picker-list-rotator" :style="{top: top + 'px'}" :class="{'-transition': transitioning}">
                 <div
-                    class="vue-scroll-picker-item-placeholder"
+                    class="vue-scroll-picker-item -placeholder"
+                    :class="{'-selected': lastIndex == -1}"
                     ref="placeholder"
                     v-if="placeholder"
                 >{{ placeholder }}</div>
                 <div
                     class="vue-scroll-picker-item"
+                    :class="{'-selected': lastIndex == index}"
                     v-for="(option, index) in sanitizedOptions"
                     :key="option.value"
                     ref="items"
