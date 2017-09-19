@@ -9,8 +9,9 @@
     "url": "git://github.com/wan2land/vue-scroll-picker.git"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "build:example": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./webpack.example.js"
+    "build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "build:example": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./webpack.example.js",
+    "build": "npm run build:production && npm run build:example"
   },
   "main": "dist/index.js",
   "dependencies": {
