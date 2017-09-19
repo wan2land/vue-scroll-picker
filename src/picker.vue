@@ -103,7 +103,7 @@
         computed: {
             sanitizedOptions() {
                 return this.options.map((option) => {
-                    if (option.value && option.name) {
+                    if (option.hasOwnProperty('value') && option.hasOwnProperty('name')) {
                         return option;
                     }
                     return {
