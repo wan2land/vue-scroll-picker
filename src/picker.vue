@@ -195,8 +195,8 @@
                 }
             },
             handleClick(e) {
-                var x = e.x;
-                var y = e.y;
+                var x = e.clientX || e.x;
+                var y = e.clientY || e.y;
                 var topRect = this.$refs.top.getBoundingClientRect();
                 var bottomRect = this.$refs.bottom.getBoundingClientRect();
                 if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
