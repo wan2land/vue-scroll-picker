@@ -69,6 +69,7 @@
                 this.$el.addEventListener('touchcancel', this.handleCancel);
             } else {
                 this.$el.addEventListener('mousewheel', this.handleWheel);
+                this.$el.addEventListener('wheel', this.handleWheel); // for IE
                 this.$el.addEventListener('mousedown', this.handleStart);
                 this.$el.addEventListener('mousemove', this.handleMove);
                 this.$el.addEventListener('mouseup', this.handleEnd);
@@ -96,6 +97,7 @@
                 this.$el.removeEventListener('touchcancel', this.handleCancel);
             } else {
                 this.$el.removeEventListener('mousewheel', this.handleWheel);
+                this.$el.removeEventListener('wheel', this.handleWheel); // for IE
                 this.$el.removeEventListener('mousedown', this.handleStart);
                 this.$el.removeEventListener('mousemove', this.handleMove);
                 this.$el.removeEventListener('mouseup', this.handleEnd);
