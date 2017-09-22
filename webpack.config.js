@@ -17,7 +17,15 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           scss: 'vue-style-loader!css-loader!sass-loader',
-          sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+          sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
+          loaders: {
+            js: {
+               loader: 'babel-loader',
+               options: {
+                   presets: ['es2015-ie'],
+               }
+            },
+          }
         },
       },
       {
@@ -54,7 +62,12 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new UglifyJSPlugin(),
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        ie8: true,
+        ecma: 5,
+      }
+    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
