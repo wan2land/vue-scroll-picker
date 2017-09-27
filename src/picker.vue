@@ -169,7 +169,7 @@
                 if (isTouchable || this.isMouseDown) {
                     this.isDragging = true;
                     const touchInfo = this.getTouchInfo(e);
-                    this.top = this.startTop + touchInfo.pageY - this.startY;
+                    this.top = this.startTop + (touchInfo.pageY - this.startY) * 1.7;
                 }
             },
             handleEnd(e) {
@@ -195,8 +195,8 @@
                 }
             },
             handleClick(e) {
-                var x = e.clientX || e.x;
-                var y = e.clientY || e.y;
+                var x = e.clientX || e.pageX || e.x;
+                var y = e.clientY || e.pageY || e.y;
                 var topRect = this.$refs.top.getBoundingClientRect();
                 var bottomRect = this.$refs.bottom.getBoundingClientRect();
                 if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
