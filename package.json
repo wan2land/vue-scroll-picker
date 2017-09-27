@@ -10,8 +10,8 @@
   },
   "scripts": {
     "dev": "vue build build/dev.js --config build/vue.config.js --host 0.0.0.0",
-    "build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "build:example": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./webpack.example.js",
+    "build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.config.js",
+    "build:example": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.example.js",
     "build": "npm run build:production && npm run build:example"
   },
   "main": "dist/index.js",
