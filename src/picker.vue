@@ -162,14 +162,18 @@
                 if (!isTouchable) {
                     this.isMouseDown = true
                 }
+                this.isDragging = false;
             },
             handleMove(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (isTouchable || this.isMouseDown) {
-                    this.isDragging = true;
                     const touchInfo = this.getTouchInfo(e);
-                    this.top = this.startTop + (touchInfo.pageY - this.startY) * 1.7;
+                    var diff = touchInfo.pageY - this.startY;
+                    if (Math.abs(diff) > 1.5) {
+                        this.isDragging = true;
+                    }
+                    this.top = this.startTop + diff * 1.7;
                 }
             },
             handleEnd(e) {
@@ -195,8 +199,9 @@
                 }
             },
             handleClick(e) {
-                var x = e.clientX || e.pageX || e.x;
-                var y = e.clientY || e.pageY || e.y;
+                const touchInfo = this.getTouchInfo(e);
+                var x = touchInfo.clientX; // not pageX (pageX = clientX + scrollLeft)
+                var y = touchInfo.clientY; // not pageY (pageY = clientY + scrollTop)
                 var topRect = this.$refs.top.getBoundingClientRect();
                 var bottomRect = this.$refs.bottom.getBoundingClientRect();
                 if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
