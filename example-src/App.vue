@@ -1,19 +1,13 @@
 <style>
-    body {
-        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-    }
     a {
-        display: inline-block;
-        background: #ccc;
-        color: #fff;
-        padding: 10px 10px 7px;
-        cursor: pointer;
-        margin: 3px;
+        margin: .25rem;
     }
-    a.active {
-        background: #333;
+    a.btn-outline-primary {
+        color: #007bff !important;
+    }
+    a.btn-outline-primary.active,
+    a.btn-outline-primary:hover {
+        color: #fff !important;
     }
     .vue-scroll-picker-item-placeholder.-selected {
         color: #17A2B8;
@@ -21,10 +15,9 @@
     .vue-scroll-picker-item.-selected {
         color: #007BFF;
     }
-
 </style>
 <template>
-    <div>
+    <div class="container">
         <h2>Support All Font Size</h2>
         <div>
             <h3>Font Size 24px</h3>
@@ -52,6 +45,7 @@
                 <scroll-picker :options="options" v-model="dataBindingTest1" />
                 <div style="text-align: center;">
                     <a
+                            class="btn btn-outline-primary"
                             v-for="option in options"
                             :class="{active: dataBindingTest1 == option.value}"
                             @click="dataBindingTest1 = option.value"
@@ -64,6 +58,7 @@
                 <scroll-picker :options="options" v-model="dataBindingTest2" />
                 <div style="text-align: center;">
                     <a
+                            class="btn btn-outline-primary"
                             v-for="option in options"
                             :class="{active: dataBindingTest2 == option.value}"
                             @click="dataBindingTest2 = option.value"
@@ -77,6 +72,7 @@
                 <div style="text-align: center;">
                     <a :class="{active: dataBindingTest3 === null}" @click="dataBindingTest3 = null">None</a>
                     <a
+                            class="btn btn-outline-primary"
                             v-for="option in options"
                             :class="{active: dataBindingTest3 == option.value}"
                             @click="dataBindingTest3 = option.value"
@@ -90,6 +86,7 @@
                 <div style="text-align: center;">
                     <a :class="{active: dataBindingTest4 === null}" @click="dataBindingTest4 = null">None</a>
                     <a
+                            class="btn btn-outline-primary"
                             v-for="option in options"
                             :class="{active: dataBindingTest4 == option.value}"
                             @click="dataBindingTest4 = option.value"

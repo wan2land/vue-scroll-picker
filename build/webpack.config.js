@@ -3,9 +3,9 @@ var webpack = require('webpack')
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: './example-src/index.js',
+  entry: path.resolve(__dirname, '../src/index.js'),
   output: {
-    path: path.resolve(__dirname, './example'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'index.js',
     library:'VueScrollPicker',
     libraryTarget: 'umd'
@@ -39,8 +39,7 @@ module.exports = {
     ]
   },
   externals: {
-    vue: 'Vue',
-    "vue-scroll-picker": 'VueScrollPicker',
+    vue: 'vue'
   },
   resolve: {
     alias: {
