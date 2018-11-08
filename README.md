@@ -12,7 +12,7 @@ Scroll Picker Component for Vue2. Support All Gestures of Mouse(even also MouseW
 ## Installation
 
 ```
-npm install vue-scroll-picker --save
+npm i vue-scroll-picker --save
 ```
 
 ## Usage
