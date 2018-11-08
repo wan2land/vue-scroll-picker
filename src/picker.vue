@@ -8,14 +8,16 @@
                     :class="{'-selected': lastIndex == -1}"
                     ref="placeholder"
                     v-if="placeholder"
-                >{{ placeholder }}</div>
+                    v-html="placeholder"
+                ></div>
                 <div
                     class="vue-scroll-picker-item"
                     :class="{'-selected': lastIndex == index}"
                     v-for="(option, index) in sanitizedOptions"
                     :key="option.value"
                     ref="items"
-                >{{ option.name }}</div>
+                    v-html="option.name"
+                ></div>
             </div>
         </div>
         <div class="vue-scroll-picker-layer">
