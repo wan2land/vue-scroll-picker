@@ -1,5 +1,4 @@
-Vue Scroll Picker
-=================
+# Vue Scroll Picker
 
 [![vue-js](https://img.shields.io/badge/vue.js-2.x-brightgreen.svg?maxAge=604800)](https://vuejs.org/)
 [![downloads](https://img.shields.io/npm/dt/vue-scroll-picker.svg)](https://www.npmjs.com/package/vue-scroll-picker)
@@ -7,7 +6,9 @@ Vue Scroll Picker
 
 Scroll Picker Component for Vue2. Support All Gestures of Mouse(even also MouseWheel!) and Touch.
 
-[Demo](http://wan2land.github.io/vue-scroll-picker/)
+### Samples
+
+ - [Default Sample](http://wan2land.github.io/vue-scroll-picker/samples/default/index.html) ([sources](./samples/default))
 
 ## Installation
 
@@ -60,10 +61,6 @@ new Vue({
 </body>
 </html>
 ```
-
-### Samples
-
- - [Default Sample](http://wan2land.github.io/vue-scroll-picker/samples/default/) [(sources)](./samples/default)
 
 ## Options
 
