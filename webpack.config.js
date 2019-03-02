@@ -1,5 +1,5 @@
-const webpack = require("webpack")
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
 
 module.exports = {
   mode: "production",
@@ -23,7 +23,9 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          "vue-style-loader",
+          process.env.NODE_ENV !== "production"
+            ? "vue-style-loader"
+            : MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader"
         ],
@@ -40,14 +42,8 @@ module.exports = {
   },
   devtool: "#source-map",
   plugins: [
-    // new UglifyJSPlugin({
-    //   uglifyOptions: {
-    //     ie8: true,
-    //     ecma: 5,
-    //   },
-    // }),
-    // new webpack.LoaderOptionsPlugin({
-    //   minimize: true
-    // }),
+    new MiniCssExtractPlugin({
+      filename: "style.css",
+    }),
   ],
 }

@@ -18,6 +18,14 @@ npm i vue-scroll-picker
 
 ## Usage
 
+### CSS
+
+Import css file (only version `v0.2` or later).
+
+```js
+import "vue-scroll-picker/dist/style.css"
+```
+
 ### ES6
 
 ```js
