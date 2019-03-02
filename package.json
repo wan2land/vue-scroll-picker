@@ -9,11 +9,11 @@
     "url": "git://github.com/wan2land/vue-scroll-picker.git"
   },
   "scripts": {
-    "dev:examples:default": "webpack-dev-server --config examples/default/webpack.config.js --content-base examples/default/",
+    "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/",
     "build": "npm run build:production",
     "build:production": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "build:examples:default": "cross-env NODE_ENV=production webpack --config examples/default/webpack.config.js",
-    "deploy:examples:default": "npm run build:examples:default && push-dir --dir=examples-dist --branch=gh-pages"
+    "build:example": "cross-env NODE_ENV=production webpack --config example/webpack.config.js",
+    "deploy:example": "push-dir --dir=example-dist --branch=gh-pages"
   },
   "main": "dist/index.js",
   "dependencies": {
@@ -31,6 +31,7 @@
     "push-dir": "^0.4.1",
     "sass-loader": "^7.1.0",
     "vue-loader": "^15.4.2",
+    "vue-router": "^3.0.2",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",

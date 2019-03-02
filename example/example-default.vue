@@ -1,52 +1,13 @@
-<style lang="scss">
-a {
-  margin: .25rem;
-}
-a.btn-outline-primary {
-  color: #007bff !important;
-}
-a.btn-outline-primary.active,
-a.btn-outline-primary:hover {
-  color: #fff !important;
-}
-.vue-scroll-picker-item-placeholder.-selected {
-  color: #17A2B8;
-}
-.vue-scroll-picker-item.-selected {
-  color: #007BFF;
-}
-</style>
 <template>
-  <div class="container">
-    <h2>Support All Font Size</h2>
-    <div>
-      <h3>Font Size 24px</h3>
-      <div style="font-size: 24px;">
-        <scroll-picker-group class="flex">
-          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
-          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
-          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
-        </scroll-picker-group>
-      </div>
-
-      <h3>Font Size 12px</h3>
-      <div style="font-size: 12px;">
-        <scroll-picker-group>
-          <scroll-picker class="vue-scroll-picker-8" :options="options" @input="change"></scroll-picker>
-          <scroll-picker class="vue-scroll-picker-4" :options="options" @input="change"></scroll-picker>
-        </scroll-picker-group>
-      </div>
-
-    </div>
-
-    <h2>Binding Tests</h2>
+  <div>
+    <h2>Full Binding</h2>
     <div>
       <h4>start value is null (current value = {{ dataBindingTest1 }})</h4>
       <div>
         <scroll-picker :options="options" v-model="dataBindingTest1" />
         <div style="text-align: center;">
           <a
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary btn-sm"
             v-for="(option, index) in options"
             :key="index"
             :class="{active: dataBindingTest1 == option.value}"
@@ -55,12 +16,12 @@ a.btn-outline-primary:hover {
         </div>
       </div>
 
-      <h4>start value is 20 (current value = {{ dataBindingTest2 }})</h4>
+      <h4 class="mt-4">start value is 20 (current value = {{ dataBindingTest2 }})</h4>
       <div>
         <scroll-picker :options="options" v-model="dataBindingTest2" />
         <div style="text-align: center;">
           <a
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary btn-sm"
             v-for="(option, index) in options"
             :key="index"
             :class="{active: dataBindingTest2 == option.value}"
@@ -69,13 +30,13 @@ a.btn-outline-primary:hover {
         </div>
       </div>
 
-      <h4>start value is null with placeholder (current value = {{ dataBindingTest3 }})</h4>
+      <h4 class="mt-4">start value is null with placeholder (current value = {{ dataBindingTest3 === null ? "null" : dataBindingTest3 }})</h4>
       <div>
         <scroll-picker :options="options" v-model="dataBindingTest3" placeholder="Select One" />
         <div style="text-align: center;">
-          <a :class="{active: dataBindingTest3 === null}" @click="dataBindingTest3 = null">None</a>
+          <a class="btn btn-outline-secondary btn-sm" :class="{active: dataBindingTest3 === null}" @click="dataBindingTest3 = null">NULL</a>
           <a
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary btn-sm"
             v-for="(option, index) in options"
             :key="index"
             :class="{active: dataBindingTest3 == option.value}"
@@ -84,13 +45,13 @@ a.btn-outline-primary:hover {
         </div>
       </div>
 
-      <h4>start value is 20 with placeholder (current value = {{ dataBindingTest4 }})</h4>
+      <h4 class="mt-4">start value is 20 with placeholder (current value = {{ dataBindingTest4 === null ? "null" : dataBindingTest4 }})</h4>
       <div>
         <scroll-picker :options="options" v-model="dataBindingTest4" placeholder="Select One" />
         <div style="text-align: center;">
-          <a :class="{active: dataBindingTest4 === null}" @click="dataBindingTest4 = null">None</a>
+          <a class="btn btn-outline-secondary btn-sm" :class="{active: dataBindingTest4 === null}" @click="dataBindingTest4 = null">NULL</a>
           <a
-            class="btn btn-outline-primary"
+            class="btn btn-outline-primary btn-sm"
             v-for="(option, index) in options"
             :key="index"
             :class="{active: dataBindingTest4 == option.value}"

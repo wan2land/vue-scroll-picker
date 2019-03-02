@@ -1,0 +1,34 @@
+<style lang="scss">
+a.btn {
+  margin: .25rem;
+}
+a.btn-outline-primary {
+  color: #007bff !important;
+}
+a.btn-outline-primary.active,
+a.btn-outline-primary:hover {
+  color: #fff !important;
+}
+.vue-scroll-picker-item-placeholder.-selected {
+  color: #17A2B8;
+}
+.vue-scroll-picker-item.-selected {
+  color: #007BFF;
+}
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-3 py-md-3">
+        <h5>Examples</h5>
+        <nav class="list-group">
+          <router-link class="list-group-item list-group-item-action p-2" to="/">Full Binding</router-link>
+          <router-link class="list-group-item list-group-item-action p-2" to="/example-inherit-font-size">Inherit font-size</router-link>
+        </nav>
+      </div>
+      <div class="col-12 col-md-9 py-md-3 pl-md-5">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
+</template>

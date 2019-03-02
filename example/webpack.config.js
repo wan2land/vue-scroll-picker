@@ -5,7 +5,7 @@ module.exports = {
   mode: "production",
   entry: __dirname + "/entry.js",
   output: {
-    path: __dirname + "/../../examples-dist/default",
+    path: __dirname + "/../example-dist",
     filename: "[name].[hash].js",
   },
   devServer: {
@@ -34,7 +34,7 @@ module.exports = {
   resolve: {
     alias: {
       "vue$": "vue/dist/vue.esm.js",
-      "vue-scroll-picker": __dirname + "/../../src/index.js",
+      "vue-scroll-picker": __dirname + "/../src/index.js",
     },
   },
   plugins: [
