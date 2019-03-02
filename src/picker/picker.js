@@ -1,33 +1,5 @@
-<style src="./picker.scss" lang="scss"></style>
-<template>
-  <div class="vue-scroll-picker">
-    <div class="vue-scroll-picker-list">
-      <div class="vue-scroll-picker-list-rotator" :style="{top: top + 'px'}" :class="{'-transition': transitioning}">
-        <div
-          class="vue-scroll-picker-item -placeholder"
-          :class="{'-selected': lastIndex == -1}"
-          ref="placeholder"
-          v-if="placeholder"
-          v-html="placeholder"
-        ></div>
-        <div
-          class="vue-scroll-picker-item"
-          :class="{'-selected': lastIndex == index}"
-          v-for="(option, index) in sanitizedOptions"
-          :key="option.value"
-          ref="items"
-          v-html="option.name"
-        ></div>
-      </div>
-    </div>
-    <div class="vue-scroll-picker-layer">
-      <div class="top" ref="top"></div>
-      <div class="middle" ref="selection"></div>
-      <div class="bottom" ref="bottom"></div>
-    </div>
-  </div>
-</template>
-<script>
+import "./picker.scss"
+
 
 const isTouchable = typeof window !== 'undefined' && 'ontouchstart' in window;
 
@@ -256,5 +228,74 @@ export default {
       }.bind(this), 100);
     },
   },
-};
-</script>
+  render(h) {
+    let items = []
+    if (this.placeholder) {
+      items.push(h("div", {
+        class: {
+          "vue-scroll-picker-item": true,
+          "-placeholder": true,
+          "-selected": this.lastIndex == -1,
+        },
+        ref: "placeholder",
+        domProps: {
+          innerHTML: this.placeholder,
+        },
+      }))
+    }
+    items = items.concat(this.sanitizedOptions.map((option, index) => {
+      return h("div", {
+        class: {
+          "vue-scroll-picker-item": true,
+          "-selected": this.lastIndex == index,
+        },
+        key: option.value,
+        ref: "items",
+        refInFor: true,
+        domProps: {
+          innerHTML: option.name,
+        },
+      })
+    }))
+    return h("div", {class: ["vue-scroll-picker"]}, [
+      h("div", {class: ["vue-scroll-picker-list"]}, [
+        h("div", {
+          class: {
+            "vue-scroll-picker-list-rotator": true,
+            "-transition": this.transitioning,
+          },
+          style: {
+            top: `${this.top}px`,
+          }
+        }, items)
+      ]),
+      h("div", {class: ["vue-scroll-picker-layer"]}, [
+        h("div", {class: ["top"], ref: "top"}),
+        h("div", {class: ["middle"], ref: "selection"}),
+        h("div", {class: ["bottom"], ref: "bottom"}),
+      ]),
+    ])
+    
+    // <div class="vue-scroll-picker">
+    //   <div class="vue-scroll-picker-list">
+    //     <div class="vue-scroll-picker-list-rotator" :style="{top: top + 'px'}" :class="{'-transition': transitioning}">
+    //       <div
+    //         class="vue-scroll-picker-item -placeholder"
+    //         :class="{'-selected': lastIndex == -1}"
+    //         ref="placeholder"
+    //         v-if="placeholder"
+    //         v-html="placeholder"
+    //       ></div>
+    //       <div
+    //         class="vue-scroll-picker-item"
+    //         :class="{'-selected': lastIndex == index}"
+    //         v-for="(option, index) in sanitizedOptions"
+    //         :key="option.value"
+    //         ref="items"
+    //         v-html="option.name"
+    //       ></div>
+    //     </div>
+    //   </div>
+    // </div>
+  }
+}

@@ -1,6 +1,6 @@
+import ScrollPicker from "./picker/picker"
+import ScrollPickerGroup from "./picker-group/picker-group"
 
-import ScrollPicker from "./picker.vue"
-import ScrollPickerGroup from "./picker-group.vue"
 
 export function install(Vue) {
   Vue.component("ScrollPicker", ScrollPicker)
