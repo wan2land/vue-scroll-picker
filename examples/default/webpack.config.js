@@ -1,13 +1,14 @@
-
-const path = require("path")
 const VueLoaderPlugin = require("vue-loader/lib/plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   mode: "production",
-  entry: path.resolve(__dirname, "./entry.js"),
+  entry: __dirname + "/entry.js",
   output: {
-    path: __dirname,
-    filename: "bundle.js",
+    path: __dirname + "/../../examples-dist/default",
+    filename: "[name].[hash].js",
+  },
+  devServer: {
   },
   module: {
     rules: [
@@ -33,10 +34,14 @@ module.exports = {
   resolve: {
     alias: {
       "vue$": "vue/dist/vue.esm.js",
-      "vue-scroll-picker": path.resolve(__dirname, "../../src/index.js"),
+      "vue-scroll-picker": __dirname + "/../../src/index.js",
     },
   },
   plugins: [
     new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({  // Also generate a test.html
+      filename: "index.html",
+      template: __dirname + "/index.html"
+    })
   ],
 }

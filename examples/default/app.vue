@@ -23,17 +23,17 @@ a.btn-outline-primary:hover {
       <h3>Font Size 24px</h3>
       <div style="font-size: 24px;">
         <scroll-picker-group class="flex">
-          <scroll-picker :options="stringOptions" @input="change" />
-          <scroll-picker :options="stringOptions" @input="change" />
-          <scroll-picker :options="stringOptions" @input="change" />
+          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
+          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
+          <scroll-picker :options="stringOptions" @input="change"></scroll-picker>
         </scroll-picker-group>
       </div>
 
       <h3>Font Size 12px</h3>
       <div style="font-size: 12px;">
         <scroll-picker-group>
-          <scroll-picker class="vue-scroll-picker-8" :options="options" @input="change" />
-          <scroll-picker class="vue-scroll-picker-4" :options="options" @input="change" />
+          <scroll-picker class="vue-scroll-picker-8" :options="options" @input="change"></scroll-picker>
+          <scroll-picker class="vue-scroll-picker-4" :options="options" @input="change"></scroll-picker>
         </scroll-picker-group>
       </div>
 
@@ -102,10 +102,13 @@ a.btn-outline-primary:hover {
   </div>
 </template>
 <script>
+function unique(items) {
+  return [...new Set(items)]
+}
 export default {
   data() {
     return {
-      stringOptions: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.".split(' '),
+      stringOptions: unique("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.".split(" ")),
       options: [
         {value: 0, name: "0KG"},
         {value: 10, name: "10KG"},

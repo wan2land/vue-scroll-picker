@@ -9,26 +9,30 @@
     "url": "git://github.com/wan2land/vue-scroll-picker.git"
   },
   "scripts": {
-    "dev": "vue build build/dev.js --config build/vue.config.js --host 0.0.0.0",
-    "build": "npm run build:production && npm run build:samples",
-    "build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.config.js",
-    "build:samples": "npm run build:samples:default",
-    "build:samples:default": "webpack --config ./samples/default/webpack.config.js"
+    "dev:examples:default": "webpack-dev-server --config examples/default/webpack.config.js --content-base examples/default/",
+    "build": "npm run build:production",
+    "build:production": "webpack --config webpack.config.js",
+    "build:examples:default": "cross-env NODE_ENV=production webpack --config examples/default/webpack.config.js",
+    "deploy:examples:default": "npm run build:examples:default && push-dir --dir=examples-dist --branch=gh-pages"
   },
   "main": "dist/index.js",
   "dependencies": {
     "vue": "^2.5.17"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.5",
-    "@babel/preset-env": "^7.1.5",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
     "babel-loader": "^8.0.4",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
+    "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.10.0",
+    "push-dir": "^0.4.1",
     "sass-loader": "^7.1.0",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.2.1"
   }
 }

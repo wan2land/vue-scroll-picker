@@ -6,9 +6,9 @@
 
 Scroll Picker Component for Vue2. Support All Gestures of Mouse(even also MouseWheel!) and Touch.
 
-### Samples
+### Examples
 
- - [Default Sample](http://wan2land.github.io/vue-scroll-picker/samples/default/index.html) ([sources](./samples/default))
+ - [Default Sample](http://wan2land.github.io/vue-scroll-picker/default/index.html) ([sources](./examples/default))
 
 ## Installation
 
