@@ -28,7 +28,8 @@ a.btn-outline-primary:hover {
       <div class="col-12 col-md-3 py-md-3">
         <h5>Examples</h5>
         <nav class="list-group">
-          <router-link class="list-group-item list-group-item-action p-2" to="/">Full Binding</router-link>
+          <router-link class="list-group-item list-group-item-action p-2" to="/">Usage</router-link>
+          <router-link class="list-group-item list-group-item-action p-2" to="/example-full-binding">Full Binding</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-inherit-font-size">Inherit font-size</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-transition">Transition</router-link>
         </nav>

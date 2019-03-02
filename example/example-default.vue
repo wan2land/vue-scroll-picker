@@ -1,63 +1,50 @@
 <template>
   <div>
-    <h3>Full Binding</h3>
+    <h3>Usage</h3>
 
-    <h4>start value is null</h4>
+    <h4>HTML Support</h4>
     <pre v-highlightjs><code class="html">{{ example1 }}</code></pre>
-    <p>Current value is <strong>{{ dataBindingTest1 }}</strong></p>
-    <scroll-picker :options="options" v-model="dataBindingTest1" />
+    <p>Current value is <strong>{{ data1 }}</strong></p>
+    <scroll-picker :options="options" v-model="data1" />
     <div style="text-align: center;">
       <a
         class="btn btn-outline-primary btn-sm"
         v-for="(option, index) in options"
         :key="index"
-        :class="{active: dataBindingTest1 == option.value}"
-        @click="dataBindingTest1 = option.value"
-      >{{ option.name }}</a>
+        :class="{active: data1 == option.value}"
+        @click="data1 = option.value"
+        v-html="option.name"
+      ></a>
     </div>
 
-    <h4 class="mt-4">start value is 20</h4>
+    <h4 class="mt-4">Sensitivity</h4>
     <pre v-highlightjs><code class="html">{{ example2 }}</code></pre>
-    <p>Current value is <strong>{{ dataBindingTest2 }}</strong></p>
-    <scroll-picker :options="options" v-model="dataBindingTest2" />
-    <div style="text-align: center;">
-      <a
-        class="btn btn-outline-primary btn-sm"
-        v-for="(option, index) in options"
-        :key="index"
-        :class="{active: dataBindingTest2 == option.value}"
-        @click="dataBindingTest2 = option.value"
-      >{{ option.name }}</a>
-    </div>
-
-    <h4 class="mt-4">start value is null with placeholder</h4>
-    <pre v-highlightjs><code class="html">{{ example3 }}</code></pre>
-    <p>Current value is {{ dataBindingTest3 === null ? "null" : dataBindingTest3 }}</p>
-    <scroll-picker :options="options" v-model="dataBindingTest3" placeholder="Select One" />
-    <div style="text-align: center;">
-      <a class="btn btn-outline-secondary btn-sm" :class="{active: dataBindingTest3 === null}" @click="dataBindingTest3 = null">NULL</a>
-      <a
-        class="btn btn-outline-primary btn-sm"
-        v-for="(option, index) in options"
-        :key="index"
-        :class="{active: dataBindingTest3 == option.value}"
-        @click="dataBindingTest3 = option.value"
-      >{{ option.name }}</a>
-    </div>
-
-    <h4 class="mt-4">start value is 20 with placeholder</h4>
-    <pre v-highlightjs><code class="html">{{ example4 }}</code></pre>
-    <p>Current value is {{ dataBindingTest4 === null ? "null" : dataBindingTest4 }}</p>
-    <scroll-picker :options="options" v-model="dataBindingTest4" placeholder="Select One" />
-    <div style="text-align: center;">
-      <a class="btn btn-outline-secondary btn-sm" :class="{active: dataBindingTest4 === null}" @click="dataBindingTest4 = null">NULL</a>
-      <a
-        class="btn btn-outline-primary btn-sm"
-        v-for="(option, index) in options"
-        :key="index"
-        :class="{active: dataBindingTest4 == option.value}"
-        @click="dataBindingTest4 = option.value"
-      >{{ option.name }}</a>
+    <scroll-picker
+      :drag-sensitivity="dragSensitivity"
+      :touch-sensitivity="touchSensitivity"
+      :scroll-sensitivity="scrollSensitivity"
+      :options="options"
+      v-model="data2"
+    />
+    <div class="form">
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Drag Sensitivity</label>
+        <div class="col-sm-8">
+          <input type="range" min="0.5" max="10" v-model.number="dragSensitivity" /> {{ dragSensitivity }} (default = 1.7)
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Touch Sensitivity</label>
+        <div class="col-sm-8">
+          <input type="range" min="0.5" max="10" v-model.number="touchSensitivity" /> {{ touchSensitivity }} (default = 1.7)
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Scroll Sensitivity</label>
+        <div class="col-sm-8">
+          <input type="range" min="0.5" max="10" v-model.number="scrollSensitivity" /> {{ scrollSensitivity }} (default = 1)
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -73,60 +60,37 @@ export default {
 export default {
   data() {
     data: null,
-    options: [{value: 0, name: "0KG"}, ... ],
+    options: [
+      {value: "instagram", name: "<i class=\\"fab fa-instagram\\"></i> Instagram"},
+      {value: "facebook", name: "<i class=\\"fab fa-facebook\\"></i> Facebook"},
+      {value: "youtube", name: "<i class=\\"fab fa-youtube\\"></i> Youtube"},
+      {value: "twitter", name: "<i class=\\"fab fa-twitter\\"></i> Twitter"},
+      {value: "line", name: "<i class=\\"fab fa-line\\"></i> Line"},
+    ],
   }
 }
 <` + `/script>`,
       example2: `<template>
-  <scroll-picker :options="options" v-model="data" />
-</template>
-<script>
-export default {
-  data() {
-    data: 20,
-    options: [{value: 0, name: "0KG"}, ... ],
-  }
-}
-<` + `/script>`,
-      example3: `<template>
-  <scroll-picker :options="options" v-model="data" placeholder="Select One" />
-</template>
-<script>
-export default {
-  data() {
-    data: null,
-    options: [{value: 0, name: "0KG"}, ... ],
-  }
-}
-<` + `/script>`,
-      example4: `<template>
-  <scroll-picker :options="options" v-model="data" placeholder="Select One" />
-</template>
-<script>
-export default {
-  data() {
-    data: 20,
-    options: [{value: 0, name: "0KG"}, ... ],
-  }
-}
-<` + `/script>`,
+  <scroll-picker
+    :drag-sensitivity="dragSensitivity"
+    :touch-sensitivity="touchSensitivity"
+    :scroll-sensitivity="scrollSensitivity"
+    :options="options"
+    v-model="data"
+  />
+</template>`,
+      dragSensitivity: 1.7,
+      touchSensitivity: 1.7,
+      scrollSensitivity: 1,
       options: [
-        {value: 0, name: "0KG"},
-        {value: 10, name: "10KG"},
-        {value: 20, name: "20KG"},
-        {value: 30, name: "30KG"},
-        {value: 40, name: "40KG"},
-        {value: 50, name: "50KG"},
-        {value: 60, name: "60KG"},
-        {value: 70, name: "70KG"},
-        {value: 80, name: "80KG"},
-        {value: 90, name: "90KG"},
-        {value: 100, name: "100KG"},
+        {value: "instagram", name: "<i class=\"fab fa-instagram\"></i> Instagram"},
+        {value: "facebook", name: "<i class=\"fab fa-facebook\"></i> Facebook"},
+        {value: "youtube", name: "<i class=\"fab fa-youtube\"></i> Youtube"},
+        {value: "twitter", name: "<i class=\"fab fa-twitter\"></i> Twitter"},
+        {value: "line", name: "<i class=\"fab fa-line\"></i> Line"},
       ],
-      dataBindingTest1: null,
-      dataBindingTest2: 20,
-      dataBindingTest3: null,
-      dataBindingTest4: 20,
+      data1: null,
+      data2: 20,
     }
   },
   methods: {

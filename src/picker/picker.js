@@ -10,6 +10,18 @@ export default {
       type: Array,
       default: () => [],
     },
+    dragSensitivity: {
+      type: Number,
+      default: 1.7,
+    },
+    touchSensitivity: {
+      type: Number,
+      default: 1.7,
+    },
+    scrollSensitivity: {
+      type: Number,
+      default: 1,
+    },
     placeholder: String,
   },
   data() {
@@ -37,17 +49,17 @@ export default {
   },
   mounted() {
     if (isTouchable) {
-      this.$el.addEventListener("touchstart", this.handleStart)
-      this.$el.addEventListener("touchmove", this.handleMove)
-      this.$el.addEventListener("touchend", this.handleEnd)
-      this.$el.addEventListener("touchcancel", this.handleCancel)
+      this.$el.addEventListener("touchstart", this.onStart)
+      this.$el.addEventListener("touchmove", this.onTouchMove)
+      this.$el.addEventListener("touchend", this.onEnd)
+      this.$el.addEventListener("touchcancel", this.onCancel)
     } else {
-      this.$el.addEventListener("mousewheel", this.handleWheel)
-      this.$el.addEventListener("wheel", this.handleWheel) // for IE
-      this.$el.addEventListener("mousedown", this.handleStart)
-      this.$el.addEventListener("mousemove", this.handleMove)
-      this.$el.addEventListener("mouseup", this.handleEnd)
-      this.$el.addEventListener("mouseleave", this.handleCancel)
+      this.$el.addEventListener("mousewheel", this.onScroll)
+      this.$el.addEventListener("wheel", this.onScroll) // for IE
+      this.$el.addEventListener("mousedown", this.onStart)
+      this.$el.addEventListener("mousemove", this.onMouseMove)
+      this.$el.addEventListener("mouseup", this.onEnd)
+      this.$el.addEventListener("mouseleave", this.onCancel)
     }
     const rect = this.$refs.selection.getBoundingClientRect()
     const med = (rect.top + rect.bottom) / 2
@@ -65,17 +77,17 @@ export default {
   },
   destroyed() {
     if (isTouchable) {
-      this.$el.removeEventListener("touchstart", this.handleStart)
-      this.$el.removeEventListener("touchmove", this.handleMove)
-      this.$el.removeEventListener("touchend", this.handleEnd)
-      this.$el.removeEventListener("touchcancel", this.handleCancel)
+      this.$el.removeEventListener("touchstart", this.onStart)
+      this.$el.removeEventListener("touchmove", this.onTouchMove)
+      this.$el.removeEventListener("touchend", this.onEnd)
+      this.$el.removeEventListener("touchcancel", this.onCancel)
     } else {
-      this.$el.removeEventListener("mousewheel", this.handleWheel)
-      this.$el.removeEventListener("wheel", this.handleWheel) // for IE
-      this.$el.removeEventListener("mousedown", this.handleStart)
-      this.$el.removeEventListener("mousemove", this.handleMove)
-      this.$el.removeEventListener("mouseup", this.handleEnd)
-      this.$el.removeEventListener("mouseleave", this.handleCancel)
+      this.$el.removeEventListener("mousewheel", this.onScroll)
+      this.$el.removeEventListener("wheel", this.onScroll) // for IE
+      this.$el.removeEventListener("mousedown", this.onStart)
+      this.$el.removeEventListener("mousemove", this.onMouseMove)
+      this.$el.removeEventListener("mouseup", this.onEnd)
+      this.$el.removeEventListener("mouseleave", this.onCancel)
     }
   },
   computed: {
@@ -103,7 +115,7 @@ export default {
     },
   },
   methods: {
-    handleWheel(e) {
+    onScroll(e) {
       if (this.top >= 0 && e.deltaY < 0) return
       if (this.top <= this.scrollMax && e.deltaY > 0) return
 
@@ -114,9 +126,9 @@ export default {
       this.isScrolling = true
       
       if (e.deltaY < 0) {
-        this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 30 + 1))
+        this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
       } else if (e.deltaY > 0) {
-        this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 30 + 1))
+        this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
       }
       setTimeout(() => {
         this.isScrolling = false
@@ -125,7 +137,7 @@ export default {
     getTouchInfo (e) {
       return isTouchable ? e.changedTouches[0] || e.touches[0] : e
     },
-    handleStart (e) {
+    onStart (e) {
       if (e.cancelable) {
         e.preventDefault()
         e.stopPropagation()
@@ -138,7 +150,7 @@ export default {
       }
       this.isDragging = false
     },
-    handleMove(e) {
+    onTouchMove(e) {
       e.preventDefault()
       e.stopPropagation()
       if (isTouchable || this.isMouseDown) {
@@ -147,10 +159,22 @@ export default {
         if (Math.abs(diff) > 1.5) {
           this.isDragging = true
         }
-        this.top = this.startTop + diff * 1.7
+        this.top = this.startTop + diff * this.touchSensitivity
       }
     },
-    handleEnd(e) {
+    onMouseMove(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      if (isTouchable || this.isMouseDown) {
+        const touchInfo = this.getTouchInfo(e)
+        const diff = touchInfo.pageY - this.startY
+        if (Math.abs(diff) > 1.5) {
+          this.isDragging = true
+        }
+        this.top = this.startTop + diff * this.dragSensitivity
+      }
+    },
+    onEnd(e) {
       e.preventDefault()
       e.stopPropagation()
       if (!this.isDragging) {
@@ -163,7 +187,7 @@ export default {
       this.isMouseDown = false
       this.correctionAfterDragging()
     },
-    handleCancel(e) {
+    onCancel(e) {
       e.preventDefault()
       e.stopPropagation()
       if (isTouchable || this.isMouseDown) {
