@@ -15,6 +15,12 @@ a.btn-outline-primary:hover {
 .vue-scroll-picker-item.-selected {
   color: #007BFF;
 }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 </style>
 <template>
   <div class="container">
@@ -24,6 +30,7 @@ a.btn-outline-primary:hover {
         <nav class="list-group">
           <router-link class="list-group-item list-group-item-action p-2" to="/">Full Binding</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-inherit-font-size">Inherit font-size</router-link>
+          <router-link class="list-group-item list-group-item-action p-2" to="/example-transition">Transition</router-link>
         </nav>
       </div>
       <div class="col-12 col-md-9 py-md-3 pl-md-5">
