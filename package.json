@@ -9,6 +9,7 @@
     "url": "git://github.com/wan2land/vue-scroll-picker.git"
   },
   "scripts": {
+    "prepack": "npm run build",
     "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/",
     "build": "npm run build:production && npm run build:example",
     "build:production": "cross-env NODE_ENV=production webpack --config webpack.config.js",
