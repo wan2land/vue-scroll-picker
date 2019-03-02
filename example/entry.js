@@ -2,9 +2,11 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import VueScrollPicker from "vue-scroll-picker"
 import App from "./app.vue"
+import VueHighlightJS from "vue-highlightjs"
 
 
 Vue.use(VueRouter)
+Vue.use(VueHighlightJS)
 Vue.use(VueScrollPicker)
 
 const router = new VueRouter({

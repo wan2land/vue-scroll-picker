@@ -1,30 +1,31 @@
 <template>
   <div>
-    <h2>Transition</h2>
-    <div>
-      <h3>Transition Picker</h3>
-      <div>
-        <div style="text-align: center;">
-          <a class="btn btn-outline-primary" @click="visible1 = !visible1">Show</a>
-        </div>
-        <transition name="fade">
-          <scroll-picker :options="options" v-model="data1" v-if="visible1"></scroll-picker>
-        </transition>
-      </div>
+    <h3>Transition</h3>
 
-      <h3 class="mt-4">Transition Picker Group</h3>
-      <div>
-        <div style="text-align: center;">
-          <a class="btn btn-outline-primary" @click="visible2 = !visible2">Show</a>
-        </div>
-        <transition name="fade">
-          <scroll-picker-group class="flex" v-if="visible2">
-            <scroll-picker :options="options" v-model="data2_1"></scroll-picker>
-            <scroll-picker :options="options" v-model="data2_2"></scroll-picker>
-            <scroll-picker :options="options" v-model="data2_3"></scroll-picker>
-          </scroll-picker-group>
-        </transition>
+    <h4>Transition Picker</h4>
+    <pre v-highlightjs><code class="html">{{ example1 }}</code></pre>
+    <div>
+      <div style="text-align: center;">
+        <a class="btn btn-outline-primary" @click="visible1 = !visible1">Show</a>
       </div>
+      <transition name="fade">
+        <scroll-picker :options="options" v-model="data1" v-if="visible1"></scroll-picker>
+      </transition>
+    </div>
+
+    <h4 class="mt-4">Transition Picker Group</h4>
+    <pre v-highlightjs><code class="html">{{ example2 }}</code></pre>
+    <div>
+      <div style="text-align: center;">
+        <a class="btn btn-outline-primary" @click="visible2 = !visible2">Show</a>
+      </div>
+      <transition name="fade">
+        <scroll-picker-group class="flex" v-if="visible2">
+          <scroll-picker :options="options" v-model="data2_1"></scroll-picker>
+          <scroll-picker :options="options" v-model="data2_2"></scroll-picker>
+          <scroll-picker :options="options" v-model="data2_3"></scroll-picker>
+        </scroll-picker-group>
+      </transition>
     </div>
   </div>
 </template>
@@ -33,6 +34,16 @@
 export default {
   data() {
     return {
+      example1: `<transition name="fade">
+  <scroll-picker :options="options" v-model="data" v-if="isVisible"></scroll-picker>
+</transition>`,
+      example2: `<transition name="fade">
+  <scroll-picker-group class="flex" v-if="isVisible">
+    <scroll-picker :options="options" v-model="data1"></scroll-picker>
+    <scroll-picker :options="options" v-model="data2"></scroll-picker>
+    <scroll-picker :options="options" v-model="data3"></scroll-picker>
+  </scroll-picker-group>
+</transition>`,
       visible1: false,
       visible2: false,
       data1: 0,

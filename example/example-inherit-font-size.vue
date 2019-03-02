@@ -1,23 +1,24 @@
 <template>
   <div>
-    <h2>Inherit font-size</h2>
-    <div>
-      <h3>Font Size 24px</h3>
-      <div style="font-size: 24px;">
-        <scroll-picker-group class="flex">
-          <scroll-picker :options="options"></scroll-picker>
-          <scroll-picker :options="options"></scroll-picker>
-          <scroll-picker :options="options"></scroll-picker>
-        </scroll-picker-group>
-      </div>
+    <h3>Inherit font-size</h3>
 
-      <h3>Font Size 12px</h3>
-      <div style="font-size: 12px;">
-        <scroll-picker-group>
-          <scroll-picker class="vue-scroll-picker-8" :options="options"></scroll-picker>
-          <scroll-picker class="vue-scroll-picker-4" :options="options"></scroll-picker>
-        </scroll-picker-group>
-      </div>
+    <h4>Font Size 24px + Group with Flex</h4>
+    <pre v-highlightjs><code class="html">{{ example1 }}</code></pre>
+    <div style="font-size: 24px;">
+      <scroll-picker-group class="flex">
+        <scroll-picker :options="options"></scroll-picker>
+        <scroll-picker :options="options"></scroll-picker>
+        <scroll-picker :options="options"></scroll-picker>
+      </scroll-picker-group>
+    </div>
+
+    <h4 class="mt-4">Font Size 12px + Group with Grid</h4>
+    <pre v-highlightjs><code class="html">{{ example2 }}</code></pre>
+    <div style="font-size: 12px;">
+      <scroll-picker-group>
+        <scroll-picker class="vue-scroll-picker-8" :options="options"></scroll-picker>
+        <scroll-picker class="vue-scroll-picker-4" :options="options"></scroll-picker>
+      </scroll-picker-group>
     </div>
   </div>
 </template>
@@ -28,6 +29,19 @@ function unique(items) {
 export default {
   data() {
     return {
+      example1: `<div style="font-size: 24px;">
+  <scroll-picker-group class="flex">
+    <scroll-picker :options="options"></scroll-picker>
+    <scroll-picker :options="options"></scroll-picker>
+    <scroll-picker :options="options"></scroll-picker>
+  </scroll-picker-group>
+</div>`,
+      example2: `<div style="font-size: 12px;">
+  <scroll-picker-group>
+    <scroll-picker class="vue-scroll-picker-8" :options="options"></scroll-picker>
+    <scroll-picker class="vue-scroll-picker-4" :options="options"></scroll-picker>
+  </scroll-picker-group>
+</div>`,
       options: [
         {value: 0, name: "0KG"},
         {value: 10, name: "10KG"},
