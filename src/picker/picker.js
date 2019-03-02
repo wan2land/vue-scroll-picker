@@ -209,8 +209,8 @@ export default {
       }
     },
     correctionAfterDragging () {
-      const index = null
-      const diff = null
+      let index = null
+      let diff = null
       const top = this.top
       if (this.placeholder) {
         index = -1
