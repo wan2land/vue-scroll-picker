@@ -17,6 +17,7 @@
     "deploy:example": "push-dir --dir=example-dist --branch=gh-pages"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.5.5",
