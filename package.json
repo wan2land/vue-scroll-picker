@@ -1,7 +1,7 @@
 {
   "name": "vue-scroll-picker",
   "version": "0.2.0",
-  "description": "scroll picker component for Vue.js.",
+  "description": "Scroll Picker Component for Vue.js.",
   "author": "Changwan Jun",
   "license": "MIT",
   "repository": {
