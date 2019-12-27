@@ -1,11 +1,10 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "docker:disable"
   ],
-  "packageRules": [
-    {
-      "updateTypes": ["patch", "pin", "digest"],
-      "automerge": true
-    }
-  ]
+  "automerge": true,
+  "major": {
+    "automerge": false
+  }
 }
