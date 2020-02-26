@@ -237,18 +237,19 @@ export default {
     },
     correction(index) {
       index = Math.min(Math.max(index, this.placeholder ? -1 : 0), this.pivots.length - 1)
-      if (this.lastIndex !== index) {
-        this.lastIndex = index
-        this.$emit('input', index > -1 ? this.sanitizedOptions[index].value : null)
-      }
-
       this.top = index > -1 ? this.pivots[index] * (-1) : 0
+
       this.transitioning = true
       if (this.transitionTO) {
         clearTimeout(this.transitionTO)
         this.transitionTO = null
       }
       this.transitionTO = setTimeout(() => {
+        if (this.lastIndex !== index) {
+          this.lastIndex = index
+          this.$emit('input', index > -1 ? this.sanitizedOptions[index].value : null)
+        }
+
         this.transitioning = false
         this.transitionTO = null
       }, 100)
