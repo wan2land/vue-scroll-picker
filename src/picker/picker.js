@@ -36,7 +36,7 @@ export default {
     const defaultValue = normalizedOptions[0] && normalizedOptions[0].value
     let innerIndex = this.placeholder ? -1 : 0 // default
     let innerValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
-    if (this.value) {
+    if (this.value != null) {
       normalizedOptions.forEach((option, index) => {
         if (option.value == this.value) {
           innerIndex = index
@@ -148,7 +148,7 @@ export default {
       }).sort((a, b) => a - b)
 
       this.scrollMax = this.pivots[this.pivots.length - 1] * (-1)
-      if (this.innerIndex > 0) {
+      if (this.innerIndex > -1) {
         this.top = this.pivots[this.innerIndex] * (-1)
       }
     },
