@@ -115,7 +115,7 @@ export default {
       const rect = this.$refs.selection.getBoundingClientRect()
       const med = (rect.top + rect.bottom) / 2
 
-      this.pivots = this.$refs.items.map((item) => {
+      this.pivots = (this.$refs.items || []).map((item) => {
         const itemRect = item.getBoundingClientRect()
         return Math.round(((itemRect.top + itemRect.bottom) / 2 - med) * 10) / 10 - this.top
       })
