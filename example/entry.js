@@ -12,10 +12,11 @@ Vue.use(VueScrollPicker)
 const router = new VueRouter({
   mode: "hash",
   routes: [
-    {path: "/", component: require("./example-default.vue").default, },
-    {path: "/example-full-binding", component: require("./example-full-binding.vue").default, },
-    {path: "/example-inherit-font-size", component: require("./example-inherit-font-size.vue").default, },
-    {path: "/example-transition", component: require("./example-transition.vue").default, },
+    { path: "/", component: require("./example-default.vue").default, },
+    { path: "/example-full-binding", component: require("./example-full-binding.vue").default, },
+    { path: "/example-inherit-font-size", component: require("./example-inherit-font-size.vue").default, },
+    { path: "/example-transition", component: require("./example-transition.vue").default, },
+    { path: "/example-dynamic-options", component: require("./example-dynamic-options.vue").default, },
   ],
 })
 

@@ -22,21 +22,36 @@ export default {
       type: Number,
       default: 1,
     },
-    placeholder: String,
+    empty: {
+      type: String,
+      default: 'No Items',
+    },
+    placeholder: {
+      type: String,
+      default: null,
+    },
   },
   data() {
-    let lastIndex = this.placeholder ? -1 : 0
+    const normalizedOptions = this.normalizeOptions(this.options)
+    const defaultValue = normalizedOptions[0] && normalizedOptions[0].value
+    let innerIndex = this.placeholder ? -1 : 0 // default
+    let innerValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
     if (this.value) {
-      this.options.forEach((option, index) => {
-        if (option == this.value || option.value == this.value) {
-          lastIndex = index
+      normalizedOptions.forEach((option, index) => {
+        if (option.value == this.value) {
+          innerIndex = index
+          innerValue = option.value
+          return false
         }
       })
     }
     return {
+      normalizedOptions,
+      innerIndex,
+      innerValue,
+
       top: 0,
       pivots: null,
-      lastIndex: lastIndex,
       transitioning: false,
       transitionTO: null,
       startTop: null,
@@ -62,8 +77,8 @@ export default {
       this.$el.addEventListener("mouseleave", this.onCancel)
     }
     this.calculatePivots()
-    if (!this.value && this.sanitizedOptions[this.lastIndex]) {
-      this.$emit('input', this.sanitizedOptions[this.lastIndex].value)
+    if (this.innerValue !== this.value) {
+      this.$emit('input', this.innerValue)
     }
   },
   destroyed() {
@@ -81,48 +96,60 @@ export default {
       this.$el.removeEventListener("mouseleave", this.onCancel)
     }
   },
-  computed: {
-    sanitizedOptions() {
-      return this.options.map((option) => {
-        if (option.hasOwnProperty('value') && option.hasOwnProperty('name')) {
-          return option
-        }
-        return {
-          value: option,
-          name: option,
-        }
-      })
-    },
-  },
   watch: {
-    value(newValue, oldValue) {
-      let foundIndex = -1
-      this.sanitizedOptions.forEach((option, index) => {
-        if (option.value == newValue) foundIndex = index
+    value(value) {
+      let foundIndex = this.placeholder ? -1 : 0
+      this.normalizedOptions.forEach((option, index) => {
+        if (option.value == value) {
+          foundIndex = index
+          return false
+        }
       })
-      if (this.lastIndex !== foundIndex) {
+      if (this.innerIndex !== foundIndex) {
         this.correction(foundIndex)
       }
     },
-    options() {
+    options(options) {
+      this.normalizedOptions = this.normalizeOptions(options)
+
+      const initIndex = this.innerIndex >= options.length ? options.length - 1 : 0
+      const defaultValue = this.normalizedOptions[initIndex] && this.normalizedOptions[initIndex].value
+      let foundIndex = this.placeholder ? -1 : initIndex // default
+      let foundValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
+      this.normalizedOptions.forEach((option, index) => {
+        if (option.value == this.innerValue) {
+          foundIndex = index
+          foundValue = option.value
+          return false
+        }
+      })
       this.$nextTick(() => {
         this.calculatePivots()
+        if (this.innerIndex !== foundIndex || this.innerValue !== foundValue) {
+          this.top = foundIndex > -1 ? this.pivots[foundIndex] * (-1) : 0
+          this.innerIndex = foundIndex
+          this.innerValue = foundValue
+          this.$emit('input', this.innerValue)
+        }
       })
     }
   },
   methods: {
+    normalizeOptions(options) {
+      return options.map((option) => option.hasOwnProperty('value') && option.hasOwnProperty('name') ? option : { value: option, name: option })
+    },
     calculatePivots(){
       const rect = this.$refs.selection.getBoundingClientRect()
       const med = (rect.top + rect.bottom) / 2
 
       this.pivots = (this.$refs.items || []).map((item) => {
-        const itemRect = item.getBoundingClientRect()
-        return Math.round(((itemRect.top + itemRect.bottom) / 2 - med) * 10) / 10 - this.top
-      })
+        const { top, bottom } = item.getBoundingClientRect()
+        return Math.round(((top + bottom) / 2 - med) * 10) / 10 - this.top
+      }).sort((a, b) => a - b)
 
       this.scrollMax = this.pivots[this.pivots.length - 1] * (-1)
-      if (this.lastIndex > 0) {
-        this.top = this.pivots[this.lastIndex] * (-1)
+      if (this.innerIndex > 0) {
+        this.top = this.pivots[this.innerIndex] * (-1)
       }
     },
     onScroll(e) {
@@ -136,9 +163,9 @@ export default {
       this.isScrolling = true
 
       if (e.deltaY < 0) {
-        this.correction(this.lastIndex - Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
+        this.correction(this.innerIndex - Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
       } else if (e.deltaY > 0) {
-        this.correction(this.lastIndex + Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
+        this.correction(this.innerIndex + Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
       }
       setTimeout(() => {
         this.isScrolling = false
@@ -213,9 +240,9 @@ export default {
       const topRect = this.$refs.top.getBoundingClientRect()
       const bottomRect = this.$refs.bottom.getBoundingClientRect()
       if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
-        this.correction(this.lastIndex - 1)
+        this.correction(this.innerIndex - 1)
       } else if (bottomRect.left <= x && x <= bottomRect.right && bottomRect.top <= y && y <= bottomRect.bottom) {
-        this.correction(this.lastIndex + 1)
+        this.correction(this.innerIndex + 1)
       }
     },
     correctionAfterDragging () {
@@ -244,12 +271,13 @@ export default {
         clearTimeout(this.transitionTO)
         this.transitionTO = null
       }
-      this.transitionTO = setTimeout(() => {
-        if (this.lastIndex !== index) {
-          this.lastIndex = index
-          this.$emit('input', index > -1 ? this.sanitizedOptions[index].value : null)
-        }
+      if (this.innerIndex !== index) {
+        this.innerIndex = index
+        this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
+        this.$emit('input', this.innerValue)
+      }
 
+      this.transitionTO = setTimeout(() => {
         this.transitioning = false
         this.transitionTO = null
       }, 100)
@@ -257,12 +285,21 @@ export default {
   },
   render(h) {
     let items = []
+    if (this.normalizedOptions.length === 0 && this.placeholder === null) {
+      items.push(h("div", {
+        class: ["vue-scroll-picker-item", "-empty", "-selected"],
+        ref: "empty",
+        domProps: {
+          innerHTML: this.empty,
+        },
+      }))
+    }
     if (this.placeholder) {
       items.push(h("div", {
         class: {
           "vue-scroll-picker-item": true,
           "-placeholder": true,
-          "-selected": this.lastIndex == -1,
+          "-selected": this.innerIndex == -1,
         },
         ref: "placeholder",
         domProps: {
@@ -270,11 +307,11 @@ export default {
         },
       }))
     }
-    items = items.concat(this.sanitizedOptions.map((option, index) => {
+    items = items.concat(this.normalizedOptions.map((option, index) => {
       return h("div", {
         class: {
           "vue-scroll-picker-item": true,
-          "-selected": this.lastIndex == index,
+          "-selected": this.innerIndex == index,
         },
         key: option.value,
         ref: "items",
