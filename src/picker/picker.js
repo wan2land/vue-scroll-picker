@@ -273,13 +273,13 @@ export default {
       }
       if (this.innerIndex !== index) {
         this.innerIndex = index
-        this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
-        this.$emit('input', this.innerValue)
       }
 
       this.transitionTO = setTimeout(() => {
         this.transitioning = false
         this.transitionTO = null
+        this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
+        this.$emit('input', this.innerValue)
       }, 100)
     },
   },
