@@ -119,7 +119,7 @@ export default {
       let foundIndex = this.placeholder ? -1 : initIndex // default
       let foundValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
       this.normalizedOptions.forEach((option, index) => {
-        if (option.value == this.innerValue) {
+        if (option.value == this.value) {
           foundIndex = index
           foundValue = option.value
           return false
