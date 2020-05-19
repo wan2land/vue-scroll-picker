@@ -152,7 +152,7 @@ export default {
 
       this.scrollMax = this.pivots[this.pivots.length - 1] * (-1)
       if (this.innerIndex > -1) {
-        this.top = this.pivots[this.innerIndex] * (-1)
+        this.top = this.pivots[this.innerIndex] && this.pivots[this.innerIndex] * (-1) || 0
       }
     },
     onScroll(e) {
