@@ -67,8 +67,8 @@ new Vue({
     <scroll-picker :options="[1, 2, 3, 4, 5]"></scroll-picker>
   </div>
 
-  <script src="path/to/vue.js"></script>
-  <script src="path/to/vue-scroll-picker.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/vue-scroll-picker/dist/index.js"></script>
   <script>
     new Vue({ el: "#app", })
   </script>
