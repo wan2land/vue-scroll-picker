@@ -76,7 +76,7 @@ export default {
       this.$el.addEventListener("mouseup", this.onEnd)
       this.$el.addEventListener("mouseleave", this.onCancel)
     }
-    this.calculatePivots()
+    this.calculatePivots(0)
     if (this.innerValue !== this.value) {
       this.$emit('input', this.innerValue)
     }
@@ -106,7 +106,9 @@ export default {
         }
       })
       if (this.innerIndex !== foundIndex) {
-        this.correction(foundIndex)
+        this.$nextTick(() => {
+          this.correction(foundIndex)
+        })
       }
     },
     options(options) {
@@ -117,14 +119,15 @@ export default {
       let foundIndex = this.placeholder ? -1 : initIndex // default
       let foundValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
       this.normalizedOptions.forEach((option, index) => {
-        if (option.value == this.innerValue) {
+        if (option.value == this.value) {
           foundIndex = index
           foundValue = option.value
           return false
         }
       })
+      const lastTop = this.top;
       this.$nextTick(() => {
-        this.calculatePivots()
+        this.calculatePivots(lastTop)
         if (this.innerIndex !== foundIndex || this.innerValue !== foundValue) {
           this.top = foundIndex > -1 ? this.pivots[foundIndex] * (-1) : 0
           this.innerIndex = foundIndex
@@ -138,13 +141,13 @@ export default {
     normalizeOptions(options) {
       return options.map((option) => option.hasOwnProperty('value') && option.hasOwnProperty('name') ? option : { value: option, name: option })
     },
-    calculatePivots(){
+    calculatePivots(lastTop){
       const rect = this.$refs.selection.getBoundingClientRect()
       const med = (rect.top + rect.bottom) / 2
 
       this.pivots = (this.$refs.items || []).map((item) => {
         const { top, bottom } = item.getBoundingClientRect()
-        return Math.round(((top + bottom) / 2 - med) * 10) / 10 - this.top
+        return Math.round(((top + bottom) / 2 - med) * 10) / 10 - lastTop
       }).sort((a, b) => a - b)
 
       this.scrollMax = this.pivots[this.pivots.length - 1] * (-1)
