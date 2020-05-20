@@ -30,7 +30,7 @@ a.btn-outline-primary:hover {
         <nav class="list-group">
           <router-link class="list-group-item list-group-item-action p-2" to="/">Usage</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-full-binding">Full Binding</router-link>
-          <router-link class="list-group-item list-group-item-action p-2" to="/example-inherit-font-size">Inherit font-size</router-link>
+          <router-link class="list-group-item list-group-item-action p-2" to="/example-styling">Styling</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-transition">Transition</router-link>
           <router-link class="list-group-item list-group-item-action p-2" to="/example-dynamic-options">Dynamic Options</router-link>
         </nav>

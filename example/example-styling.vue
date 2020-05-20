@@ -1,18 +1,33 @@
+<style lang="scss" scoped>
+.example1 {
+  .vue-scroll-picker {
+    height: 6em;
+  }
+}
+</style>
 <template>
   <div>
-    <h3>Inherit font-size</h3>
+    <h3>Styling</h3>
+    <h4>Height</h4>
+    <p>You can adjust the height of the vue-scroll-picker through CSS.</p>
+    <pre v-highlightjs><code class="html">{{ exampleHeight }}</code></pre>
+    <div class="example1">
+      <scroll-picker :options="options" />
+    </div>
 
-    <h4>Font Size 24px + Group with Flex</h4>
+    <h4>Inherit font-size</h4>
+    <p>The size of the vue-scroll-picker inherits the font-size of the parent node.</p>
+    <h5>Size 24px + Group with Flex</h5>
     <pre v-highlightjs><code class="html">{{ example1 }}</code></pre>
     <div style="font-size: 24px;">
       <scroll-picker-group class="flex">
-        <scroll-picker :options="options"></scroll-picker>
-        <scroll-picker :options="options"></scroll-picker>
-        <scroll-picker :options="options"></scroll-picker>
+        <scroll-picker :options="options" />
+        <scroll-picker :options="options" />
+        <scroll-picker :options="options" />
       </scroll-picker-group>
     </div>
 
-    <h4 class="mt-4">Font Size 12px + Group with Grid</h4>
+    <h5>Font Size 12px + Group with Grid</h5>
     <pre v-highlightjs><code class="html">{{ example2 }}</code></pre>
     <div style="font-size: 12px;">
       <scroll-picker-group>
@@ -29,6 +44,14 @@ function unique(items) {
 export default {
   data() {
     return {
+      exampleHeight: `<style>
+.example .vue-scroll-picker {
+  height: 6em; /* default 10em */
+}
+</style>
+<div class="example">
+  <scroll-picker :options="options" />
+</div>`,
       example1: `<div style="font-size: 24px;">
   <scroll-picker-group class="flex">
     <scroll-picker :options="options"></scroll-picker>

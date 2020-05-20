@@ -16,8 +16,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
-  padding-top: 4.4em;
+  top: calc(50% - .6em);
   &.-transition {
     transition: top ease 200ms;
   }
@@ -49,14 +48,14 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 40%;
+    height: calc(50% - 1em); // 96
     cursor: pointer;
   }
   .middle {
-    top: 40%;
+    top: calc(50% - 1em);
     left: 0;
     right: 0;
-    bottom: 40%;
+    bottom: calc(50% - 1em);
   }
   .bottom {
     border-top: 1px solid #c8c7cc;
@@ -64,7 +63,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40%;
+    height: calc(50% - 1em);
     cursor: pointer;
   }   
 }

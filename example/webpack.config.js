@@ -2,13 +2,13 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  mode: "production",
   entry: __dirname + "/entry.js",
   output: {
     path: __dirname + "/../example-dist",
     filename: "[name].[hash].js",
   },
   devServer: {
+    hot: true,
   },
   module: {
     rules: [
@@ -38,10 +38,10 @@ module.exports = {
     },
   },
   plugins: [
-    new VueLoaderPlugin(),
-    new HtmlWebpackPlugin({  // Also generate a test.html
+    new HtmlWebpackPlugin({
       filename: "index.html",
       template: __dirname + "/index.html"
-    })
+    }),
+    new VueLoaderPlugin(),
   ],
 }
