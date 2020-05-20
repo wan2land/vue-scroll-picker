@@ -3,6 +3,11 @@ import "./picker.scss"
 
 const isTouchable = typeof window !== "undefined" && "ontouchstart" in window
 
+function getClientCenterY(elem) {
+  const { top, bottom } = elem.getBoundingClientRect()
+  return (top + bottom) / 2
+}
+
 export default {
   props: {
     value: null,
@@ -50,7 +55,8 @@ export default {
       innerIndex,
       innerValue,
 
-      top: 0,
+      top: null,
+      pivotMin: null,
       pivots: null,
       transitioning: false,
       transitionTO: null,
@@ -59,6 +65,9 @@ export default {
       isDragging: false,
       isScrolling: false,
       startY: null,
+
+      scrollOffsetTop: null,
+      scrollMin: null,
       scrollMax: null,
     }
   },
@@ -76,7 +85,7 @@ export default {
       this.$el.addEventListener("mouseup", this.onEnd)
       this.$el.addEventListener("mouseleave", this.onCancel)
     }
-    this.calculatePivots(0)
+    this.calculatePivots()
     if (this.innerValue !== this.value) {
       this.$emit('input', this.innerValue)
     }
@@ -125,11 +134,14 @@ export default {
           return false
         }
       })
-      const lastTop = this.top;
       this.$nextTick(() => {
-        this.calculatePivots(lastTop)
+        this.calculatePivots()
         if (this.innerIndex !== foundIndex || this.innerValue !== foundValue) {
-          this.top = foundIndex > -1 ? this.pivots[foundIndex] * (-1) : 0
+          if (foundIndex > -1 && foundIndex in this.pivots) {
+            this.top = this.scrollOffsetTop + this.pivots[foundIndex] * -1
+          } else {
+            this.top = this.scrollOffsetTop - this.pivotMin
+          }
           this.innerIndex = foundIndex
           this.innerValue = foundValue
           this.$emit('input', this.innerValue)
@@ -141,22 +153,28 @@ export default {
     normalizeOptions(options) {
       return options.map((option) => option.hasOwnProperty('value') && option.hasOwnProperty('name') ? option : { value: option, name: option })
     },
-    calculatePivots(lastTop){
-      const rect = this.$refs.selection.getBoundingClientRect()
-      const med = (rect.top + rect.bottom) / 2
+    calculatePivots() {
+      const rotatorTop = this.$refs.list.getBoundingClientRect().top
+      this.pivots = (this.$refs.items || []).map((item) => getClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
+      this.pivotMin = Math.min(...[
+        ...(this.$refs.empty ? [getClientCenterY(this.$refs.empty) - rotatorTop] : []),
+        ...(this.$refs.placeholder ? [getClientCenterY(this.$refs.placeholder) - rotatorTop] : []),
+        ...this.pivots,
+      ])
 
-      this.pivots = (this.$refs.items || []).map((item) => {
-        const { top, bottom } = item.getBoundingClientRect()
-        return Math.round(((top + bottom) / 2 - med) * 10) / 10 - lastTop
-      }).sort((a, b) => a - b)
+      this.scrollOffsetTop = this.$refs.selection.offsetTop + this.$refs.selection.offsetHeight / 2
 
-      this.scrollMax = this.pivots[this.pivots.length - 1] * (-1)
-      if (this.innerIndex > -1) {
-        this.top = this.pivots[this.innerIndex] && this.pivots[this.innerIndex] * (-1) || 0
+      this.scrollMin = this.scrollOffsetTop - this.pivotMin
+      this.scrollMax = this.scrollOffsetTop + this.pivots[this.pivots.length - 1] * (-1)
+
+      if (this.innerIndex > -1 && this.innerIndex in this.pivots) {
+        this.top = this.scrollOffsetTop + this.pivots[this.innerIndex] * -1
+      } else {
+        this.top = this.scrollOffsetTop - this.pivotMin
       }
     },
     onScroll(e) {
-      if (this.top >= 0 && e.deltaY < 0) return
+      if (this.top >= this.scrollMin && e.deltaY < 0) return
       if (this.top <= this.scrollMax && e.deltaY > 0) return
 
       e.preventDefault()
@@ -261,7 +279,12 @@ export default {
     },
     correction(index, isImmediatly) {
       index = Math.min(Math.max(index, this.placeholder ? -1 : 0), this.pivots.length - 1)
-      this.top = index > -1 ? this.pivots[index] * (-1) : 0
+
+      if (index > -1 && index in this.pivots) {
+        this.top = this.scrollOffsetTop + this.pivots[index] * -1
+      } else {
+        this.top = this.scrollOffsetTop - this.pivotMin
+      }
 
       if (isImmediatly && this.innerIndex !== index) {
         this.innerIndex = index
@@ -328,13 +351,12 @@ export default {
     return h("div", {class: ["vue-scroll-picker"]}, [
       h("div", {class: ["vue-scroll-picker-list"]}, [
         h("div", {
+          ref: 'list',
           class: {
             "vue-scroll-picker-list-rotator": true,
             "-transition": this.transitioning,
           },
-          style: {
-            top: `${this.top}px`,
-          }
+          style: this.top !== null ? { top: `${this.top}px` } : {},
         }, items)
       ]),
       h("div", {class: ["vue-scroll-picker-layer"]}, [
