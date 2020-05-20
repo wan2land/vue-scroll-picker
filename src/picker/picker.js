@@ -160,15 +160,14 @@ export default {
       if (this.top <= this.scrollMax && e.deltaY > 0) return
 
       e.preventDefault()
-      e.stopPropagation()
 
       if (this.isScrolling) return
       this.isScrolling = true
 
       if (e.deltaY < 0) {
-        this.correction(this.innerIndex - Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
+        this.correction(this.innerIndex - Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1), true)
       } else if (e.deltaY > 0) {
-        this.correction(this.innerIndex + Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1))
+        this.correction(this.innerIndex + Math.floor(Math.abs(e.deltaY) / 30 * this.scrollSensitivity + 1), true)
       }
       setTimeout(() => {
         this.isScrolling = false
@@ -180,7 +179,6 @@ export default {
     onStart (e) {
       if (e.cancelable) {
         e.preventDefault()
-        e.stopPropagation()
       }
       const touchInfo = this.getTouchInfo(e)
       this.startTop = this.top
@@ -192,7 +190,6 @@ export default {
     },
     onTouchMove(e) {
       e.preventDefault()
-      e.stopPropagation()
       if (isTouchable || this.isMouseDown) {
         const touchInfo = this.getTouchInfo(e)
         const diff = touchInfo.pageY - this.startY
@@ -204,7 +201,6 @@ export default {
     },
     onMouseMove(e) {
       e.preventDefault()
-      e.stopPropagation()
       if (isTouchable || this.isMouseDown) {
         const touchInfo = this.getTouchInfo(e)
         const diff = touchInfo.pageY - this.startY
@@ -216,7 +212,6 @@ export default {
     },
     onEnd(e) {
       e.preventDefault()
-      e.stopPropagation()
       if (!this.isDragging) {
         this.isDragging = false
         this.isMouseDown = false
@@ -229,7 +224,6 @@ export default {
     },
     onCancel(e) {
       e.preventDefault()
-      e.stopPropagation()
       if (isTouchable || this.isMouseDown) {
         this.correctionAfterDragging()
         this.isMouseDown = false
@@ -265,9 +259,15 @@ export default {
       })
       this.correction(index)
     },
-    correction(index) {
+    correction(index, isImmediatly) {
       index = Math.min(Math.max(index, this.placeholder ? -1 : 0), this.pivots.length - 1)
       this.top = index > -1 ? this.pivots[index] * (-1) : 0
+
+      if (isImmediatly && this.innerIndex !== index) {
+        this.innerIndex = index
+        this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
+        this.$emit('input', this.innerValue)
+      }
 
       this.transitioning = true
       if (this.transitionTO) {
@@ -279,7 +279,7 @@ export default {
         this.transitioning = false
         this.transitionTO = null
 
-        if (this.innerIndex !== index) {
+        if (!isImmediatly && this.innerIndex !== index) {
           this.innerIndex = index
           this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
           this.$emit('input', this.innerValue)
