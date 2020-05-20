@@ -10,10 +10,10 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/",
+    "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/ --mode development",
     "build": "npm run build:production && npm run build:example",
     "build:production": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "build:example": "cross-env NODE_ENV=production webpack --config example/webpack.config.js",
+    "build:example": "cross-env NODE_ENV=production webpack --config example/webpack.config.js --mode production",
     "deploy:example": "push-dir --dir=example-dist --branch=gh-pages"
   },
   "main": "dist/index.js",
