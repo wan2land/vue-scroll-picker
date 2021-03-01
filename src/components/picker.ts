@@ -1,18 +1,22 @@
-import "./picker.scss"
+import { defineComponent, PropType, h } from 'vue'
 
-
-const isTouchable = typeof window !== "undefined" && "ontouchstart" in window
+const isTouchable = typeof window !== 'undefined' && 'ontouchstart' in window
 
 function getClientCenterY(elem) {
   const { top, bottom } = elem.getBoundingClientRect()
   return (top + bottom) / 2
 }
 
-export default {
+export interface ScrollPickerOption {
+  name: string
+  value: any
+}
+
+export default defineComponent({
   props: {
-    value: null,
+    modelValue: null,
     options: {
-      type: Array,
+      type: Array as PropType<(string | ScrollPickerOption)[]>,
       default: () => [],
     },
     dragSensitivity: {
@@ -37,76 +41,79 @@ export default {
     },
   },
   data() {
-    const normalizedOptions = this.normalizeOptions(this.options)
+    const normalizedOptions: ScrollPickerOption[] = this.normalizeOptions(this.options)
     const defaultValue = normalizedOptions[0] && normalizedOptions[0].value
     let innerIndex = this.placeholder ? -1 : 0 // default
     let innerValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
-    if (this.value != null) {
-      normalizedOptions.forEach((option, index) => {
-        if (option.value == this.value) {
-          innerIndex = index
-          innerValue = option.value
-          return false
-        }
-      })
+    if (this.modelValue != null) {
+      const foundOptionIndex = normalizedOptions.findIndex(option => option.value == this.modelValue)
+      if (foundOptionIndex > -1) {
+        innerIndex = foundOptionIndex
+        innerValue = normalizedOptions[foundOptionIndex].value
+      }
     }
     return {
+      refItems: [] as HTMLDivElement[],
+
       normalizedOptions,
       innerIndex,
       innerValue,
 
-      top: null,
-      pivotMin: null,
-      pivots: null,
+      top: null as number | null,
+      pivotMin: null as number | null,
+      pivots: [] as number[],
       transitioning: false,
-      transitionTO: null,
-      startTop: null,
+      transitionTO: null as any | null,
+      startTop: null as number | null,
       isMouseDown: false,
       isDragging: false,
       isScrolling: false,
-      startY: null,
+      startY: null as number | null,
 
-      scrollOffsetTop: null,
-      scrollMin: null,
-      scrollMax: null,
+      scrollOffsetTop: null as number | null,
+      scrollMin: null as number | null,
+      scrollMax: null as number | null,
     }
+  },
+  beforeUpdate() {
+    this.refItems = []
   },
   mounted() {
     if (isTouchable) {
-      this.$el.addEventListener("touchstart", this.onStart)
-      this.$el.addEventListener("touchmove", this.onTouchMove)
-      this.$el.addEventListener("touchend", this.onEnd)
-      this.$el.addEventListener("touchcancel", this.onCancel)
+      this.$el.addEventListener('touchstart', this.onStart)
+      this.$el.addEventListener('touchmove', this.onTouchMove)
+      this.$el.addEventListener('touchend', this.onEnd)
+      this.$el.addEventListener('touchcancel', this.onCancel)
     } else {
-      this.$el.addEventListener("mousewheel", this.onScroll)
-      this.$el.addEventListener("wheel", this.onScroll) // for IE
-      this.$el.addEventListener("mousedown", this.onStart)
-      this.$el.addEventListener("mousemove", this.onMouseMove)
-      this.$el.addEventListener("mouseup", this.onEnd)
-      this.$el.addEventListener("mouseleave", this.onCancel)
+      this.$el.addEventListener('mousewheel', this.onScroll)
+      this.$el.addEventListener('wheel', this.onScroll) // for IE
+      this.$el.addEventListener('mousedown', this.onStart)
+      this.$el.addEventListener('mousemove', this.onMouseMove)
+      this.$el.addEventListener('mouseup', this.onEnd)
+      this.$el.addEventListener('mouseleave', this.onCancel)
     }
     this.calculatePivots()
-    if (this.innerValue !== this.value) {
+    if (this.innerValue !== this.modelValue) {
       this.$emit('input', this.innerValue)
     }
   },
-  destroyed() {
+  beforeUnmount() {
     if (isTouchable) {
-      this.$el.removeEventListener("touchstart", this.onStart)
-      this.$el.removeEventListener("touchmove", this.onTouchMove)
-      this.$el.removeEventListener("touchend", this.onEnd)
-      this.$el.removeEventListener("touchcancel", this.onCancel)
+      this.$el.removeEventListener('touchstart', this.onStart)
+      this.$el.removeEventListener('touchmove', this.onTouchMove)
+      this.$el.removeEventListener('touchend', this.onEnd)
+      this.$el.removeEventListener('touchcancel', this.onCancel)
     } else {
-      this.$el.removeEventListener("mousewheel", this.onScroll)
-      this.$el.removeEventListener("wheel", this.onScroll) // for IE
-      this.$el.removeEventListener("mousedown", this.onStart)
-      this.$el.removeEventListener("mousemove", this.onMouseMove)
-      this.$el.removeEventListener("mouseup", this.onEnd)
-      this.$el.removeEventListener("mouseleave", this.onCancel)
+      this.$el.removeEventListener('mousewheel', this.onScroll)
+      this.$el.removeEventListener('wheel', this.onScroll) // for IE
+      this.$el.removeEventListener('mousedown', this.onStart)
+      this.$el.removeEventListener('mousemove', this.onMouseMove)
+      this.$el.removeEventListener('mouseup', this.onEnd)
+      this.$el.removeEventListener('mouseleave', this.onCancel)
     }
   },
   watch: {
-    value(value) {
+    modelValue(value: any) {
       let foundIndex = this.placeholder ? -1 : 0
       this.normalizedOptions.forEach((option, index) => {
         if (option.value == value) {
@@ -127,13 +134,12 @@ export default {
       const defaultValue = this.normalizedOptions[initIndex] && this.normalizedOptions[initIndex].value
       let foundIndex = this.placeholder ? -1 : initIndex // default
       let foundValue = this.placeholder ? null : (typeof defaultValue === 'undefined' ? null : defaultValue)
-      this.normalizedOptions.forEach((option, index) => {
-        if (option.value == this.value) {
-          foundIndex = index
-          foundValue = option.value
-          return false
-        }
-      })
+
+      const foundOptionIndex = this.normalizedOptions.findIndex(option => option.value == this.modelValue)
+      if (foundOptionIndex > -1) {
+        foundIndex = foundOptionIndex
+        foundValue = this.normalizedOptions[foundOptionIndex].value
+      }
       this.$nextTick(() => {
         this.calculatePivots()
         if (this.innerIndex !== foundIndex || this.innerValue !== foundValue) {
@@ -150,8 +156,11 @@ export default {
     }
   },
   methods: {
-    normalizeOptions(options) {
-      return options.map((option) => option.hasOwnProperty('value') && option.hasOwnProperty('name') ? option : { value: option, name: option })
+    setRefItem(el: HTMLDivElement) {
+      this.refItems.push(el)
+    },
+    normalizeOptions(options: (string | ScrollPickerOption)[]): ScrollPickerOption[] {
+      return options.map((option) => typeof option === 'string' ? { value: option, name: option } : option)
     },
     calculatePivots() {
       const rotatorTop = this.$refs.list.getBoundingClientRect().top
@@ -277,7 +286,7 @@ export default {
       })
       this.correction(index)
     },
-    correction(index, isImmediatly) {
+    correction(index: number, isImmediatly = false) {
       index = Math.min(Math.max(index, this.placeholder ? -1 : 0), this.pivots.length - 1)
 
       if (index > -1 && index in this.pivots) {
@@ -310,60 +319,53 @@ export default {
       }, 100)
     },
   },
-  render(h) {
+  render() {
     let items = []
     if (this.normalizedOptions.length === 0 && this.placeholder === null) {
-      items.push(h("div", {
-        class: ["vue-scroll-picker-item", "-empty", "-selected"],
-        ref: "empty",
-        domProps: {
-          innerHTML: this.empty,
-        },
+      items.push(h('div', {
+        class: ['vue-scroll-picker-item', '-empty', '-selected'],
+        ref: 'empty',
+        innerHTML: this.empty,
       }))
     }
     if (this.placeholder) {
-      items.push(h("div", {
+      items.push(h('div', {
         class: {
-          "vue-scroll-picker-item": true,
-          "-placeholder": true,
-          "-selected": this.innerIndex == -1,
+          'vue-scroll-picker-item': true,
+          '-placeholder': true,
+          '-selected': this.innerIndex == -1,
         },
-        ref: "placeholder",
-        domProps: {
-          innerHTML: this.placeholder,
-        },
+        ref: 'placeholder',
+        innerHTML: this.placeholder,
       }))
     }
     items = items.concat(this.normalizedOptions.map((option, index) => {
-      return h("div", {
+      return h('div', {
         class: {
-          "vue-scroll-picker-item": true,
-          "-selected": this.innerIndex == index,
+          'vue-scroll-picker-item': true,
+          '-selected': this.innerIndex == index,
         },
         key: option.value,
-        ref: "items",
-        refInFor: true,
-        domProps: {
-          innerHTML: option.name,
-        },
+        ref: (el) => el && this.setRefItem(el as HTMLDivElement),
+        innerHTML: option.name,
       })
     }))
-    return h("div", {class: ["vue-scroll-picker"]}, [
-      h("div", {class: ["vue-scroll-picker-list"]}, [
-        h("div", {
+    return h('div', {class: ['vue-scroll-picker']}, [
+      h('div', {class: ['vue-scroll-picker-list']}, [
+        h('div', {
           ref: 'list',
           class: {
-            "vue-scroll-picker-list-rotator": true,
-            "-transition": this.transitioning,
+            'vue-scroll-picker-list-rotator': true,
+            '-transition': this.transitioning,
           },
           style: this.top !== null ? { top: `${this.top}px` } : {},
         }, items)
       ]),
-      h("div", {class: ["vue-scroll-picker-layer"]}, [
-        h("div", {class: ["top"], ref: "top"}),
-        h("div", {class: ["middle"], ref: "selection"}),
-        h("div", {class: ["bottom"], ref: "bottom"}),
+      h('div', {class: ['vue-scroll-picker-layer']}, [
+        h('div', {class: ['top'], ref: 'top'}),
+        h('div', {class: ['middle'], ref: 'selection'}),
+        h('div', {class: ['bottom'], ref: 'bottom'}),
       ]),
     ])
   }
-}
+})
