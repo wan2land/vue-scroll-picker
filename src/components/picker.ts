@@ -291,7 +291,7 @@ export default defineComponent({
       if (Math.abs(diff) > 1.5) {
         this.isDragging = true
       }
-      this.scroll = this.start[0] + diff * this.touchSensitivity
+      this.scroll = this.start[0] + diff * (isTouchEvent(event) ? this.touchSensitivity : this.dragSensitivity)
     },
     onEnd(event: TouchEvent | MouseEvent) {
       if (event.cancelable) {
