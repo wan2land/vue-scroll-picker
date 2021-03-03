@@ -94,7 +94,7 @@ export default defineComponent({
     }
     this.calculatePivots()
     if (this.innerValue !== this.modelValue) {
-      this.$emit('input', this.innerValue)
+      this.$emit('update:modelValue', this.innerValue)
     }
   },
   beforeUnmount() {
@@ -150,7 +150,7 @@ export default defineComponent({
           }
           this.innerIndex = foundIndex
           this.innerValue = foundValue
-          this.$emit('input', this.innerValue)
+          this.$emit('update:modelValue', this.innerValue)
         }
       })
     }
@@ -298,7 +298,7 @@ export default defineComponent({
       if (isImmediatly && this.innerIndex !== index) {
         this.innerIndex = index
         this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
-        this.$emit('input', this.innerValue)
+        this.$emit('update:modelValue', this.innerValue)
       }
 
       this.transitioning = true
@@ -314,7 +314,7 @@ export default defineComponent({
         if (!isImmediatly && this.innerIndex !== index) {
           this.innerIndex = index
           this.innerValue = index > -1 ? this.normalizedOptions[index].value : null
-          this.$emit('input', this.innerValue)
+          this.$emit('update:modelValue', this.innerValue)
         }
       }, 100)
     },
