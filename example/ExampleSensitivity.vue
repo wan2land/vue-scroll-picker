@@ -42,7 +42,7 @@
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from '../src/components/picker'
+import { ScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 

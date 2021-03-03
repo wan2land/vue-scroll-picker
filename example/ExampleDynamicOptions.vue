@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
-    <div>
+    <div class="button-group">
       <a class="button" @click="pushItem">Push Random Item</a>
       <a class="button" @click="popItem">Pop Item</a>
       <a class="button" @click="unshiftItem">Unshift Random Item</a>

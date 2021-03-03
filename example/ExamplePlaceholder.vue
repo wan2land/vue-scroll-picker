@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
-    <div>
+    <div class="button-group">
       <a
         class="button"
         :class="{active: currentValue === null}"
@@ -24,7 +24,7 @@
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from '../src/components/picker'
+import { ScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 

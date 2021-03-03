@@ -5,23 +5,51 @@ html, body {
 
 html {
   font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+  font-weight: 400;
 }
 
 a {
   cursor: pointer;
 }
 
-.waniexample .hero {
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 1.625rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.375rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+
+.hero {
   position: relative;
-  padding: 6rem 0;
+  padding: 6rem 1rem;
   background: linear-gradient(150deg, #281483 15%, #8f6ed5 70%, #d782d9 94%);
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
+  color: #fff;
 }
 
-.waniexample .hero::after {
+.hero::after {
   content: '';
   display: block;
   position: absolute;
@@ -33,61 +61,42 @@ a {
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
-.waniexample .hero h2 {
-  color: #fff;
+
+.section {
+  padding: 2rem 1rem;
 }
 
-.waniexample .section {
-  padding: 2rem 0;
-}
-
-.waniexample .section h2 {
-  font-weight: 400;
-  line-height: 1.5;
-  color: #32325d;
-  font-size: 1.5rem;
-}
-
-.waniexample .section h3 {
-  font-weight: 400;
-  line-height: 1.5;
-  color: #32325d;
-  font-size: 1.375rem;
-}
-
-.waniexample .container {
+.container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 @media (min-width: 576px) {
-  .waniexample .container {
+  .container {
     max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
-  .waniexample .container {
+  .container {
     max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
-  .waniexample .container {
+  .container {
     max-width: 960px;
   }
 }
 
 @media (min-width: 1200px) {
-  .waniexample .container {
+  .container {
     max-width: 1140px;
   }
 }
 
 .button {
-  margin-left: .25rem;
-  margin-right: .25rem;
   display: inline-block;
   padding: .25rem .5rem;
   border: 1px solid #007bff;
@@ -99,6 +108,11 @@ a {
   color: #fff;
 }
 
-.button:first-child {
-  margin-left: 0;
+.button-group {
+  margin-left: -.25rem;
+  margin-right: -.25rem;
+}
+
+.button-group .button {
+  margin: .25rem;
 }

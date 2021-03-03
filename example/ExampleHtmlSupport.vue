@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
-    <div>
+    <div class="button-group">
       <a
         class="button"
         v-for="(option, index) in options"

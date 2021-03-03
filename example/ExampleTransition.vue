@@ -9,7 +9,7 @@
 <template>
   <div>
     <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
-    <div>
+    <div class="button-group">
       <a class="button" @click="isVisible = !isVisible">{{ isVisible ? 'Hide' : 'Show' }}</a>
     </div>
     <transition name="fade">
@@ -18,7 +18,7 @@
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from '../src/components/picker'
+import { ScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 

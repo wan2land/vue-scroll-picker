@@ -1,8 +1,8 @@
 <template>
-  <div class="waniexample">
+  <div>
     <div class="hero">
       <h2>Vue Scroll Picker</h2>
-      <p>:-)</p>
+      <p>Scroll Picker Component for Vue3. Support All Gestures of Mouse and Touch.</p>
     </div>
     <div class="section">
       <div class="container">
