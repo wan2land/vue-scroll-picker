@@ -84,3 +84,21 @@ a {
     max-width: 1140px;
   }
 }
+
+.button {
+  margin-left: .25rem;
+  margin-right: .25rem;
+  display: inline-block;
+  padding: .25rem .5rem;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+.button.active {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.button:first-child {
+  margin-left: 0;
+}

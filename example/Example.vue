@@ -1,27 +1,3 @@
-<style>
-a.btn {
-  margin: .25rem;
-}
-a.btn-outline-primary {
-  color: #007bff !important;
-}
-a.btn-outline-primary.active,
-a.btn-outline-primary:hover {
-  color: #fff !important;
-}
-.vue-scroll-picker-item-placeholder.-selected {
-  color: #17A2B8;
-}
-.vue-scroll-picker-item.-selected {
-  color: #007BFF;
-}
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-</style>
 <template>
   <div class="waniexample">
     <div class="hero">
@@ -30,14 +6,24 @@ a.btn-outline-primary:hover {
     </div>
     <div class="section">
       <div class="container">
+        <h2>Full Binding</h2>
+        <ExampleFullBinding :options="defaultOptions" />
+        
+        <h2>Placeholder</h2>
+        <ExamplePlaceholder :options="defaultOptions" />
+
         <h2>HTML Support</h2>
         <ExampleHtmlSupport />
 
-        <h2>Example</h2>
-        <h3>Full Binding</h3>
-        <h3>Styling</h3>
-        <h3>Transition</h3>
-        <h3>Dynamic Options</h3>
+        <h2>Sensitivity</h2>
+        <ExampleSensitivity :options="defaultOptions" />
+
+        <h2>Styling</h2>
+        <h2>Transition</h2>
+        <ExampleTransition :options="defaultOptions" />
+
+        <h2>Dynamic Options</h2>
+        <ExampleDynamicOptions />
       </div>
     </div>
   </div>
@@ -45,12 +31,39 @@ a.btn-outline-primary:hover {
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import ExampleFullBinding from './ExampleFullBinding.vue'
+import ExamplePlaceholder from './ExamplePlaceholder.vue'
 import ExampleHtmlSupport from './ExampleHtmlSupport.vue'
+import ExampleSensitivity from './ExampleSensitivity.vue'
+import ExampleTransition from './ExampleTransition.vue'
+import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 
 
 export default defineComponent({
   components: {
+    ExampleFullBinding,
+    ExamplePlaceholder,
     ExampleHtmlSupport,
+    ExampleSensitivity,
+    ExampleTransition,
+    ExampleDynamicOptions,
+  },
+  data() {
+    return {
+      defaultOptions: [
+        {value: 0, name: "0KG"},
+        {value: 10, name: "10KG"},
+        {value: 20, name: "20KG"},
+        {value: 30, name: "30KG"},
+        {value: 40, name: "40KG"},
+        {value: 50, name: "50KG"},
+        {value: 60, name: "60KG"},
+        {value: 70, name: "70KG"},
+        {value: 80, name: "80KG"},
+        {value: 90, name: "90KG"},
+        {value: 100, name: "100KG"},
+      ],
+    }
   },
 })
 </script>
