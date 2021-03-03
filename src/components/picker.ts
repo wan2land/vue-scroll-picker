@@ -323,7 +323,11 @@ export default defineComponent({
     let items = []
     if (this.normalizedOptions.length === 0 && this.placeholder === null) {
       items.push(h('div', {
-        class: ['vue-scroll-picker-item', '-empty', '-selected'],
+        class: [
+          'vue-scroll-picker-item',
+          'vue-scroll-picker-item-empty',
+          'vue-scroll-picker-item-selected',
+        ],
         ref: 'empty',
         innerHTML: this.empty,
       }))
@@ -332,8 +336,8 @@ export default defineComponent({
       items.push(h('div', {
         class: {
           'vue-scroll-picker-item': true,
-          '-placeholder': true,
-          '-selected': this.innerIndex == -1,
+          'vue-scroll-picker-item-placeholder': true,
+          'vue-scroll-picker-item-selected': this.innerIndex == -1,
         },
         ref: 'placeholder',
         innerHTML: this.placeholder,
@@ -343,7 +347,7 @@ export default defineComponent({
       return h('div', {
         class: {
           'vue-scroll-picker-item': true,
-          '-selected': this.innerIndex == index,
+          'vue-scroll-picker-item-selected': this.innerIndex == index,
         },
         key: option.value,
         ref: (el) => el && this.setRefItem(el as HTMLDivElement),
@@ -355,8 +359,8 @@ export default defineComponent({
         h('div', {
           ref: 'list',
           class: {
-            'vue-scroll-picker-list-rotator': true,
-            '-transition': this.transitioning,
+            'vue-scroll-picker-rotator': true,
+            'vue-scroll-picker-rotator-transition': this.transitioning,
           },
           style: this.top !== null ? { top: `${this.top}px` } : {},
         }, items)

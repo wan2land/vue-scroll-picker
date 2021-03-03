@@ -14,14 +14,14 @@
   bottom: 0;
 }
 
-.vue-scroll-picker-list-rotator {
+.vue-scroll-picker-rotator {
   position: absolute;
   left: 0;
   right: 0;
   top: calc(50% - .6em);
 }
 
-.vue-scroll-picker-list-rotator.-transition {
+.vue-scroll-picker-rotator-transition {
   transition: top ease 200ms;
 }
 
@@ -29,11 +29,22 @@
   text-align: center;
   height: 1.2em;
   line-height: 1.2em;
+  color: #333;
 }
 
-.vue-scroll-picker-item.-placeholder {
+.vue-scroll-picker-item-selected {
+  color: #000;
+}
+
+.vue-scroll-picker-item-empty,
+.vue-scroll-picker-item-placeholder {
   color: #aaa;
 }    
+
+.vue-scroll-picker-item-empty.vue-scroll-picker-item-selected,
+.vue-scroll-picker-item-placeholder.vue-scroll-picker-item-selected {
+  color: #777;
+}
 
 .vue-scroll-picker-layer {
   position: absolute;
