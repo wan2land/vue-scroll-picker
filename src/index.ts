@@ -17,6 +17,12 @@ const plugin: Plugin = {
 
 export default plugin
 
+// re-define: https://github.com/vitejs/vite/issues/2117
+export interface ScrollPickerOption {
+  name: string
+  value: any
+}
+
 export {
   ScrollPicker,
 }
