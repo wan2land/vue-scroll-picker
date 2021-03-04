@@ -10,7 +10,7 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/ --mode development",
+    "dev:example": "webpack-dev-server --config example/webpack.config.js --content-base example/ --mode development --host 0.0.0.0",
     "build": "npm run build:production && npm run build:example",
     "build:production": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "build:example": "cross-env NODE_ENV=production webpack --config example/webpack.config.js --mode production",
