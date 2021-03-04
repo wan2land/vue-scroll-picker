@@ -19,7 +19,7 @@ If you are using vue 3, please refer to the [main](https://github.com/wan2land/v
 ## Installation
 
 ```
-npm i vue-scroll-picker
+npm i vue-scroll-picker@vue2
 ```
 
 ## Usage
