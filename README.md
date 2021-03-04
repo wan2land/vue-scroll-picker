@@ -10,11 +10,13 @@
   <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
 </p>
 
-Scroll Picker Component for Vue3. Support All Gestures of Mouse(also MouseWheel) and Touch.
+Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.
+
+If you are using vue 2, please refer to the [v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
 
 ### Examples
 
- - [Show Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./example))
+ - [Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./examples))
 
 ## Installation
 
@@ -32,6 +34,8 @@ npm i vue-scroll-picker
 import { createApp } from 'vue'
 import VueScrollPicker from 'vue-scroll-picker'
 
+import 'vue-scroll-picker/lib/style.css'
+
 
 const app = createApp(/* */)
 
@@ -43,7 +47,8 @@ app.use(VueScrollPicker)
 
 [Vue3 Local Registration Guide](https://v3.vuejs.org/guide/component-registration.html#local-registration)
 
-```js
+```vue
+<script>
 import { ScrollPicker } from 'vue-scroll-picker'
 
 export default {
@@ -51,6 +56,8 @@ export default {
     ScrollPicker,
   },
 }
+</script>
+<style src="vue-scroll-picker/lib/style.css"></style>
 ```
 
 ## Options
