@@ -18,7 +18,6 @@
         <h2>Sensitivity</h2>
         <ExampleSensitivity :options="defaultOptions" />
 
-        <h2>Styling</h2>
         <h2>Transition</h2>
         <ExampleTransition :options="defaultOptions" />
 
