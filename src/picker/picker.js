@@ -91,6 +91,7 @@ export default {
 
       pivots: [],
       pivotMin: 0,
+      pivotMax: 0,
 
       transitioning: false,
       transitionTO: null,
@@ -180,12 +181,12 @@ export default {
       const rotatorTop = this.$refs.list.getBoundingClientRect().top
       this.pivots = (this.$refs.items || []).map((item) => getClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
       this.pivotMin = Math.min(...this.pivots)
-      const pivotMax = Math.max(...this.pivots)
+      this.pivotMax = Math.max(...this.pivots)
 
       this.scrollOffsetTop = this.$refs.selection.offsetTop + this.$refs.selection.offsetHeight / 2
 
       this.scrollMin = this.scrollOffsetTop - this.pivotMin
-      this.scrollMax = this.scrollOffsetTop - pivotMax
+      this.scrollMax = this.scrollOffsetTop - this.pivotMax
     },
     sanitizeInternalIndex(index) {
       return Math.min(Math.max(index, this.placeholder ? -1 : 0), this.normalizedOptions.length - 1)
@@ -213,15 +214,27 @@ export default {
       if (index > -1 && pivotIndex in this.pivots) {
         return this.scrollOffsetTop - this.pivots[pivotIndex]
       }
+      if (index >= this.pivots.length) {
+        return this.scrollOffsetTop - this.pivotMax
+      }
+
       return this.scrollOffsetTop - this.pivotMin
     },
     onScroll(e) {
       if (this.top >= this.scrollMin && e.deltaY < 0) return
       if (this.top <= this.scrollMax && e.deltaY > 0) return
+      if (this.pivots.length === 1) return
 
       e.preventDefault()
 
-      this.top = Math.min(Math.max(this.top - e.deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
+      const nextDirInnerIndex = this.sanitizeInternalIndex(this.innerIndex + (e.deltaY > 0 ? 1 : -1))
+      const deltaMax = e.deltaY > 0
+        ? this.findScrollByIndex(nextDirInnerIndex - 1) - this.findScrollByIndex(nextDirInnerIndex)
+        : this.findScrollByIndex(nextDirInnerIndex) - this.findScrollByIndex(nextDirInnerIndex + 1)
+
+      const deltaY = Math.max(Math.min(e.deltaY, deltaMax), deltaMax * -1)
+
+      this.top = Math.min(Math.max(this.top - deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
 
       const nextInnerIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.top))
       const nextInnerValue = this.normalizedOptions[nextInnerIndex] && this.normalizedOptions[nextInnerIndex].value || null
