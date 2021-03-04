@@ -16,7 +16,7 @@ If you are using vue 2, please refer to the [v0.x branch](https://github.com/wan
 
 ### Examples
 
- - [Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./examples))
+ - [Example](http://vue-scroll-picker.dist.be) ([sources](./examples))
 
 ## Installation
 
