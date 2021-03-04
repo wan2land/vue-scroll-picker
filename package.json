@@ -15,7 +15,7 @@
     "dev:example": "vite serve example",
     "build": "npm run build:production && npm run build:example",
     "build:production": "vite build && tsc -p tsconfig.build.json",
-    "build:example": "vite build example",
+    "build:example": "vite build example && cp example/CNAME example-dist/",
     "deploy:example": "npm run build:example && gh-pages -d example-dist"
   },
   "main": "lib/vue-scroll-picker.umd.js",
