@@ -14,9 +14,7 @@ Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel
 
 If you are using vue 2, please refer to the [v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
 
-### Examples
-
- - [Example](http://vue-scroll-picker.dist.be) ([sources](./examples))
+ [See Example](http://vue-scroll-picker.dist.be) ([sources](./example))
 
 ## Installation
 
@@ -69,12 +67,12 @@ export default {
 | modelValue        | `any`     | `null`   |          |
 | placeholder       | `string`  | `null`   |          |
 | empty             | `string`  | `'No Items'`  |     |
-| options           | `(string|{ name: string, value: any })[]` | `[]`  | `["10KG", "20KG", "30KG"]` or `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| options           | `string[]`<br />`{ name: string, value: any }[]` | `[]`  | `["10KG", "20KG", "30KG"]`<br />`[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
 | dragSensitivity   | `number`  | `1.7`    |          |
 | touchSensitivity  | `number`  | `1.7`    |          |
 | scrollSensitivity | `number`  | `1`      |          |
 
-### EventS
+### Events
 
 | Name             | Type      |
 | ----------------- |:--------- |
