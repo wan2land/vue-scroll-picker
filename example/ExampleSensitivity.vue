@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <scroll-picker
+    <VueScrollPicker
       :drag-sensitivity="dragSensitivity"
       :touch-sensitivity="touchSensitivity"
       :scroll-sensitivity="scrollSensitivity"
@@ -42,14 +42,14 @@
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from 'vue-scroll-picker'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 
 export default defineComponent({
   props: {
     options: {
-      type: Array as PropType<ScrollPickerOption[]>,
+      type: Array as PropType<VueScrollPickerOption[]>,
       default: () => [],
     },
   },

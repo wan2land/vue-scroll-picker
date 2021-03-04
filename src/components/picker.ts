@@ -58,7 +58,7 @@ export default defineComponent({
   props: {
     modelValue: null,
     options: {
-      type: Array as PropType<ScrollPickerOptionable[]>,
+      type: Array as PropType<VueScrollPickerOptionable[]>,
       default: () => [],
     },
     dragSensitivity: {

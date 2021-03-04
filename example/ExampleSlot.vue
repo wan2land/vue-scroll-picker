@@ -35,17 +35,17 @@
         v-html="option.name"
       ></a>
     </div>
-    <scroll-picker :options="options" v-model="currentValue">
+    <VueScrollPicker :options="options" v-model="currentValue">
       <template v-slot:placeholder>
         Select One 🥲
       </template>
-      <template v-slot="{ option }">
+      <template v-slot:default="{ option }">
         <div class="custom-option">
           <div class="custom-option-icon" v-html="option.icon" />
           <span>{{ option.name }}</span>
         </div>
       </template>
-    </scroll-picker>
+    </VueScrollPicker>
   </div>
 </template>
 <script lang="ts">

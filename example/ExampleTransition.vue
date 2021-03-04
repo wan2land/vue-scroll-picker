@@ -13,19 +13,19 @@
       <a class="button" @click="isVisible = !isVisible">{{ isVisible ? 'Hide' : 'Show' }}</a>
     </div>
     <transition name="fade">
-      <scroll-picker :options="options" v-model="currentValue" v-if="isVisible"></scroll-picker>
+      <VueScrollPicker :options="options" v-model="currentValue" v-if="isVisible" />
     </transition>
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from 'vue-scroll-picker'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 
 export default defineComponent({
   props: {
     options: {
-      type: Array as PropType<ScrollPickerOption[]>,
+      type: Array as PropType<VueScrollPickerOption[]>,
       default: () => [],
     },
   },

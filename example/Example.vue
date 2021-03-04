@@ -7,21 +7,27 @@
     <div class="section">
       <div class="container">
         <h2>Full Binding</h2>
+        <p>Vue Scroll Picker provides full binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleFullBinding :options="defaultOptions" />
         
         <h2>Placeholder</h2>
+        <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as a value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
         <ExamplePlaceholder :options="defaultOptions" />
 
         <h2>Slot Support</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSlot.vue">[Source]</a></p>
         <ExampleSlot />
 
         <h2>Sensitivity</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSensitivity.vue">[Source]</a></p>
         <ExampleSensitivity :options="defaultOptions" />
 
         <h2>Transition</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleTransition.vue">[Source]</a></p>
         <ExampleTransition :options="defaultOptions" />
 
         <h2>Dynamic Options</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleDynamicOptions />
       </div>
     </div>

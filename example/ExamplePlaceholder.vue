@@ -20,18 +20,18 @@
         @click="currentValue = option.value"
       >{{ option.name }}</a>
     </div>
-    <scroll-picker :options="options" v-model="currentValue" placeholder="Select One" />
+    <VueScrollPicker :options="options" v-model="currentValue" placeholder="Select One" />
   </div>
 </template>
 <script lang="ts">
-import { ScrollPickerOption } from 'vue-scroll-picker'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
 
 
 export default defineComponent({
   props: {
     options: {
-      type: Array as PropType<ScrollPickerOption[]>,
+      type: Array as PropType<VueScrollPickerOption[]>,
       default: () => [],
     },
   },

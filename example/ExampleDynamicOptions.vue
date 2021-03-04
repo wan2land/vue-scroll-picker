@@ -8,7 +8,7 @@
       <a class="button" @click="shiftItem">Shift Item</a>
       <a class="button" @click="replaceItems">Replace 10 Items</a>
     </div>
-    <scroll-picker :options="options" v-model="currentValue"></scroll-picker>
+    <VueScrollPicker :options="options" v-model="currentValue" />
   </div>
 </template>
 <script lang="ts">

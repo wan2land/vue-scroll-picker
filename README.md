@@ -4,7 +4,7 @@
   <a href="https://npmcharts.com/compare/vue-scroll-picker?minimal=true"><img alt="Downloads" src="https://img.shields.io/npm/dt/vue-scroll-picker.svg?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/vue-scroll-picker"><img alt="Version" src="https://img.shields.io/npm/v/vue-scroll-picker.svg?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/vue-scroll-picker"><img alt="License" src="https://img.shields.io/npm/l/vue-scroll-picker.svg?style=flat-square" /></a>
-  <img alt="VueJS 2.x" src="https://img.shields.io/badge/vue.js-2.x-brightgreen.svg?style=flat-square" />
+  <img alt="VueJS 3.x" src="https://img.shields.io/badge/vue.js-3.x-brightgreen.svg?style=flat-square" />
   <br />
   <a href="https://david-dm.org/wan2land/vue-scroll-picker"><img alt="dependencies Status" src="https://img.shields.io/david/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
   <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
@@ -88,7 +88,3 @@ export default {
 | default         | `{ option: { name: string, value: any } }` | `{{ option.name }}`  |
 | placeholder     | `{ text: string }`  | `{{ placeholder }}` |
 | empty           | `{ text: string }`  | `No Items`          |
-
-### Styling
-
-- [Vue Loader Deep Selector](https://vue-loader.vuejs.org/en/features/scoped-css.html) : if you want to override css style, use deep selector!
