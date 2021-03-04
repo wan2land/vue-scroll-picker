@@ -10,91 +10,84 @@
   <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
 </p>
 
-Scroll Picker Component for Vue2. Support All Gestures of Mouse(even also MouseWheel!) and Touch.
+Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.
+
+If you are using vue 2, please refer to the [v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
 
 ### Examples
 
- - [Show Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./example))
+ - [Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./examples))
 
 ## Installation
 
-```
+```bash
 npm i vue-scroll-picker
 ```
 
 ## Usage
 
-### CSS
+**Global Registration**
 
-Import css file (only version `v0.2` or later).
+[Vue3 Global Registration Guide](https://v3.vuejs.org/guide/component-registration.html#global-registration)
 
 ```js
-import "vue-scroll-picker/dist/style.css"
+import { createApp } from 'vue'
+import VueScrollPicker from 'vue-scroll-picker'
+
+import 'vue-scroll-picker/lib/style.css'
+
+
+const app = createApp(/* */)
+
+app.use(VueScrollPicker)
+
 ```
 
-### ES6
+**Local Registration**
 
-```js
-import Vue from "vue"
-import VueScrollPicker from "vue-scroll-picker"
+[Vue3 Local Registration Guide](https://v3.vuejs.org/guide/component-registration.html#local-registration)
 
-Vue.use(VueScrollPicker)
-```
+```vue
+<script>
+import { ScrollPicker } from 'vue-scroll-picker'
 
-or
-
-```js
-import Vue from "vue"
-import { ScrollPicker, ScrollPickerGroup } from "vue-scroll-picker"
-
-new Vue({
+export default {
   components: {
     ScrollPicker,
-    ScrollPickerGroup,
-  }
-})
-```
-
-### Globals
-
-```html
-<html>
-<head>
-  ...
-</head>
-<body>
-  <div id="app">
-    <scroll-picker :options="[1, 2, 3, 4, 5]"></scroll-picker>
-  </div>
-
-  <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/vue-scroll-picker/dist/index.js"></script>
-  <script>
-    new Vue({ el: "#app", })
-  </script>
-</body>
-</html>
+  },
+}
+</script>
+<style src="vue-scroll-picker/lib/style.css"></style>
 ```
 
 ## Options
 
 ### Props
 
-| Props       | Type          | Default  | Description  |
-| ----------- |:--------------| ---------|--------------|
-| value       | mixed         | null     | set value    |
-| placeholder | String        | null     | placeholder  |
-| options     | Array         | []       | options of value. example, `["10KG", "20KG", "30KG"]` or `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| Name              | Type      | Default  | Example  |
+| ----------------- |:--------- | -------- | -------- |
+| modelValue        | `any`     | `null`   |          |
+| placeholder       | `string`  | `null`   |          |
+| empty             | `string`  | `'No Items'`  |     |
+| options           | `(string|{ name: string, value: any })[]` | `[]`  | `["10KG", "20KG", "30KG"]` or `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| dragSensitivity   | `number`  | `1.7`    |          |
+| touchSensitivity  | `number`  | `1.7`    |          |
+| scrollSensitivity | `number`  | `1`      |          |
 
-### Event
+### EventS
 
- - `@input` : you can use `v-model` :-)
+| Name             | Type      |
+| ----------------- |:--------- |
+| update:modelValue | `any`     |
+
+### Slots
+
+| Name            | Prop      | Default  |
+| --------------- |:--------- | -------- |
+| default         | `{ option: { name: string, value: any } }` | `{{ option.name }}`  |
+| placeholder     | `{ text: string }`  | `{{ placeholder }}` |
+| empty           | `{ text: string }`  | `No Items`          |
 
 ### Styling
 
-- [rscss](http://rscss.io/index.html)
-- [Vue Loader Deep Selector](https://vue-loader.vuejs.org/en/features/scoped-css.html) : if you want to override css style, use deep selector in vue-loader!
-
-### License
-
-MIT
+- [Vue Loader Deep Selector](https://vue-loader.vuejs.org/en/features/scoped-css.html) : if you want to override css style, use deep selector!

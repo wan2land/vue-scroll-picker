@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "outDir": "lib",
+    "baseUrl": "./",
+    "paths": {
+      "vue-scroll-picker": ["./src"]
+    },
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": [
+      "DOM",
+      "ESNEXT"
+    ],
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "pretty": true,
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitReturns": true
+  },
+  "include": [
+    "example/**/*.ts",
+    "example/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "types/**/*.ts"
+  ]
+}
