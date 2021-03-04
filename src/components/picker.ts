@@ -1,17 +1,17 @@
 import { defineComponent, PropType, h, renderSlot, VNode } from 'vue'
 
 
-function debounce<T extends Function>(handle: T, delay = 83): T {
+function debounce<TFunc extends Function>(handle: TFunc, delay = 83): TFunc { // eslint-disable-line @typescript-eslint/ban-types
   let timeout = null as any
   return function (this: any) {
     if (timeout) {
       clearTimeout(timeout)
       timeout = null
     }
-    const self = this
-    const args = arguments
+    const self = this // eslint-disable-line no-invalid-this,@typescript-eslint/no-this-alias
+    const args = arguments // eslint-disable-line prefer-rest-params
     timeout = setTimeout(() => handle.apply(self, args), delay)
-  } as any as T
+  } as any as TFunc
 }
 
 function getBoundingClientCenterY(elem: HTMLElement) {
@@ -38,7 +38,7 @@ function isTouchEvent(event: any): event is TouchEvent {
   return event.changedTouches || event.touches
 }
 
-function getEventXY (event: TouchEvent | MouseEvent): { clientX: number, clientY: number } {
+function getEventXY(event: TouchEvent | MouseEvent): { clientX: number, clientY: number } {
   if (isTouchEvent(event)) {
     return event.changedTouches[0] || event.touches[0]
   }
@@ -58,7 +58,7 @@ export default defineComponent({
   props: {
     modelValue: null,
     options: {
-      type: Array as PropType<VueScrollPickerOptionable[]>,
+      type: Array as PropType<ScrollPickerOptionable[]>,
       default: () => [],
     },
     dragSensitivity: {
@@ -160,7 +160,7 @@ export default defineComponent({
   },
   watch: {
     modelValue(value: any) {
-      if (value == null && this.hasPlaceholder) {
+      if ((value === null || value === undefined) && this.hasPlaceholder) {
         this.correction(-1)
         return
       }
@@ -178,13 +178,13 @@ export default defineComponent({
     options: {
       handler(options: ScrollPickerOptionable[]) {
         const internalOptions = this.internalOptions = normalizeOptions(options)
-  
+
         let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
         if (internalIndex === -1 && !this.hasPlaceholder && this.options.length > 0) {
           internalIndex = 0
         }
         const internalValue = internalOptions[internalIndex]?.value ?? null
-    
+
         this.$nextTick(() => {
           this.calculatePivots()
           this.scroll = this.findScrollByIndex(internalIndex)
@@ -245,18 +245,18 @@ export default defineComponent({
       }
       if (index > -1 && pivotIndex in this.pivots) {
         return this.scrollOffsetTop - this.pivots[pivotIndex]
-      } else {
-        return this.scrollOffsetTop - this.pivotsMin
       }
+      return this.scrollOffsetTop - this.pivotsMin
+
     },
     onWheel(event: MouseWheelEvent) {
-      if (this.scroll! >= this.scrollMin && event.deltaY < 0) return
-      if (this.scroll! <= this.scrollMax && event.deltaY > 0) return
+      if (this.scroll! >= this.scrollMin && event.deltaY < 0) { return }
+      if (this.scroll! <= this.scrollMax && event.deltaY > 0) { return }
 
       event.preventDefault()
 
       this.scroll = Math.min(Math.max(this.scroll! - event.deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
-      
+
       const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
       const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
 
@@ -269,10 +269,10 @@ export default defineComponent({
         this.correction(this.findIndexFromScroll(this.scroll!))
       })
     },
-    onAfterWheel: debounce(function (handler: () => void) {
+    onAfterWheel: debounce((handler: () => void) => {
       handler()
     }, 200),
-    onStart (event: TouchEvent | MouseEvent) {
+    onStart(event: TouchEvent | MouseEvent) {
       if (event.cancelable) {
         event.preventDefault()
       }
@@ -391,7 +391,7 @@ export default defineComponent({
           'vue-scroll-picker-item',
           {
             'vue-scroll-picker-item-selected': this.internalIndex === index,
-          }
+          },
         ],
         key: option.value,
         ref: (el) => el && this.setRefItem(el as HTMLDivElement),
@@ -410,15 +410,15 @@ export default defineComponent({
           'vue-scroll-picker-rotator',
           {
             'vue-scroll-picker-rotator-transition': this.transitioning,
-          }
+          },
         ],
         style: typeof this.scroll === 'number' ? { top: `${this.scroll}px` } : {},
       }, nodes),
-      h('div', {class: ['vue-scroll-picker-layer']}, [
-        h('div', {class: ['vue-scroll-picker-layer-top'], ref: 'layerTop'}),
-        h('div', {class: ['vue-scroll-picker-layer-selection'], ref: 'layerSelection'}),
-        h('div', {class: ['vue-scroll-picker-layer-bottom'], ref: 'layerBottom'}),
+      h('div', { class: ['vue-scroll-picker-layer'] }, [
+        h('div', { class: ['vue-scroll-picker-layer-top'], ref: 'layerTop' }),
+        h('div', { class: ['vue-scroll-picker-layer-selection'], ref: 'layerSelection' }),
+        h('div', { class: ['vue-scroll-picker-layer-bottom'], ref: 'layerBottom' }),
       ]),
     ])
-  }
+  },
 })

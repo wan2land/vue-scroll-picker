@@ -49,8 +49,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
 import { get } from 'simple-icons'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   data() {

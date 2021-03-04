@@ -24,8 +24,8 @@
   </div>
 </template>
 <script lang="ts">
-import { VueScrollPickerOption } from 'vue-scroll-picker'
 import { defineComponent, PropType } from 'vue'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 
 
 export default defineComponent({

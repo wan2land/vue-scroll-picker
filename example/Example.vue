@@ -9,7 +9,7 @@
         <h2>Full Binding</h2>
         <p>Vue Scroll Picker provides full binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleFullBinding :options="defaultOptions" />
-        
+
         <h2>Placeholder</h2>
         <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as a value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
         <ExamplePlaceholder :options="defaultOptions" />
@@ -36,12 +36,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 import ExampleFullBinding from './ExampleFullBinding.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
-import ExampleSlot from './ExampleSlot.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
+import ExampleSlot from './ExampleSlot.vue'
 import ExampleTransition from './ExampleTransition.vue'
-import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 
 
 export default defineComponent({

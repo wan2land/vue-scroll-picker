@@ -36,7 +36,7 @@ export default defineComponent({
       this.options.shift()
     },
     replaceItems() {
-      this.options = [...Array(10)].map(() => ~~(Math.random() * 100000))
+      this.options = [...new Array(10)].map(() => ~~(Math.random() * 100000))
     },
   },
 })
