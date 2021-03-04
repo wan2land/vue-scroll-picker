@@ -10,11 +10,11 @@
   <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
 </p>
 
-Scroll Picker Component for Vue2. Support All Gestures of Mouse(even also MouseWheel!) and Touch.
+iOS Style Scroll Picker Component for Vue 2. Support All Gestures of Mouse(also MouseWheel) and Touch.
 
-### Examples
+If you are using vue 3, please refer to the [main](https://github.com/wan2land/vue-scroll-picker/tree/main).
 
- - [Show Example](http://wan2land.github.io/vue-scroll-picker/) ([sources](./example))
+[See Example](http://vue-scroll-picker.dist.be) ([sources](./example))
 
 ## Installation
 
@@ -80,11 +80,15 @@ new Vue({
 
 ### Props
 
-| Props       | Type          | Default  | Description  |
-| ----------- |:--------------| ---------|--------------|
-| value       | mixed         | null     | set value    |
-| placeholder | String        | null     | placeholder  |
-| options     | Array         | []       | options of value. example, `["10KG", "20KG", "30KG"]` or `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| Name              | Type      | Default  | Example  |
+| ----------------- |:--------- | -------- | -------- |
+| modelValue        | `any`     | `null`   |          |
+| placeholder       | `string`  | `null`   |          |
+| empty             | `string`  | `'No Items'`  |     |
+| options           | `string[]`<br />`{ name: string, value: any }[]` | `[]`  | `["10KG", "20KG", "30KG"]`<br />`[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| dragSensitivity   | `number`  | `1.7`    |          |
+| touchSensitivity  | `number`  | `1.7`    |          |
+| scrollSensitivity | `number`  | `1`      |          |
 
 ### Event
 
@@ -94,7 +98,3 @@ new Vue({
 
 - [rscss](http://rscss.io/index.html)
 - [Vue Loader Deep Selector](https://vue-loader.vuejs.org/en/features/scoped-css.html) : if you want to override css style, use deep selector in vue-loader!
-
-### License
-
-MIT
