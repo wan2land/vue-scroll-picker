@@ -37,7 +37,7 @@ import 'vue-scroll-picker/lib/style.css'
 
 const app = createApp(/* */)
 
-app.use(VueScrollPicker)
+app.use(VueScrollPicker) // export default is plugin
 
 ```
 
@@ -46,12 +46,15 @@ app.use(VueScrollPicker)
 [Vue3 Local Registration Guide](https://v3.vuejs.org/guide/component-registration.html#local-registration)
 
 ```vue
+<template>
+  <VueScrollPicker :options="options" />
+</template>
 <script>
-import { ScrollPicker } from 'vue-scroll-picker'
+import { VueScrollPicker } from 'vue-scroll-picker'
 
 export default {
   components: {
-    ScrollPicker,
+    VueScrollPicker, // export VueScrollPicker is component
   },
 }
 </script>
