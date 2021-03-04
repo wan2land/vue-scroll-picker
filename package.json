@@ -14,8 +14,8 @@
     "test:lint": "eslint 'src/**/*.ts'",
     "dev:example": "vite serve example",
     "build": "npm run build:production && npm run build:example",
-    "build:production": "rimraf ./lib && vite build src && tsc -p tsconfig.build.json",
-    "build:example": "rimraf ./example-dist && vite build example",
+    "build:production": "vite build && tsc -p tsconfig.build.json",
+    "build:example": "vite build example",
     "deploy:example": "npm run build:example && push-dir --dir=example-dist --branch=gh-pages"
   },
   "main": "lib/vue-scroll-picker.umd.js",
@@ -35,7 +35,6 @@
     "husky": "^5.1.3",
     "mini-css-extract-plugin": "0.9.0",
     "push-dir": "0.4.1",
-    "rimraf": "^3.0.2",
     "simple-icons": "^4.13.0",
     "typescript": "^4.2.2",
     "vite": "^2.0.4",

@@ -6,9 +6,9 @@ import * as path from 'path'
 export default defineConfig({
   plugins: [vue()],
   build: {
-    outDir: path.resolve(__dirname, '../lib'),
+    outDir: path.resolve(__dirname, 'lib'),
     lib: {
-      entry: path.resolve(__dirname, './index.ts'),
+      entry: path.resolve(__dirname, 'entry.ts'),
       name: 'VueScrollPicker',
     },
     rollupOptions: {
@@ -19,5 +19,6 @@ export default defineConfig({
         },
       },
     },
+    sourcemap: true,
   },
 })
