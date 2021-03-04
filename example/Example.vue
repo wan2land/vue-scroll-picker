@@ -12,8 +12,8 @@
         <h2>Placeholder</h2>
         <ExamplePlaceholder :options="defaultOptions" />
 
-        <h2>HTML Support</h2>
-        <ExampleHtmlSupport />
+        <h2>Slot Support</h2>
+        <ExampleSlot />
 
         <h2>Sensitivity</h2>
         <ExampleSensitivity :options="defaultOptions" />
@@ -33,7 +33,7 @@ import { defineComponent } from 'vue'
 
 import ExampleFullBinding from './ExampleFullBinding.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
-import ExampleHtmlSupport from './ExampleHtmlSupport.vue'
+import ExampleSlot from './ExampleSlot.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleTransition from './ExampleTransition.vue'
 import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
@@ -43,7 +43,7 @@ export default defineComponent({
   components: {
     ExampleFullBinding,
     ExamplePlaceholder,
-    ExampleHtmlSupport,
+    ExampleSlot,
     ExampleSensitivity,
     ExampleTransition,
     ExampleDynamicOptions,
@@ -51,17 +51,17 @@ export default defineComponent({
   data() {
     return {
       defaultOptions: [
-        {value: 0, name: "0KG"},
-        {value: 10, name: "10KG"},
-        {value: 20, name: "20KG"},
-        {value: 30, name: "30KG"},
-        {value: 40, name: "40KG"},
-        {value: 50, name: "50KG"},
-        {value: 60, name: "60KG"},
-        {value: 70, name: "70KG"},
-        {value: 80, name: "80KG"},
-        {value: 90, name: "90KG"},
-        {value: 100, name: "100KG"},
+        { value: 0, name: '0KG' },
+        { value: 10, name: '10KG' },
+        { value: 20, name: '20KG' },
+        { value: 30, name: '30KG' },
+        { value: 40, name: '40KG' },
+        { value: 50, name: '50KG' },
+        { value: 60, name: '60KG' },
+        { value: 70, name: '70KG' },
+        { value: 80, name: '80KG' },
+        { value: 90, name: '90KG' },
+        { value: 100, name: '100KG' },
       ],
     }
   },

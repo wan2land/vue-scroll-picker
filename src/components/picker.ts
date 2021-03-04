@@ -1,4 +1,4 @@
-import { defineComponent, PropType, h } from 'vue'
+import { defineComponent, PropType, h, renderSlot, VNode } from 'vue'
 
 
 function debounce<T extends Function>(handle: T, delay = 83): T {
@@ -86,7 +86,7 @@ export default defineComponent({
     const internalOptions = normalizeOptions(this.options)
 
     let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
-    if (internalIndex === -1 && !this.placeholder && this.options.length > 0) {
+    if (internalIndex === -1 && !this.placeholder && !this.$slots.placeholder && this.options.length > 0) {
       internalIndex = 0
     }
     const internalValue = internalOptions[internalIndex]?.value ?? null
@@ -160,7 +160,7 @@ export default defineComponent({
   },
   watch: {
     modelValue(value: any) {
-      if (value == null && this.placeholder) {
+      if (value == null && this.hasPlaceholder) {
         this.correction(-1)
         return
       }
@@ -180,7 +180,7 @@ export default defineComponent({
         const internalOptions = this.internalOptions = normalizeOptions(options)
   
         let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
-        if (internalIndex === -1 && !this.placeholder && this.options.length > 0) {
+        if (internalIndex === -1 && !this.hasPlaceholder && this.options.length > 0) {
           internalIndex = 0
         }
         const internalValue = internalOptions[internalIndex]?.value ?? null
@@ -195,6 +195,11 @@ export default defineComponent({
         })
       },
       deep: true,
+    },
+  },
+  computed: {
+    hasPlaceholder(): boolean {
+      return !!(this.placeholder || this.$slots.placeholder)
     },
   },
   methods: {
@@ -216,7 +221,7 @@ export default defineComponent({
       this.scrollMax = scrollOffsetTop - pivotsMax
     },
     sanitizeInternalIndex(index: number): number {
-      return Math.min(Math.max(index, this.placeholder ? -1 : 0), this.internalOptions.length - 1)
+      return Math.min(Math.max(index, this.hasPlaceholder ? -1 : 0), this.internalOptions.length - 1)
     },
     findIndexFromScroll(scroll: number): number {
       let prevDiff = null as number | null
@@ -228,14 +233,14 @@ export default defineComponent({
           prevDiff = diff
         }
       })
-      if (this.placeholder || this.options.length === 0) {
+      if (this.hasPlaceholder || this.options.length === 0) {
         return pivotIndex - 1
       }
       return pivotIndex
     },
     findScrollByIndex(index: number): number {
       let pivotIndex = index
-      if (this.placeholder || this.options.length === 0) {
+      if (this.hasPlaceholder || this.options.length === 0) {
         pivotIndex++
       }
       if (index > -1 && pivotIndex in this.pivots) {
@@ -353,49 +358,62 @@ export default defineComponent({
     },
   },
   render() {
-    let items = []
-    if (this.placeholder) {
-      items.push(h('div', {
-        class: {
-          'vue-scroll-picker-item': true,
-          'vue-scroll-picker-item-placeholder': true,
-          'vue-scroll-picker-item-selected': this.internalIndex === -1,
-        },
+    let nodes = [] as VNode[]
+    if (this.hasPlaceholder) {
+      nodes.push(h('div', {
+        class: [
+          'vue-scroll-picker-item',
+          'vue-scroll-picker-item-placeholder',
+          {
+            'vue-scroll-picker-item-selected': this.internalIndex === -1,
+          },
+        ],
         ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-        innerHTML: this.placeholder,
-      }))
+      }, renderSlot(this.$slots, 'placeholder', { text: this.placeholder }, () => [
+        this.placeholder,
+      ])))
     } else if (this.internalOptions.length === 0) {
-      items.push(h('div', {
+      nodes.push(h('div', {
         class: [
           'vue-scroll-picker-item',
           'vue-scroll-picker-item-empty',
           'vue-scroll-picker-item-selected',
         ],
         ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-        innerHTML: this.empty,
-      }))
+      }, renderSlot(this.$slots, 'empty', { text: this.empty }, () => [
+        this.empty,
+      ])))
     }
 
-    items = items.concat(this.internalOptions.map((option, index) => {
+    nodes = nodes.concat(this.internalOptions.map((option, index) => {
       return h('div', {
-        class: {
-          'vue-scroll-picker-item': true,
-          'vue-scroll-picker-item-selected': this.internalIndex === index,
-        },
+        class: [
+          'vue-scroll-picker-item',
+          {
+            'vue-scroll-picker-item-selected': this.internalIndex === index,
+          }
+        ],
         key: option.value,
         ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-        innerHTML: option.name,
-      })
+      }, renderSlot(this.$slots, 'default', { option }, () => [
+        option.name,
+      ]))
     }))
-    return h('div', {class: ['vue-scroll-picker']}, [
+    return h('div', {
+      class: [
+        'vue-scroll-picker',
+      ],
+    }, [
       h('div', {
         ref: 'rotator',
-        class: {
-          'vue-scroll-picker-rotator': true,
-          'vue-scroll-picker-rotator-transition': this.transitioning,
-        },
+        class: [
+          'vue-scroll-picker-rotator',
+          {
+            'vue-scroll-picker-rotator-transition': this.transitioning,
+          }
+        ],
         style: typeof this.scroll === 'number' ? { top: `${this.scroll}px` } : {},
-      }, items),
+      }, nodes),
       h('div', {class: ['vue-scroll-picker-layer']}, [
         h('div', {class: ['vue-scroll-picker-layer-top'], ref: 'layerTop'}),
         h('div', {class: ['vue-scroll-picker-layer-selection'], ref: 'layerSelection'}),
