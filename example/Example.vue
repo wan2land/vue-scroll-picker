@@ -2,7 +2,7 @@
   <div>
     <div class="hero">
       <h2>Vue Scroll Picker</h2>
-      <p>Scroll Picker Component for Vue3. Support All Gestures of Mouse and Touch.</p>
+      <p>iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.</p>
     </div>
     <div class="section">
       <div class="container">

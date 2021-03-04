@@ -10,7 +10,7 @@
   <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
 </p>
 
-Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.
+iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.
 
 If you are using vue 2, please refer to the [v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
 
