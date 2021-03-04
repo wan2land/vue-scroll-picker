@@ -246,16 +246,27 @@ export default defineComponent({
       if (index > -1 && pivotIndex in this.pivots) {
         return this.scrollOffsetTop - this.pivots[pivotIndex]
       }
+      if (index >= this.pivots.length) {
+        return this.scrollOffsetTop - this.pivotsMax
+      }
       return this.scrollOffsetTop - this.pivotsMin
 
     },
     onWheel(event: MouseWheelEvent) {
       if (this.scroll! >= this.scrollMin && event.deltaY < 0) { return }
       if (this.scroll! <= this.scrollMax && event.deltaY > 0) { return }
+      if (this.pivots.length === 1) { return }
 
       event.preventDefault()
 
-      this.scroll = Math.min(Math.max(this.scroll! - event.deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
+      const nextDirInternalIndex = this.sanitizeInternalIndex(this.internalIndex + (event.deltaY > 0 ? 1 : -1))
+      const deltaMax = event.deltaY > 0
+        ? this.findScrollByIndex(nextDirInternalIndex - 1) - this.findScrollByIndex(nextDirInternalIndex)
+        : this.findScrollByIndex(nextDirInternalIndex) - this.findScrollByIndex(nextDirInternalIndex + 1)
+
+      const deltaY = Math.max(Math.min(event.deltaY, deltaMax), deltaMax * -1)
+
+      this.scroll = Math.min(Math.max(this.scroll! - deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
 
       const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
       const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
