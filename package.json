@@ -29,7 +29,7 @@
     "@types/simple-icons": "4.17.0",
     "@vitejs/plugin-vue": "1.2.2",
     "@vue/compiler-sfc": "3.0.11",
-    "eslint": "7.26.0",
+    "eslint": "7.27.0",
     "eslint-config-stable": "0.9.0",
     "eslint-plugin-vue": "7.9.0",
     "gh-pages": "3.1.0",
