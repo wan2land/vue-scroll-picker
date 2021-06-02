@@ -206,6 +206,12 @@ export default defineComponent({
     setRefItem(el: HTMLDivElement) {
       this.refItems.push(el)
     },
+    resize() {
+      this.$nextTick(() => {
+        this.calculatePivots()
+        this.scroll = this.findScrollByIndex(this.internalIndex)
+      })
+    },
     calculatePivots() {
       const $rotator = this.$refs.rotator as HTMLDivElement
       const $layerSelection = this.$refs.layerSelection as HTMLDivElement

@@ -6,29 +6,33 @@
     </div>
     <div class="section">
       <div class="container">
-        <h2>Full Binding</h2>
+        <h2 id="full_binding">Full Binding</h2>
         <p>Vue Scroll Picker provides full binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleFullBinding :options="defaultOptions" />
 
-        <h2>Placeholder</h2>
+        <h2 id="placeholder">Placeholder</h2>
         <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as a value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
         <ExamplePlaceholder :options="defaultOptions" />
 
-        <h2>Slot Support</h2>
+        <h2 id="slot_support">Slot Support</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSlot.vue">[Source]</a></p>
         <ExampleSlot />
 
-        <h2>Sensitivity</h2>
+        <h2 id="sensitivity">Sensitivity</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSensitivity.vue">[Source]</a></p>
         <ExampleSensitivity :options="defaultOptions" />
 
-        <h2>Transition</h2>
+        <h2 id="transition">Transition</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleTransition.vue">[Source]</a></p>
         <ExampleTransition :options="defaultOptions" />
 
-        <h2>Dynamic Options</h2>
+        <h2 id="dynamic_options">Dynamic Options</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleDynamicOptions />
+
+        <h2 id="reactive_style">Reactive Style</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleReactiveStyle.vue">[Source]</a></p>
+        <ExampleReactiveStyle :options="defaultOptions" />
       </div>
     </div>
   </div>
@@ -39,6 +43,7 @@ import { defineComponent } from 'vue'
 import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 import ExampleFullBinding from './ExampleFullBinding.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
+import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleSlot from './ExampleSlot.vue'
 import ExampleTransition from './ExampleTransition.vue'
@@ -52,6 +57,7 @@ export default defineComponent({
     ExampleSensitivity,
     ExampleTransition,
     ExampleDynamicOptions,
+    ExampleReactiveStyle,
   },
   data() {
     return {
