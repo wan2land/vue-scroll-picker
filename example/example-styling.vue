@@ -12,7 +12,12 @@
     <p>You can adjust the height of the vue-scroll-picker through CSS.</p>
     <pre v-highlightjs><code class="html">{{ exampleHeight }}</code></pre>
     <div class="example1">
-      <scroll-picker :options="options" />
+      <input type="range" :min="4" :max="64" :step="1" v-model="fontSize" @input="onChangeFontSize" />
+      <div :style="{
+        'font-size': `${fontSize}px`,
+      }">
+        <scroll-picker :options="options" ref="scroll" />
+      </div>
     </div>
 
     <h4>Inherit font-size</h4>
@@ -44,6 +49,7 @@ function unique(items) {
 export default {
   data() {
     return {
+      fontSize: 24,
       exampleHeight: `<style>
 .example .vue-scroll-picker {
   height: 6em; /* default 10em */
@@ -79,6 +85,11 @@ export default {
         {value: 100, name: "100KG"},
       ],
     }
+  },
+  methods: {
+    onChangeFontSize() {
+      this.$refs.scroll.resize()
+    },
   },
 }
 </script>

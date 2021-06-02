@@ -177,6 +177,12 @@ export default {
     }
   },
   methods: {
+    resize() {
+      this.$nextTick(() => {
+        this.calculatePivots()
+        this.top = this.findScrollByIndex(this.innerIndex)
+      })
+    },
     calculatePivots() {
       const rotatorTop = this.$refs.list.getBoundingClientRect().top
       this.pivots = (this.$refs.items || []).map((item) => getClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
