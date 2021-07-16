@@ -28,7 +28,7 @@
     "@types/node": "14.17.5",
     "@types/simple-icons": "5.0.1",
     "@vitejs/plugin-vue": "1.2.5",
-    "@vue/compiler-sfc": "3.1.4",
+    "@vue/compiler-sfc": "3.1.5",
     "eslint": "7.30.0",
     "eslint-config-stable": "0.9.0",
     "eslint-plugin-vue": "7.13.0",
@@ -37,6 +37,6 @@
     "simple-icons": "5.6.0",
     "typescript": "4.3.5",
     "vite": "2.4.2",
-    "vue": "3.1.4"
+    "vue": "3.1.5"
   }
 }
