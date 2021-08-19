@@ -27,6 +27,34 @@
   color: #007bff;
 }
 
+.vue-scroll-picker-item-0 {
+transform: rotateX(0deg);
+}
+
+.vue-scroll-picker-item-previous-1 {
+  transform: rotateX(18deg);
+}
+
+.vue-scroll-picker-item-previous-2 {
+  transform: rotateX(36deg);
+}
+
+.vue-scroll-picker-item-previous-3 {
+  transform: rotateX(54deg);
+}
+
+.vue-scroll-picker-item-next-1 {
+  transform: rotateX(-18deg);
+}
+
+.vue-scroll-picker-item-next-2 {
+  transform: rotateX(-36deg);
+}
+
+.vue-scroll-picker-item-next-3 {
+  transform: rotateX(-54deg);
+}
+
 .vue-scroll-picker-item-empty,
 .vue-scroll-picker-item-placeholder {
   color: #aaa;

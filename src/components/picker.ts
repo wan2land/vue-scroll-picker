@@ -81,6 +81,10 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    iosStyle: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     const internalOptions = normalizeOptions(this.options)
@@ -408,6 +412,13 @@ export default defineComponent({
           'vue-scroll-picker-item',
           {
             'vue-scroll-picker-item-selected': this.internalIndex === index,
+            'vue-scroll-picker-item-0': this.internalIndex === index && this.iosStyle,
+            'vue-scroll-picker-item-previous-1': this.internalIndex === index - 1 && this.iosStyle,
+            'vue-scroll-picker-item-previous-2': this.internalIndex === index - 2 && this.iosStyle,
+            'vue-scroll-picker-item-previous-3': this.internalIndex === index - 3 && this.iosStyle,
+            'vue-scroll-picker-item-next-1': this.internalIndex === index + 1 && this.iosStyle,
+            'vue-scroll-picker-item-next-2': this.internalIndex === index + 2 && this.iosStyle,
+            'vue-scroll-picker-item-next-3': this.internalIndex === index + 3 && this.iosStyle,
           },
         ],
         key: option.value,
