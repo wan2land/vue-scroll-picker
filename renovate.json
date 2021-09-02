@@ -1,10 +1,12 @@
 {
   "extends": [
     "config:base",
-    "docker:disable"
+    "docker:disable",
+    ":dependencyDashboard"
   ],
   "automerge": true,
   "major": {
-    "automerge": false
+    "automerge": false,
+    "dependencyDashboardApproval": true
   }
 }
