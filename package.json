@@ -25,7 +25,7 @@
   "devDependencies": {
     "@commitlint/cli": "13.1.0",
     "@commitlint/config-conventional": "13.1.0",
-    "@types/node": "14.17.14",
+    "@types/node": "14.17.15",
     "@types/simple-icons": "5.8.0",
     "@vitejs/plugin-vue": "1.6.1",
     "@vue/compiler-sfc": "3.2.9",
