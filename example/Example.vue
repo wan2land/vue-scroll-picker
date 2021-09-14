@@ -34,7 +34,7 @@
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleReactiveStyle.vue">[Source]</a></p>
         <ExampleReactiveStyle :options="defaultOptions" />
 
-        <h2 id="reactive_style">Multiple</h2>
+        <h2 id="multiple">Multiple</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleMultiple.vue">[Source]</a></p>
         <ExampleMultiple />
       </div>
