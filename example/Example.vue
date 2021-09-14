@@ -33,6 +33,10 @@
         <h2 id="reactive_style">Reactive Style</h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleReactiveStyle.vue">[Source]</a></p>
         <ExampleReactiveStyle :options="defaultOptions" />
+
+        <h2 id="reactive_style">Multiple</h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleMultiple.vue">[Source]</a></p>
+        <ExampleMultiple />
       </div>
     </div>
   </div>
@@ -42,6 +46,7 @@ import { defineComponent } from 'vue'
 
 import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 import ExampleFullBinding from './ExampleFullBinding.vue'
+import ExampleMultiple from './ExampleMultiple.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
 import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
@@ -58,6 +63,7 @@ export default defineComponent({
     ExampleTransition,
     ExampleDynamicOptions,
     ExampleReactiveStyle,
+    ExampleMultiple,
   },
   data() {
     return {
