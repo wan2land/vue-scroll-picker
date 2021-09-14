@@ -6,35 +6,35 @@
     </div>
     <div class="section">
       <div class="container">
-        <h2 id="full_binding">Full Binding</h2>
+        <h2 id="full_binding"><a href="#full_binding">Full Binding</a></h2>
         <p>Vue Scroll Picker provides full binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleFullBinding :options="defaultOptions" />
 
-        <h2 id="placeholder">Placeholder</h2>
+        <h2 id="placeholder"><a href="#placeholder">Placeholder</a></h2>
         <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as a value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
         <ExamplePlaceholder :options="defaultOptions" />
 
-        <h2 id="slot_support">Slot Support</h2>
+        <h2 id="slot_support"><a href="#slot_support">Slot Support</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSlot.vue">[Source]</a></p>
         <ExampleSlot />
 
-        <h2 id="sensitivity">Sensitivity</h2>
+        <h2 id="sensitivity"><a href="#sensitivity">Sensitivity</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSensitivity.vue">[Source]</a></p>
         <ExampleSensitivity :options="defaultOptions" />
 
-        <h2 id="transition">Transition</h2>
+        <h2 id="transition"><a href="#transition">Transition</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleTransition.vue">[Source]</a></p>
         <ExampleTransition :options="defaultOptions" />
 
-        <h2 id="dynamic_options">Dynamic Options</h2>
+        <h2 id="dynamic_options"><a href="#dynamic_options">Dynamic Options</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleDynamicOptions />
 
-        <h2 id="reactive_style">Reactive Style</h2>
+        <h2 id="reactive_style"><a href="#reactive_style">Reactive Style</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleReactiveStyle.vue">[Source]</a></p>
         <ExampleReactiveStyle :options="defaultOptions" />
 
-        <h2 id="multiple">Multiple</h2>
+        <h2 id="multiple"><a href="#multiple">Multiple</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleMultiple.vue">[Source]</a></p>
         <ExampleMultiple />
       </div>

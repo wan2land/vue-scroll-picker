@@ -1,10 +1,13 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
 
 html {
-  font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   font-weight: 400;
 }
 
@@ -13,7 +16,12 @@ a {
   color: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
   line-height: 1.5;
 }
@@ -38,6 +46,25 @@ h5 {
   font-size: 1.125rem;
 }
 
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 a:hover::after,
+h2 a:hover::after,
+h3 a:hover::after,
+h4 a:hover::after,
+h5 a:hover::after,
+h6 a:hover::after {
+  /* if hover, appear a link icon */
+  content: " 🔗";
+}
 
 .hero {
   position: relative;
@@ -51,7 +78,7 @@ h5 {
 }
 
 .hero::after {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   left: 0;
@@ -99,21 +126,21 @@ h5 {
 
 .button {
   display: inline-block;
-  padding: .25rem .5rem;
+  padding: 0.25rem 0.5rem;
   border: 1px solid #007bff;
   color: #007bff;
 }
 
 .button.active {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
 }
 
 .button-group {
-  margin-left: -.25rem;
-  margin-right: -.25rem;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
 }
 
 .button-group .button {
-  margin: .25rem;
+  margin: 0.25rem;
 }
