@@ -49,18 +49,18 @@
   </div>
 </template>
 <script lang="ts">
-import { get } from 'simple-icons'
+import { Get } from 'simple-icons'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   data() {
     return {
       options: [
-        { value: 'instagram', name: ' Instagram', icon: get('instagram').svg },
-        { value: 'facebook', name: 'Facebook', icon: get('facebook').svg },
-        { value: 'youtube', name: 'Youtube', icon: get('youtube').svg },
-        { value: 'twitter', name: 'Twitter', icon: get('twitter').svg },
-        { value: 'line', name: 'Line', icon: get('line').svg },
+        { value: 'instagram', name: ' Instagram', icon: Get('instagram').svg },
+        { value: 'facebook', name: 'Facebook', icon: Get('facebook').svg },
+        { value: 'youtube', name: 'Youtube', icon: Get('youtube').svg },
+        { value: 'twitter', name: 'Twitter', icon: Get('twitter').svg },
+        { value: 'line', name: 'Line', icon: Get('line').svg },
       ],
       currentValue: null,
     }
