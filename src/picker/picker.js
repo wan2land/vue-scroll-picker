@@ -287,7 +287,7 @@ export default {
       }
       if (this.isDragging) {
         this.correction(this.findIndexFromScroll(this.top))
-      } else {
+      } else if (this.isMouseDown) {
         this.handleClick(e)
       }
       this.start = null
