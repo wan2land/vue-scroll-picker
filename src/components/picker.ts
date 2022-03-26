@@ -321,7 +321,7 @@ export default defineComponent({
       }
       if (this.isDragging) {
         this.correction(this.findIndexFromScroll(this.scroll!))
-      } else {
+      } else if (this.isMouseDown) {
         this.onClick(event)
       }
       this.start = null
