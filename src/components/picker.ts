@@ -177,9 +177,15 @@ export default defineComponent({
     $el.addEventListener('touchend', this.onEnd)
     $el.addEventListener('touchcancel', this.onCancel)
 
-    $el.addEventListener('mousewheel', this.onWheel as any)
-    $el.addEventListener('DOMMouseScroll', this.onWheel as any)
-    $el.addEventListener('wheel', this.onWheel)
+    if ('onwheel' in $el) {
+      $el.addEventListener('wheel', this.onWheel)
+    } else if ('onmousewheel' in $el) {
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/mousewheel_event
+      $el.addEventListener('mousewheel', this.onWheel as any)
+    } else if ('onDOMMouseScroll' in $el) {
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/DOMMouseScroll_event
+      $el.addEventListener('DOMMouseScroll', this.onWheel as any)
+    }
     $el.addEventListener('mousedown', this.onStart)
     document.addEventListener('mousemove', this.onMove)
     document.addEventListener('mouseup', this.onEnd)
@@ -193,9 +199,13 @@ export default defineComponent({
     $el.removeEventListener('touchend', this.onEnd)
     $el.removeEventListener('touchcancel', this.onCancel)
 
-    $el.removeEventListener('mousewheel', this.onWheel as any)
-    $el.removeEventListener('DOMMouseScroll', this.onWheel as any)
-    $el.removeEventListener('wheel', this.onWheel)
+    if ('onwheel' in $el) {
+      $el.removeEventListener('wheel', this.onWheel)
+    } else if ('onmousewheel' in $el) {
+      $el.removeEventListener('mousewheel', this.onWheel as any)
+    } else if ('onDOMMouseScroll' in $el) {
+      $el.removeEventListener('DOMMouseScroll', this.onWheel as any)
+    }
     $el.removeEventListener('mousedown', this.onStart)
     document.removeEventListener('mousemove', this.onMove)
     document.removeEventListener('mouseup', this.onEnd)
