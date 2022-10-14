@@ -18,7 +18,8 @@
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "skipLibCheck": true
   },
   "include": [
     "example/**/*.ts",
