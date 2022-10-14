@@ -7,9 +7,6 @@
   <a href="https://www.npmjs.com/package/vue-scroll-picker"><img alt="License" src="https://img.shields.io/npm/l/vue-scroll-picker.svg?style=flat-square" /></a>
   <img alt="VueJS 3.x" src="https://img.shields.io/badge/vue.js-3.x-brightgreen.svg?style=flat-square" />
   <img alt="Language Typescript" src="https://img.shields.io/badge/language-Typescript-007acc.svg?style=flat-square" />
-  <br />
-  <a href="https://david-dm.org/wan2land/vue-scroll-picker"><img alt="dependencies Status" src="https://img.shields.io/david/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
-  <a href="https://david-dm.org/wan2land/vue-scroll-picker?type=dev"><img alt="devDependencies Status" src="https://img.shields.io/david/dev/wan2land/vue-scroll-picker.svg?style=flat-square" /></a>
 </p>
 
 iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.
