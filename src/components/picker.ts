@@ -116,6 +116,50 @@ export default defineComponent({
       isDragging: false,
     }
   },
+  computed: {
+    hasPlaceholder(): boolean {
+      return !!(this.placeholder || this.$slots.placeholder)
+    },
+  },
+  watch: {
+    modelValue(value: any) {
+      if ((value === null || value === undefined) && this.hasPlaceholder) {
+        this.correction(-1)
+        return
+      }
+
+      const nextInternalIndex = this.internalOptions.findIndex((option) => option.value == value)
+      if (nextInternalIndex === -1) {
+        this.$emit('update:modelValue', this.internalValue)
+        return
+      }
+
+      if (this.internalIndex !== nextInternalIndex) {
+        this.correction(nextInternalIndex)
+      }
+    },
+    options: {
+      handler(options: ScrollPickerOptionable[]) {
+        const internalOptions = this.internalOptions = normalizeOptions(options)
+
+        let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
+        if (internalIndex === -1 && !this.hasPlaceholder && this.options.length > 0) {
+          internalIndex = 0
+        }
+        const internalValue = internalOptions[internalIndex]?.value ?? null
+
+        this.$nextTick(() => {
+          this.calculatePivots()
+          this.scroll = this.findScrollByIndex(internalIndex)
+          this.internalIndex = internalIndex
+          if (this.internalValue !== internalValue) {
+            this.$emit('update:modelValue', this.internalValue = internalValue)
+          }
+        })
+      },
+      deep: true,
+    },
+  },
   beforeUpdate() {
     this.refItems = []
   },
@@ -157,50 +201,6 @@ export default defineComponent({
     $el.removeEventListener('mousemove', this.onMove)
     $el.removeEventListener('mouseup', this.onEnd)
     $el.removeEventListener('mouseleave', this.onCancel)
-  },
-  watch: {
-    modelValue(value: any) {
-      if ((value === null || value === undefined) && this.hasPlaceholder) {
-        this.correction(-1)
-        return
-      }
-
-      const nextInternalIndex = this.internalOptions.findIndex((option) => option.value == value)
-      if (nextInternalIndex === -1) {
-        this.$emit('update:modelValue', this.internalValue)
-        return
-      }
-
-      if (this.internalIndex !== nextInternalIndex) {
-        this.correction(nextInternalIndex)
-      }
-    },
-    options: {
-      handler(options: ScrollPickerOptionable[]) {
-        const internalOptions = this.internalOptions = normalizeOptions(options)
-
-        let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
-        if (internalIndex === -1 && !this.hasPlaceholder && this.options.length > 0) {
-          internalIndex = 0
-        }
-        const internalValue = internalOptions[internalIndex]?.value ?? null
-
-        this.$nextTick(() => {
-          this.calculatePivots()
-          this.scroll = this.findScrollByIndex(internalIndex)
-          this.internalIndex = internalIndex
-          if (this.internalValue !== internalValue) {
-            this.$emit('update:modelValue', this.internalValue = internalValue)
-          }
-        })
-      },
-      deep: true,
-    },
-  },
-  computed: {
-    hasPlaceholder(): boolean {
-      return !!(this.placeholder || this.$slots.placeholder)
-    },
   },
   methods: {
     setRefItem(el: HTMLDivElement) {
