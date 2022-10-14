@@ -12,7 +12,7 @@
     "prepack": "npm run build",
     "test": "npm run test:lint",
     "test:lint": "eslint 'src/**/*.ts'",
-    "dev:example": "vite serve example",
+    "dev:example": "vite serve example --host 0.0.0.0",
     "build": "npm run build:production && npm run build:example",
     "build:production": "vite build && tsc -p tsconfig.build.json",
     "build:example": "vite build example && cp example/CNAME example-dist/",

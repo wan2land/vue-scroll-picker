@@ -181,10 +181,9 @@ export default defineComponent({
     $el.addEventListener('DOMMouseScroll', this.onWheel as any)
     $el.addEventListener('wheel', this.onWheel)
     $el.addEventListener('mousedown', this.onStart)
-    $el.addEventListener('mousemove', this.onMove)
-    $el.addEventListener('mouseup', this.onEnd)
-    $el.addEventListener('mouseleave', this.onCancel)
-
+    document.addEventListener('mousemove', this.onMove)
+    document.addEventListener('mouseup', this.onEnd)
+    document.addEventListener('mouseout', this.onDocumentMouseOut)
   },
   beforeUnmount() {
     const $el = this.$el as HTMLDivElement
@@ -198,9 +197,9 @@ export default defineComponent({
     $el.removeEventListener('DOMMouseScroll', this.onWheel as any)
     $el.removeEventListener('wheel', this.onWheel)
     $el.removeEventListener('mousedown', this.onStart)
-    $el.removeEventListener('mousemove', this.onMove)
-    $el.removeEventListener('mouseup', this.onEnd)
-    $el.removeEventListener('mouseleave', this.onCancel)
+    document.removeEventListener('mousemove', this.onMove)
+    document.removeEventListener('mouseup', this.onEnd)
+    document.removeEventListener('mouseout', this.onDocumentMouseOut)
   },
   methods: {
     setRefItem(el: HTMLDivElement) {
@@ -328,11 +327,16 @@ export default defineComponent({
       this.isDragging = false
       this.isMouseDown = false
     },
+    onDocumentMouseOut(event: MouseEvent) {
+      if (event.relatedTarget === null || (event.relatedTarget as Element)?.nodeName === 'HTML') {
+        this.onCancel(event)
+      }
+    },
     onCancel(event: TouchEvent | MouseEvent) {
       if (event.cancelable) {
         event.preventDefault()
       }
-      this.correction(this.findIndexFromScroll(this.scroll!))
+      this.correction(this.internalIndex) // cancel (rollback)
       this.start = null
       this.isMouseDown = false
       this.isDragging = false
