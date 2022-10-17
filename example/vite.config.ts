@@ -12,5 +12,16 @@ export default defineConfig({
   },
   build: {
     outDir: resolve(__dirname, '../example-dist'),
+    emptyOutDir: true,
+    rollupOptions: {
+      output:{
+        manualChunks(id) {
+          if (!id.includes('node_modules')) {
+            return
+          }
+          return id.toString().split('node_modules/')[1].split('/')[0].toString();
+        }
+      },
+    },
   },
 })
