@@ -1,6 +1,6 @@
 {
   "name": "vue-scroll-picker",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.",
   "author": "Changwan Jun",
   "license": "MIT",
