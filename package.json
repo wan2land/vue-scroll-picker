@@ -10,8 +10,9 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "test": "npm run test:lint",
+    "test": "npm run test:lint && npm run test:build",
     "test:lint": "eslint 'src/**/*.ts'",
+    "test:build": "npm run build:production && node scripts/test-build.mjs",
     "dev:example": "vite serve example --host 0.0.0.0",
     "build": "npm run build:production && npm run build:example",
     "build:production": "vite build && tsc -p tsconfig.build.json",
@@ -19,7 +20,7 @@
     "deploy:example": "npm run build:example && gh-pages -d example-dist"
   },
   "main": "lib/vue-scroll-picker.umd.js",
-  "module": "lib/vue-scroll-picker.es.js",
+  "module": "lib/vue-scroll-picker.mjs",
   "types": "lib/index.d.ts",
   "devDependencies": {
     "@commitlint/cli": "13.2.1",
