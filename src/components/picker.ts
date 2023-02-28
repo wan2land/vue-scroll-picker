@@ -181,10 +181,10 @@ export default defineComponent({
       $el.addEventListener('wheel', this.onWheel)
     } else if ('onmousewheel' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/mousewheel_event
-      $el.addEventListener('mousewheel', this.onWheel as any)
+      ($el as HTMLDivElement).addEventListener('mousewheel', this.onWheel as any)
     } else if ('onDOMMouseScroll' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/DOMMouseScroll_event
-      $el.addEventListener('DOMMouseScroll', this.onWheel as any)
+      ($el as HTMLDivElement).addEventListener('DOMMouseScroll', this.onWheel as any)
     }
     $el.addEventListener('mousedown', this.onStart)
     document.addEventListener('mousemove', this.onMove)
@@ -202,9 +202,9 @@ export default defineComponent({
     if ('onwheel' in $el) {
       $el.removeEventListener('wheel', this.onWheel)
     } else if ('onmousewheel' in $el) {
-      $el.removeEventListener('mousewheel', this.onWheel as any)
+      ($el as HTMLDivElement).removeEventListener('mousewheel', this.onWheel as any)
     } else if ('onDOMMouseScroll' in $el) {
-      $el.removeEventListener('DOMMouseScroll', this.onWheel as any)
+      ($el as HTMLDivElement).removeEventListener('DOMMouseScroll', this.onWheel as any)
     }
     $el.removeEventListener('mousedown', this.onStart)
     document.removeEventListener('mousemove', this.onMove)
