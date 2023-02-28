@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://github.com/wan2land/vue-scroll-picker/actions/workflows/ci.yml"><img alt="Build" src="https://img.shields.io/github/actions/workflow/status/wan2land/vue-scroll-picker/ci.yml?branch=main&logo=github&style=flat-square" /></a>
-  <a href="https://npmcharts.com/compare/vue-scroll-picker?minimal=true"><img alt="Downloads" src="https://img.shields.io/npm/dt/vue-scroll-picker.svg?style=flat-square" /></a>
+  <a href="https://npmcharts.com/compare/vue-scroll-picker?minimal=true"><img alt="Downloads" src="https://img.shields.io/npm/dm/vue-scroll-picker.svg?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/vue-scroll-picker"><img alt="Version" src="https://img.shields.io/npm/v/vue-scroll-picker.svg?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/vue-scroll-picker"><img alt="License" src="https://img.shields.io/npm/l/vue-scroll-picker.svg?style=flat-square" /></a>
   <img alt="VueJS 3.x" src="https://img.shields.io/badge/vue.js-3.x-brightgreen.svg?style=flat-square" />
