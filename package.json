@@ -38,7 +38,7 @@
     "eslint-plugin-vue": "9.9.0",
     "gh-pages": "3.2.3",
     "husky": "7.0.4",
-    "prettier": "2.8.4",
+    "prettier": "2.8.5",
     "simple-icons": "7.21.0",
     "typescript": "4.9.5",
     "vite": "3.2.5",
