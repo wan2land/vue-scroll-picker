@@ -23,7 +23,7 @@
   "module": "lib/vue-scroll-picker.mjs",
   "types": "lib/index.d.ts",
   "devDependencies": {
-    "@commitlint/cli": "17.6.3",
+    "@commitlint/cli": "17.6.5",
     "@commitlint/config-conventional": "13.2.0",
     "@types/node": "18.16.16",
     "@types/simple-icons": "5.21.1",
