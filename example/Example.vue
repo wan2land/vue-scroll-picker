@@ -3,6 +3,7 @@
     <div class="hero">
       <h2>Vue Scroll Picker</h2>
       <p>iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also MouseWheel) and Touch.</p>
+      <a class="github" href="https://github.com/wan2land/vue-scroll-picker" target="_blank" v-html="iconGithub" />
     </div>
     <div class="section">
       <div class="container">
@@ -43,6 +44,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { siGithub } from 'simple-icons/icons'
 
 import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 import ExampleFullBinding from './ExampleFullBinding.vue'
@@ -67,6 +69,7 @@ export default defineComponent({
   },
   data() {
     return {
+      iconGithub: siGithub.svg,
       defaultOptions: [
         { value: 0, name: '0KG' },
         { value: 10, name: '10KG' },
