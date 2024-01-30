@@ -114,6 +114,7 @@ export default defineComponent({
 
       isMouseDown: false,
       isDragging: false,
+      isTouch: false
     }
   },
   computed: {
@@ -305,7 +306,9 @@ export default defineComponent({
 
       const { clientY } = getEventXY(event)
       this.start = [this.scroll!, clientY]
-      if (!isTouchEvent(event)) {
+      if (isTouchEvent(event)) {
+        this.isTouch = true
+      } else {
         this.isMouseDown = true
       }
       this.isDragging = false
@@ -330,12 +333,13 @@ export default defineComponent({
       }
       if (this.isDragging) {
         this.correction(this.findIndexFromScroll(this.scroll!))
-      } else if (this.isMouseDown) {
+      } else if (this.isMouseDown || this.isTouch) {
         this.onClick(event)
       }
       this.start = null
       this.isDragging = false
       this.isMouseDown = false
+      this.isTouch = false
     },
     onDocumentMouseOut(event: MouseEvent) {
       if (event.relatedTarget === null || (event.relatedTarget as Element)?.nodeName === 'HTML') {
@@ -350,6 +354,7 @@ export default defineComponent({
       this.start = null
       this.isMouseDown = false
       this.isDragging = false
+      this.isTouch = false
     },
     onClick(event: TouchEvent | MouseEvent) {
       const $layerTop = this.$refs.layerTop as HTMLDivElement
