@@ -311,11 +311,11 @@ export default defineComponent({
       this.isDragging = false
     },
     onMove(event: TouchEvent | MouseEvent) {
-      if (event.cancelable) {
-        event.preventDefault()
-      }
       if (!this.start) {
         return
+      }
+      if (event.cancelable) {
+        event.preventDefault()
       }
       const { clientY } = getEventXY(event)
       const diff = clientY - this.start[1]
@@ -325,6 +325,9 @@ export default defineComponent({
       this.scroll = this.start[0] + diff * (isTouchEvent(event) ? this.touchSensitivity : this.dragSensitivity)
     },
     onEnd(event: TouchEvent | MouseEvent) {
+      if (!this.start) {
+        return
+      }
       if (event.cancelable) {
         event.preventDefault()
       }
