@@ -112,7 +112,6 @@ export default defineComponent({
 
       start: null as [scroll: number, clientY: number] | null,
 
-      isMouseDown: false,
       isDragging: false,
     }
   },
@@ -305,9 +304,6 @@ export default defineComponent({
 
       const { clientY } = getEventXY(event)
       this.start = [this.scroll!, clientY]
-      if (!isTouchEvent(event)) {
-        this.isMouseDown = true
-      }
       this.isDragging = false
     },
     onMove(event: TouchEvent | MouseEvent) {
@@ -333,12 +329,11 @@ export default defineComponent({
       }
       if (this.isDragging) {
         this.correction(this.findIndexFromScroll(this.scroll!))
-      } else if (this.isMouseDown) {
+      } else {
         this.onClick(event)
       }
       this.start = null
       this.isDragging = false
-      this.isMouseDown = false
     },
     onDocumentMouseOut(event: MouseEvent) {
       if (event.relatedTarget === null || (event.relatedTarget as Element)?.nodeName === 'HTML') {
@@ -351,15 +346,12 @@ export default defineComponent({
       }
       this.correction(this.internalIndex) // cancel (rollback)
       this.start = null
-      this.isMouseDown = false
       this.isDragging = false
     },
     onClick(event: TouchEvent | MouseEvent) {
       const $layerTop = this.$refs.layerTop as HTMLDivElement
       const $layerBottom = this.$refs.layerBottom as HTMLDivElement
-      const touchInfo = getEventXY(event)
-      const x = touchInfo.clientX
-      const y = touchInfo.clientY
+      const { clientX: x, clientY: y } = getEventXY(event)
       const topRect = $layerTop.getBoundingClientRect()
       const bottomRect = $layerBottom.getBoundingClientRect()
 
