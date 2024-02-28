@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "@vitejs/plugin-vue": "3.2.0",
-    "@vue/compiler-sfc": "3.4.20",
+    "@vue/compiler-sfc": "3.4.21",
     "@vue/eslint-config-typescript": "11.0.3",
     "eslint": "8.57.0",
     "eslint-config-prettier": "8.10.0",
@@ -42,6 +42,6 @@
     "simple-icons": "7.21.0",
     "typescript": "4.9.5",
     "vite": "3.2.8",
-    "vue": "3.4.20"
+    "vue": "3.4.21"
   }
 }
