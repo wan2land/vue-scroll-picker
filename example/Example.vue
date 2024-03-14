@@ -19,6 +19,10 @@
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSlot.vue">[Source]</a></p>
         <ExampleSlot />
 
+        <h2 id="event"><a href="#event">Event</a></h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleEvent.vue">[Source]</a></p>
+        <ExampleEvent :options="defaultOptions" />
+
         <h2 id="sensitivity"><a href="#sensitivity">Sensitivity</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleSensitivity.vue">[Source]</a></p>
         <ExampleSensitivity :options="defaultOptions" />
@@ -53,6 +57,7 @@ import ExamplePlaceholder from './ExamplePlaceholder.vue'
 import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleSlot from './ExampleSlot.vue'
+import ExampleEvent from './ExampleEvent.vue'
 import ExampleTransition from './ExampleTransition.vue'
 
 
@@ -61,6 +66,7 @@ export default defineComponent({
     ExampleFullBinding,
     ExamplePlaceholder,
     ExampleSlot,
+    ExampleEvent,
     ExampleSensitivity,
     ExampleTransition,
     ExampleDynamicOptions,

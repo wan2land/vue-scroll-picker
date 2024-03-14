@@ -55,6 +55,15 @@ export interface ScrollPickerOption {
 export type ScrollPickerOptionable = string | number | boolean | ScrollPickerOption
 
 export default defineComponent({
+  emits: {
+    'update:modelValue': (value: any) => {},
+    'start': () => {},
+    'move': (value: any) => {},
+    'end': (value: any) => {},
+    'cancel': () => {},
+    'wheel': (value: any) => {},
+    'click': (newValue: any, oldValue: any) => {},
+  },
   props: {
     modelValue: null,
     options: {
@@ -286,6 +295,7 @@ export default defineComponent({
       const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
 
       this.internalIndex = nextInternalIndex
+      this.$emit('wheel', nextInternalValue)
       if (this.internalValue !== nextInternalValue) {
         this.$emit('update:modelValue', this.internalValue = nextInternalValue)
       }
@@ -305,6 +315,7 @@ export default defineComponent({
       const { clientY } = getEventXY(event)
       this.start = [this.scroll!, clientY]
       this.isDragging = false
+      this.$emit('start')
     },
     onMove(event: TouchEvent | MouseEvent) {
       if (!this.start) {
@@ -319,6 +330,10 @@ export default defineComponent({
         this.isDragging = true
       }
       this.scroll = this.start[0] + diff * (isTouchEvent(event) ? this.touchSensitivity : this.dragSensitivity)
+
+      const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
+      const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
+      this.$emit('move', nextInternalValue)
     },
     onEnd(event: TouchEvent | MouseEvent) {
       if (!this.start) {
@@ -334,6 +349,7 @@ export default defineComponent({
       }
       this.start = null
       this.isDragging = false
+      this.$emit('end', this.internalValue)
     },
     onDocumentMouseOut(event: MouseEvent) {
       if (event.relatedTarget === null || (event.relatedTarget as Element)?.nodeName === 'HTML') {
@@ -347,6 +363,7 @@ export default defineComponent({
       this.correction(this.internalIndex) // cancel (rollback)
       this.start = null
       this.isDragging = false
+      this.$emit('cancel')
     },
     onClick(event: TouchEvent | MouseEvent) {
       const $layerTop = this.$refs.layerTop as HTMLDivElement
@@ -356,13 +373,16 @@ export default defineComponent({
       const bottomRect = $layerBottom.getBoundingClientRect()
 
       if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
-        this.correction(this.internalIndex - 1)
+        const [next, prev] = this.correction(this.internalIndex - 1)
+        this.$emit('click', next, prev)
       } else if (bottomRect.left <= x && x <= bottomRect.right && bottomRect.top <= y && y <= bottomRect.bottom) {
-        this.correction(this.internalIndex + 1)
+        const [next, prev] = this.correction(this.internalIndex + 1)
+        this.$emit('click', next, prev)
       }
     },
     correction(index: number) {
       const nextInternalIndex = this.sanitizeInternalIndex(index)
+      const internalValue = this.internalValue
       const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
       this.scroll = this.findScrollByIndex(nextInternalIndex)
 
@@ -381,6 +401,11 @@ export default defineComponent({
           this.$emit('update:modelValue', this.internalValue = nextInternalValue)
         }
       }, 100)
+
+      return [
+        nextInternalValue,
+        internalValue,
+      ]
     },
   },
   render() {
