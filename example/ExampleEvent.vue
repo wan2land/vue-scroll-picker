@@ -37,16 +37,16 @@ function log(event: string, ...args: any[]) {
           @click="currentValue = 'unknown'"
         >(Unknown)</a>
         <a
-          class="button"
           v-for="(option, index) in options"
           :key="index"
+          class="button"
           :class="{active: currentValue == option.value}"
           @click="currentValue = option.value"
         >{{ option.name }}</a>
       </div>
       <VueScrollPicker
-        :options="options"
         v-model="currentValue"
+        :options="options"
         @start="(...args) => log('start', ...args)"
         @cancel="(...args) => log('cancel', ...args)"
         @end="(...args) => log('end', ...args)"

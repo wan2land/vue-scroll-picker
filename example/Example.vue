@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div>
     <div class="hero">
@@ -59,6 +60,7 @@ import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleSlot from './ExampleSlot.vue'
 import ExampleEvent from './ExampleEvent.vue'
 import ExampleTransition from './ExampleTransition.vue'
+import { ScrollPickerOption } from 'vue-scroll-picker'
 
 
 export default defineComponent({
@@ -88,7 +90,7 @@ export default defineComponent({
         { value: 80, name: '80KG' },
         { value: 90, name: '90KG' },
         { value: 100, name: '100KG' },
-      ],
+      ] satisfies ScrollPickerOption[],
     }
   },
 })

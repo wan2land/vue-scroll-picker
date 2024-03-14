@@ -1,7 +1,6 @@
 import { App, Plugin } from 'vue'
 
-import VueScrollPicker from './components/picker'
-
+import VueScrollPicker, { type ScrollPickerOption, type ScrollPickerOptionable } from './components/picker'
 
 export function install(app: App) {
   app.component('VueScrollPicker', VueScrollPicker)
@@ -25,4 +24,9 @@ export interface VueScrollPickerOption {
 
 export {
   VueScrollPicker,
+}
+
+export type {
+  ScrollPickerOption,
+  ScrollPickerOptionable,
 }
