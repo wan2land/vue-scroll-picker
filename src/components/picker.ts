@@ -55,15 +55,6 @@ export interface ScrollPickerOption {
 export type ScrollPickerOptionable = string | number | boolean | ScrollPickerOption
 
 export default defineComponent({
-  emits: {
-    'update:modelValue': (value: any) => {},
-    'start': () => {},
-    'move': (value: any) => {},
-    'end': (value: any) => {},
-    'cancel': () => {},
-    'wheel': (value: any) => {},
-    'click': (newValue: any, oldValue: any) => {},
-  },
   props: {
     modelValue: null,
     options: {
@@ -90,6 +81,20 @@ export default defineComponent({
       type: String,
       default: null,
     },
+  },
+  emits: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    'update:modelValue': (value: any) => true,
+    'start': () => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    'move': (value: any) => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    'end': (value: any) => true,
+    'cancel': () => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    'wheel': (value: any) => true,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    'click': (newValue: any, oldValue: any) => true,
   },
   data() {
     const internalOptions = normalizeOptions(this.options)
