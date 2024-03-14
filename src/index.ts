@@ -16,17 +16,9 @@ const plugin: Plugin = {
 
 export default plugin
 
-// re-define: https://github.com/vitejs/vite/issues/2117
-export interface VueScrollPickerOption {
-  name: string
-  value: any
-}
-
 export {
   VueScrollPicker,
 }
 
-export type {
-  ScrollPickerOption,
-  ScrollPickerOptionable,
-}
+export type VueScrollPickerOption = ScrollPickerOption
+export type VueScrollPickerOptionable = ScrollPickerOptionable

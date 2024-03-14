@@ -48,7 +48,7 @@ export default defineComponent({
         { value: 'twitter', name: 'Twitter', icon: siTwitter.svg },
         { value: 'line', name: 'Line', icon: siLine.svg },
       ],
-      currentValue: null,
+      currentValue: null as any,
     }
   },
 })

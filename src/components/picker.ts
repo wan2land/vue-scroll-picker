@@ -50,6 +50,7 @@ type MouseWheelEvent = MouseEvent & { deltaY: number }
 export interface ScrollPickerOption {
   name: string
   value: any
+  disabled?: boolean
 }
 
 export type ScrollPickerOptionable = string | number | boolean | ScrollPickerOption
@@ -121,8 +122,7 @@ export default defineComponent({
       scrollMin: 0,
       scrollMax: 0,
 
-      transitioning: false,
-      transitionTimer: null as any | null,
+      transitionTimeout: null as ReturnType<typeof setTimeout> | null,
 
       start: null as [scroll: number, clientY: number] | null,
 
@@ -137,7 +137,7 @@ export default defineComponent({
   watch: {
     modelValue(value: any) {
       if ((value === null || value === undefined) && this.hasPlaceholder) {
-        this.correction(-1)
+        this.scrollTo(this.findScrollByIndex(-1))
         return
       }
 
@@ -148,7 +148,7 @@ export default defineComponent({
       }
 
       if (this.internalIndex !== nextInternalIndex) {
-        this.correction(nextInternalIndex)
+        this.scrollTo(this.findScrollByIndex(nextInternalIndex))
       }
     },
     options: {
@@ -297,16 +297,17 @@ export default defineComponent({
       this.scroll = Math.min(Math.max(this.scroll! - deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
 
       const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
-      const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
+      const nextOption = this.internalOptions[nextInternalIndex]
+      const nextInternalValue = nextOption?.value ?? null
 
       this.internalIndex = nextInternalIndex
       this.$emit('wheel', nextInternalValue)
-      if (this.internalValue !== nextInternalValue) {
+      if (this.internalValue !== nextInternalValue && !nextOption?.disabled) {
         this.$emit('update:modelValue', this.internalValue = nextInternalValue)
       }
 
       this.onAfterWheel(() => {
-        this.correction(this.findIndexFromScroll(this.scroll!))
+        this.correction(this.scroll!)
       })
     },
     onAfterWheel: debounce((handler: () => void) => {
@@ -348,7 +349,7 @@ export default defineComponent({
         event.preventDefault()
       }
       if (this.isDragging) {
-        this.correction(this.findIndexFromScroll(this.scroll!))
+        this.correction(this.scroll!)
       } else {
         this.onClick(event)
       }
@@ -365,7 +366,7 @@ export default defineComponent({
       if (event.cancelable) {
         event.preventDefault()
       }
-      this.correction(this.internalIndex) // cancel (rollback)
+      this.scrollTo(this.findScrollByIndex(this.internalIndex))
       this.start = null
       this.isDragging = false
       this.$emit('cancel')
@@ -377,40 +378,80 @@ export default defineComponent({
       const topRect = $layerTop.getBoundingClientRect()
       const bottomRect = $layerBottom.getBoundingClientRect()
 
+      let nextIndex = this.internalIndex
       if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
-        const [next, prev] = this.correction(this.internalIndex - 1)
-        this.$emit('click', next, prev)
+        if (this.internalIndex === (this.hasPlaceholder ? -1 : 0)) {
+          return // top
+        }
+        nextIndex--
+        while (this.internalOptions[nextIndex] && this.internalOptions[nextIndex].disabled) {
+          nextIndex--
+        }
       } else if (bottomRect.left <= x && x <= bottomRect.right && bottomRect.top <= y && y <= bottomRect.bottom) {
-        const [next, prev] = this.correction(this.internalIndex + 1)
-        this.$emit('click', next, prev)
+        if (this.internalIndex === this.internalOptions.length - 1) {
+          return // bottom
+        }
+        nextIndex++
+        while (this.internalOptions[nextIndex] && this.internalOptions[nextIndex].disabled) {
+          nextIndex++
+        }
+      }
+      if (this.internalIndex !== nextIndex && this.internalOptions[nextIndex]) {
+        const value = this.internalValue
+        const nextValue = this.internalOptions[nextIndex].value
+        this.scrollTo(this.findScrollByIndex(nextIndex), () => {
+          this.internalIndex = nextIndex
+          this.emitModalValue(nextValue)
+        })
+        this.$emit('click', nextValue, value)
       }
     },
-    correction(index: number) {
-      const nextInternalIndex = this.sanitizeInternalIndex(index)
-      const internalValue = this.internalValue
-      const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
-      this.scroll = this.findScrollByIndex(nextInternalIndex)
+    correction(scroll: number) {
+      const indexOffset = this.hasPlaceholder || this.options.length === 0 ? 1 : 0
+      const indexes = this.bounds
+        .map((bound, i) => [i - indexOffset, bound + scroll - this.scrollOffsetTop]) // [index, diff]
+        .sort((a, b) => Math.abs(a[1]) - Math.abs(b[1])) // nearest diff
+        .map(([i]) => i) // index
 
-      this.transitioning = true
-      if (this.transitionTimer) {
-        clearTimeout(this.transitionTimer)
-        this.transitionTimer = null
+      console.log(JSON.stringify(indexes))
+
+      let indexCursor = 0
+      while (
+        indexes[indexCursor] != null
+        && this.internalOptions[indexes[indexCursor]]
+        && this.internalOptions[indexes[indexCursor]].disabled
+      ) {
+        console.log('skip', indexes[indexCursor])
+        indexCursor++
       }
-
-      this.transitionTimer = setTimeout(() => {
-        this.transitioning = false
-        this.transitionTimer = null
-
-        this.internalIndex = nextInternalIndex
-        if (this.internalValue !== nextInternalValue) {
-          this.$emit('update:modelValue', this.internalValue = nextInternalValue)
-        }
+      if (
+        indexes[indexCursor] === -1
+        || indexes[indexCursor] != null && this.internalOptions[indexes[indexCursor]]
+      ) {
+        const nextIndex = indexes[indexCursor]
+        const nextValue = this.internalOptions[nextIndex]?.value ?? null
+        this.scrollTo(this.findScrollByIndex(nextIndex), () => {
+          this.internalIndex = nextIndex
+          this.emitModalValue(nextValue)
+        })
+      } else {
+        this.scrollTo(this.findScrollByIndex(this.internalIndex)) // cancel
+      }
+    },
+    scrollTo(scroll: number, onComplete?: () => void) {
+      this.scroll = scroll
+      if (this.transitionTimeout) {
+        clearTimeout(this.transitionTimeout)
+      }
+      this.transitionTimeout = setTimeout(() => {
+        this.transitionTimeout = null
+        onComplete?.()
       }, 100)
-
-      return [
-        nextInternalValue,
-        internalValue,
-      ]
+    },
+    emitModalValue(value: unknown) {
+      if (this.internalValue !== value) {
+        this.$emit('update:modelValue', this.internalValue = value)
+      }
     },
   },
   render() {
@@ -447,6 +488,7 @@ export default defineComponent({
           'vue-scroll-picker-item',
           {
             'vue-scroll-picker-item-selected': this.internalIndex === index,
+            'vue-scroll-picker-item-disabled': option.disabled,
           },
         ],
         key: option.value,
@@ -465,7 +507,7 @@ export default defineComponent({
         class: [
           'vue-scroll-picker-rotator',
           {
-            'vue-scroll-picker-rotator-transition': this.transitioning,
+            'vue-scroll-picker-rotator-transition': this.transitionTimeout,
           },
         ],
         style: typeof this.scroll === 'number' ? { top: `${this.scroll}px` } : {},

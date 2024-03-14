@@ -13,14 +13,17 @@
         @click="currentValue = 'unknown'"
       >(Unknown)</a>
       <a
-        class="button"
         v-for="(option, index) in options"
         :key="index"
-        :class="{active: currentValue == option.value}"
+        class="button"
+        :class="{
+          active: currentValue == option.value,
+          disabled: option.disabled,
+        }"
         @click="currentValue = option.value"
       >{{ option.name }}</a>
     </div>
-    <VueScrollPicker :options="options" v-model="currentValue" placeholder="Select One" />
+    <VueScrollPicker v-model="currentValue" :options="options" placeholder="Select One" />
   </div>
 </template>
 <script lang="ts">
@@ -37,7 +40,7 @@ export default defineComponent({
   },
   data() {
     return {
-      currentValue: null,
+      currentValue: null as unknown,
     }
   },
 })

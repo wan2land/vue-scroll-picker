@@ -16,7 +16,10 @@
         v-for="(option, index) in options"
         :key="index"
         class="button"
-        :class="{active: currentValue == option.value}"
+        :class="{
+          active: currentValue == option.value,
+          disabled: option.disabled,
+        }"
         @click="currentValue = option.value"
       >{{ option.name }}</a>
     </div>
@@ -37,7 +40,7 @@ export default defineComponent({
   },
   data() {
     return {
-      currentValue: null as any,
+      currentValue: null as unknown,
     }
   },
 })

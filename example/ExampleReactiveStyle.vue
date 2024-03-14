@@ -13,21 +13,26 @@
         @click="currentValue = 'unknown'"
       >(Unknown)</a>
       <a
-        class="button"
         v-for="(option, index) in options"
         :key="index"
-        :class="{active: currentValue == option.value}"
+        class="button"
+        :class="{
+          active: currentValue == option.value,
+          disabled: option.disabled,
+        }"
         @click="currentValue = option.value"
       >{{ option.name }}</a>
     </div>
     <div>
       <span>Font Size: {{ fontSize }}px</span>
-      <input type="range" :min="4" :max="128" :step="1" v-model="fontSize" @input="$refs.picker.resize()" />
+      <input v-model="fontSize" type="range" :min="4" :max="128" :step="1" @input="($refs.picker as any).resize()" />
     </div>
-    <div :style="{
-      'font-size': `${fontSize}px`,
-    }">
-      <VueScrollPicker :options="options" v-model="currentValue" ref="picker" />
+    <div
+      :style="{
+        'font-size': `${fontSize}px`,
+      }"
+    >
+      <VueScrollPicker ref="picker" v-model="currentValue" :options="options" />
     </div>
   </div>
 </template>
@@ -46,7 +51,7 @@ export default defineComponent({
   data() {
     return {
       fontSize: 16,
-      currentValue: null,
+      currentValue: null as unknown,
     }
   },
 })

@@ -60,7 +60,7 @@ import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleSlot from './ExampleSlot.vue'
 import ExampleEvent from './ExampleEvent.vue'
 import ExampleTransition from './ExampleTransition.vue'
-import { ScrollPickerOption } from 'vue-scroll-picker'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 
 
 export default defineComponent({
@@ -80,17 +80,17 @@ export default defineComponent({
       iconGithub: siGithub.svg,
       defaultOptions: [
         { value: 0, name: '0KG' },
-        { value: 10, name: '10KG' },
+        { value: 10, name: '10KG', disabled: true },
         { value: 20, name: '20KG' },
         { value: 30, name: '30KG' },
         { value: 40, name: '40KG' },
-        { value: 50, name: '50KG' },
-        { value: 60, name: '60KG' },
+        { value: 50, name: '50KG', disabled: true },
+        { value: 60, name: '60KG', disabled: true },
         { value: 70, name: '70KG' },
         { value: 80, name: '80KG' },
-        { value: 90, name: '90KG' },
-        { value: 100, name: '100KG' },
-      ] satisfies ScrollPickerOption[],
+        { value: 90, name: '90KG', disabled: true },
+        { value: 100, name: '100KG', disabled: true },
+      ] satisfies VueScrollPickerOption[],
     }
   },
 })

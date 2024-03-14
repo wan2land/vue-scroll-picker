@@ -151,6 +151,18 @@ h6 a:hover::after {
   color: #fff;
 }
 
+.button.disabled {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #aaaaaa;
+  color: #aaaaaa;
+}
+
+.button.disabled.active {
+  background-color: #aaaaaa;
+  color: #fff;
+}
+
 .button-group {
   margin-left: -0.25rem;
   margin-right: -0.25rem;

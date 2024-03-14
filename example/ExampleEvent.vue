@@ -40,7 +40,10 @@ function log(event: string, ...args: unknown[]) {
           v-for="(option, index) in options"
           :key="index"
           class="button"
-          :class="{active: currentValue == option.value}"
+          :class="{
+            active: currentValue == option.value,
+            disabled: option.disabled,
+          }"
           @click="currentValue = option.value"
         >{{ option.name }}</a>
       </div>
