@@ -76,9 +76,15 @@ export default {
 
 ### Events
 
-| Name              | Type  |
-| ----------------- | :---- |
-| update:modelValue | `any` |
+| Name              | Type                                  |
+| ----------------- | :------------------------------------ |
+| update:modelValue | `(value: any) => void`                |
+| start             | `() => void`                          |
+| move              | `(value: any) => void`                |
+| end               | `(value: any) => void`                |
+| cancel            | `() => void`                          |
+| wheel             | `(value: any) => void`                |
+| click             | `(value: any, oldValue: any) => void` |
 
 ### Slots
 
