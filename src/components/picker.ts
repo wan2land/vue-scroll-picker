@@ -112,9 +112,9 @@ export default defineComponent({
       internalIndex,
       internalValue,
 
-      pivots: [] as number[],
-      pivotsMin: 0,
-      pivotsMax: 0,
+      bounds: [] as number[],
+      boundMin: 0,
+      boundMax: 0,
 
       scroll: null as number | null,
       scrollOffsetTop: 0,
@@ -162,7 +162,7 @@ export default defineComponent({
         const internalValue = internalOptions[internalIndex]?.value ?? null
 
         this.$nextTick(() => {
-          this.calculatePivots()
+          this.calculateBounds()
           this.scroll = this.findScrollByIndex(internalIndex)
           this.internalIndex = internalIndex
           if (this.internalValue !== internalValue) {
@@ -177,7 +177,7 @@ export default defineComponent({
     this.refItems = []
   },
   mounted() {
-    this.calculatePivots()
+    this.calculateBounds()
     this.scroll = this.findScrollByIndex(this.internalIndex)
     if (this.internalValue !== this.modelValue) {
       this.$emit('update:modelValue', this.internalValue)
@@ -230,60 +230,60 @@ export default defineComponent({
     },
     resize() {
       this.$nextTick(() => {
-        this.calculatePivots()
+        this.calculateBounds()
         this.scroll = this.findScrollByIndex(this.internalIndex)
       })
     },
-    calculatePivots() {
+    calculateBounds() {
       const $rotator = this.$refs.rotator as HTMLDivElement
       const $layerSelection = this.$refs.layerSelection as HTMLDivElement
 
       const rotatorTop = $rotator.getBoundingClientRect().top
-      const pivots = this.pivots = this.refItems.map((item) => getBoundingClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
-      const pivotsMin = this.pivotsMin = Math.min(...pivots)
-      const pivotsMax = this.pivotsMax = Math.max(...pivots)
+      const bounds = this.bounds = this.refItems.map((item) => getBoundingClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
+      const boundMin = this.boundMin = Math.min(...bounds)
+      const boundMax = this.boundMax = Math.max(...bounds)
 
       const scrollOffsetTop = this.scrollOffsetTop = $layerSelection.offsetTop + $layerSelection.offsetHeight / 2
 
-      this.scrollMin = scrollOffsetTop - pivotsMin
-      this.scrollMax = scrollOffsetTop - pivotsMax
+      this.scrollMin = scrollOffsetTop - boundMin
+      this.scrollMax = scrollOffsetTop - boundMax
     },
     sanitizeInternalIndex(index: number): number {
       return Math.min(Math.max(index, this.hasPlaceholder ? -1 : 0), this.internalOptions.length - 1)
     },
     findIndexFromScroll(scroll: number): number {
       let prevDiff = null as number | null
-      let pivotIndex = 0
-      this.pivots.forEach((pivot, i) => {
-        const diff = pivot + scroll - this.scrollOffsetTop
+      let boundIndex = 0
+      this.bounds.forEach((bound, i) => {
+        const diff = bound + scroll - this.scrollOffsetTop
         if (prevDiff === null || Math.abs(prevDiff) > Math.abs(diff)) {
-          pivotIndex = i
+          boundIndex = i
           prevDiff = diff
         }
       })
       if (this.hasPlaceholder || this.options.length === 0) {
-        return pivotIndex - 1
+        return boundIndex - 1
       }
-      return pivotIndex
+      return boundIndex
     },
     findScrollByIndex(index: number): number {
-      let pivotIndex = index
+      let boundIndex = index
       if (this.hasPlaceholder || this.options.length === 0) {
-        pivotIndex++
+        boundIndex++
       }
-      if (index > -1 && pivotIndex in this.pivots) {
-        return this.scrollOffsetTop - this.pivots[pivotIndex]
+      if (index > -1 && boundIndex in this.bounds) {
+        return this.scrollOffsetTop - this.bounds[boundIndex]
       }
-      if (index >= this.pivots.length) {
-        return this.scrollOffsetTop - this.pivotsMax
+      if (index >= this.bounds.length) {
+        return this.scrollOffsetTop - this.boundMax
       }
-      return this.scrollOffsetTop - this.pivotsMin
+      return this.scrollOffsetTop - this.boundMin
 
     },
     onWheel(event: MouseWheelEvent) {
       if (this.scroll! >= this.scrollMin && event.deltaY < 0) { return }
       if (this.scroll! <= this.scrollMax && event.deltaY > 0) { return }
-      if (this.pivots.length === 1) { return }
+      if (this.bounds.length === 1) { return }
 
       event.preventDefault()
 
