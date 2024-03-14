@@ -9,14 +9,14 @@ defineProps({
   },
 })
 
-const currentValue = ref<any>(null)
+const currentValue = ref<unknown>(null)
 
-const logs = ref<string[]>([])
+const logMessages = ref<string[]>([])
 
-function log(event: string, ...args: any[]) {
-  logs.value.unshift(`@${event}(${args.map(arg => JSON.stringify(arg)).join(', ')})`)
-  if (logs.value.length > 100) {
-    logs.value.pop()
+function log(event: string, ...args: unknown[]) {
+  logMessages.value.unshift(`@${event}(${args.map(arg => JSON.stringify(arg)).join(', ')})`)
+  if (logMessages.value.length > 100) {
+    logMessages.value.pop()
   }
 }
 
@@ -58,7 +58,7 @@ function log(event: string, ...args: any[]) {
     </div>
     <div class="log-container">
       <div class="log">
-        <div v-for="(log, index) in logs" :key="index">{{ log }}</div>
+        <div v-for="(logMessage, index) in logMessages" :key="index">{{ logMessage }}</div>
       </div>
     </div>
   </div>
