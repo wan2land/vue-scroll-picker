@@ -69,7 +69,7 @@ export default {
 | modelValue        | `any`                                             | `null`       |                                                                                           |
 | placeholder       | `string`                                          | `null`       |                                                                                           |
 | empty             | `string`                                          | `'No Items'` |                                                                                           |
-| options           | `string[]`<br /> `{ name: string, value: any }[]` | `[]`         | `["10KG", "20KG", "30KG"]`<br /> `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
+| options           | `string[]`<br /> `{ name: string, value: any, disabled: boolean }[]` | `[]`         | `["10KG", "20KG", "30KG"]`<br /> `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
 | dragSensitivity   | `number`                                          | `1.7`        |                                                                                           |
 | touchSensitivity  | `number`                                          | `1.7`        |                                                                                           |
 | scrollSensitivity | `number`                                          | `1`          |                                                                                           |
