@@ -148,6 +148,7 @@ export default defineComponent({
       }
 
       if (this.internalIndex !== nextInternalIndex) {
+        this.internalIndex = nextInternalIndex
         this.scrollTo(this.findScrollByIndex(nextInternalIndex))
       }
     },
