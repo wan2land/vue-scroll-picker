@@ -9,11 +9,15 @@
     <div class="section">
       <div class="container">
         <h2 id="full_binding"><a href="#full_binding">Full Binding</a></h2>
-        <p>Vue Scroll Picker provides full binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
+        <p>Vue Scroll Picker provides full data binding. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDynamicOptions.vue">[Source]</a></p>
         <ExampleFullBinding :options="defaultOptions" />
 
+        <h2 id="disabled_items"><a href="#disabled_items">Disabled Items</a></h2>
+        <p>You can add a disabled property to the select options. A disabled value cannot be selected. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDisabledItems.vue">[Source]</a></p>
+        <ExampleDisabledItems />
+
         <h2 id="placeholder"><a href="#placeholder">Placeholder</a></h2>
-        <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as a value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
+        <p>Vue Scroll Picker provides a placeholder option. When setting a placeholder, you can use null as the value. <a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue">[Source]</a></p>
         <ExamplePlaceholder :options="defaultOptions" />
 
         <h2 id="slot_support"><a href="#slot_support">Slot Support</a></h2>
@@ -53,6 +57,7 @@ import { siGithub } from 'simple-icons/icons'
 
 import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
 import ExampleFullBinding from './ExampleFullBinding.vue'
+import ExampleDisabledItems from './ExampleDisabledItems.vue'
 import ExampleMultiple from './ExampleMultiple.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
 import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
@@ -66,6 +71,7 @@ import { VueScrollPickerOption } from 'vue-scroll-picker'
 export default defineComponent({
   components: {
     ExampleFullBinding,
+    ExampleDisabledItems,
     ExamplePlaceholder,
     ExampleSlot,
     ExampleEvent,
@@ -80,16 +86,16 @@ export default defineComponent({
       iconGithub: siGithub.svg,
       defaultOptions: [
         { value: 0, name: '0KG' },
-        { value: 10, name: '10KG', disabled: true },
+        { value: 10, name: '10KG' },
         { value: 20, name: '20KG' },
         { value: 30, name: '30KG' },
         { value: 40, name: '40KG' },
-        { value: 50, name: '50KG', disabled: true },
-        { value: 60, name: '60KG', disabled: true },
+        { value: 50, name: '50KG' },
+        { value: 60, name: '60KG' },
         { value: 70, name: '70KG' },
         { value: 80, name: '80KG' },
-        { value: 90, name: '90KG', disabled: true },
-        { value: 100, name: '100KG', disabled: true },
+        { value: 90, name: '90KG' },
+        { value: 100, name: '100KG' },
       ] satisfies VueScrollPickerOption[],
     }
   },
