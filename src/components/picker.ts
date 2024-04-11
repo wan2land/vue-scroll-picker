@@ -414,15 +414,12 @@ export default defineComponent({
         .sort((a, b) => Math.abs(a[1]) - Math.abs(b[1])) // nearest diff
         .map(([i]) => i) // index
 
-      console.log(JSON.stringify(indexes))
-
       let indexCursor = 0
       while (
         indexes[indexCursor] != null
         && this.internalOptions[indexes[indexCursor]]
         && this.internalOptions[indexes[indexCursor]].disabled
       ) {
-        console.log('skip', indexes[indexCursor])
         indexCursor++
       }
       if (
