@@ -44,6 +44,10 @@
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleReactiveStyle.vue">[Source]</a></p>
         <ExampleReactiveStyle :options="defaultOptions" />
 
+        <h2 id="dialog"><a href="#dialog">Dialog</a></h2>
+        <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleDialog.vue">[Source]</a></p>
+        <ExampleDialog :options="defaultOptions" />
+
         <h2 id="multiple"><a href="#multiple">Multiple</a></h2>
         <p><a href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExampleMultiple.vue">[Source]</a></p>
         <ExampleMultiple />
@@ -52,25 +56,27 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
 import { siGithub } from 'simple-icons/icons'
+import { defineComponent } from 'vue'
 
-import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
-import ExampleFullBinding from './ExampleFullBinding.vue'
+import { VueScrollPickerOption } from 'vue-scroll-picker'
 import ExampleDisabledItems from './ExampleDisabledItems.vue'
+import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
+import ExampleEvent from './ExampleEvent.vue'
+import ExampleFullBinding from './ExampleFullBinding.vue'
 import ExampleMultiple from './ExampleMultiple.vue'
 import ExamplePlaceholder from './ExamplePlaceholder.vue'
+import ExampleDialog from './ExampleDialog.vue'
 import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
 import ExampleSensitivity from './ExampleSensitivity.vue'
 import ExampleSlot from './ExampleSlot.vue'
-import ExampleEvent from './ExampleEvent.vue'
 import ExampleTransition from './ExampleTransition.vue'
-import { VueScrollPickerOption } from 'vue-scroll-picker'
 
 
 export default defineComponent({
   components: {
     ExampleFullBinding,
+    ExampleDialog,
     ExampleDisabledItems,
     ExamplePlaceholder,
     ExampleSlot,

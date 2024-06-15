@@ -107,6 +107,7 @@ export default defineComponent({
     const internalValue = internalOptions[internalIndex]?.value ?? null
 
     return {
+      resizeObserver: null as ResizeObserver | null,
       refItems: [] as HTMLDivElement[],
 
       internalOptions,
@@ -204,6 +205,11 @@ export default defineComponent({
     document.addEventListener('mousemove', this.onMove)
     document.addEventListener('mouseup', this.onEnd)
     document.addEventListener('mouseout', this.onDocumentMouseOut)
+
+    if (typeof window.ResizeObserver !== 'undefined') {
+      const resizeObserver = this.resizeObserver = new window.ResizeObserver(() => this.resize())
+      resizeObserver.observe($el)
+    }
   },
   beforeUnmount() {
     const $el = this.$el as HTMLDivElement
@@ -224,6 +230,8 @@ export default defineComponent({
     document.removeEventListener('mousemove', this.onMove)
     document.removeEventListener('mouseup', this.onEnd)
     document.removeEventListener('mouseout', this.onDocumentMouseOut)
+
+    this.resizeObserver?.disconnect()
   },
   methods: {
     setRefItem(el: HTMLDivElement) {

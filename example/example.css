@@ -144,6 +144,10 @@ h6 a:hover::after {
   padding: 0.25rem 0.5rem;
   border: 1px solid #007bff;
   color: #007bff;
+  background-color: transparent;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
 }
 
 .button.active {
