@@ -1,7 +1,12 @@
 <template>
   <div>
-    <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
-    <button type="button" class="button" @click="handleClick">Open Dialog</button>
+    <p>
+      currentValue =
+      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+    </p>
+    <button type="button" class="button" @click="handleClick">
+      Open Dialog
+    </button>
     <dialog>
       <VueScrollPicker v-model="currentValue" :options="options" />
     </dialog>
@@ -10,7 +15,6 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VueScrollPickerOption } from 'vue-scroll-picker'
-
 
 export default defineComponent({
   props: {
@@ -64,5 +68,4 @@ dialog:not([open]),
 dialog:not([open])::backdrop {
   opacity: 0;
 }
-
 </style>

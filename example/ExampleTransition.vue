@@ -1,26 +1,26 @@
-<style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-</style>
 <template>
   <div>
-    <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
+    <p>
+      currentValue =
+      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+    </p>
     <div class="button-group">
-      <a class="button" @click="isVisible = !isVisible">{{ isVisible ? 'Hide' : 'Show' }}</a>
+      <a class="button" @click="isVisible = !isVisible">{{
+        isVisible ? 'Hide' : 'Show'
+      }}</a>
     </div>
     <transition name="fade">
-      <VueScrollPicker :options="options" v-model="currentValue" v-if="isVisible" />
+      <VueScrollPicker
+        v-if="isVisible"
+        v-model="currentValue"
+        :options="options"
+      />
     </transition>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VueScrollPickerOption } from 'vue-scroll-picker'
-
 
 export default defineComponent({
   props: {
@@ -37,3 +37,13 @@ export default defineComponent({
   },
 })
 </script>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

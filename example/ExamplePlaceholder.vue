@@ -1,17 +1,22 @@
 <template>
   <div>
-    <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
+    <p>
+      currentValue =
+      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+    </p>
     <div class="button-group">
       <a
         class="button"
-        :class="{active: currentValue === null}"
+        :class="{ active: currentValue === null }"
         @click="currentValue = null"
-      >(null)</a>
+        >(null)</a
+      >
       <a
         class="button"
-        :class="{active: currentValue === 'unknown'}"
+        :class="{ active: currentValue === 'unknown' }"
         @click="currentValue = 'unknown'"
-      >(Unknown)</a>
+        >(Unknown)</a
+      >
       <a
         v-for="(option, index) in options"
         :key="index"
@@ -21,15 +26,19 @@
           disabled: option.disabled,
         }"
         @click="currentValue = option.value"
-      >{{ option.name }}</a>
+        >{{ option.name }}</a
+      >
     </div>
-    <VueScrollPicker v-model="currentValue" :options="options" placeholder="Select One" />
+    <VueScrollPicker
+      v-model="currentValue"
+      :options="options"
+      placeholder="Select One"
+    />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VueScrollPickerOption } from 'vue-scroll-picker'
-
 
 export default defineComponent({
   props: {

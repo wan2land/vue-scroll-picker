@@ -1,6 +1,9 @@
 <template>
   <div>
-    <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
+    <p>
+      currentValue =
+      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+    </p>
     <div class="button-group">
       <a class="button" @click="pushItem">Push Random Item</a>
       <a class="button" @click="popItem">Pop Item</a>
@@ -8,12 +11,11 @@
       <a class="button" @click="shiftItem">Shift Item</a>
       <a class="button" @click="replaceItems">Replace 10 Items</a>
     </div>
-    <VueScrollPicker :options="options" v-model="currentValue" />
+    <VueScrollPicker v-model="currentValue" :options="options" />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-
 
 export default defineComponent({
   data() {

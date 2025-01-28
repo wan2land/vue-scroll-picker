@@ -1,30 +1,33 @@
 <template>
   <div>
-    <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
+    <p>
+      currentValue =
+      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+    </p>
     <div class="button-group">
       <a
         class="button"
-        :class="{active: currentValue === null}"
+        :class="{ active: currentValue === null }"
         @click="currentValue = null"
-      >(null)</a>
+        >(null)</a
+      >
       <a
         class="button"
-        :class="{active: currentValue === 'unknown'}"
+        :class="{ active: currentValue === 'unknown' }"
         @click="currentValue = 'unknown'"
-      >(Unknown)</a>
+        >(Unknown)</a
+      >
       <a
         v-for="(option, index) in options"
         :key="index"
         class="button"
-        :class="{active: currentValue == option.value}"
+        :class="{ active: currentValue == option.value }"
         @click="currentValue = option.value"
         v-html="option.name"
       ></a>
     </div>
     <VueScrollPicker v-model="currentValue" :options="options">
-      <template #placeholder>
-        Select One 🥲
-      </template>
+      <template #placeholder> Select One 🥲 </template>
       <template #default="{ option }">
         <div class="custom-option">
           <div class="custom-option-icon" v-html="option.icon" />
@@ -35,7 +38,13 @@
   </div>
 </template>
 <script lang="ts">
-import { siInstagram, siFacebook, siYoutube, siTwitter, siLine } from 'simple-icons/icons'
+import {
+  siInstagram,
+  siFacebook,
+  siYoutube,
+  siTwitter,
+  siLine,
+} from 'simple-icons/icons'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -48,7 +57,7 @@ export default defineComponent({
         { value: 'twitter', name: 'Twitter', icon: siTwitter.svg },
         { value: 'line', name: 'Line', icon: siLine.svg },
       ],
-      currentValue: null as any,
+      currentValue: null as string | null,
     }
   },
 })
@@ -63,7 +72,7 @@ export default defineComponent({
 .custom-option-icon {
   width: 20px;
   height: 20px;
-  margin-right:6px;
+  margin-right: 6px;
   fill: currentColor;
 }
 </style>

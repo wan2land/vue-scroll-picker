@@ -1,17 +1,19 @@
 <template>
   <div>
-    <p>Date = <strong>{{ currentYear }}-{{ currentMonth }}-{{ currentDay }}</strong></p>
+    <p>
+      Date =
+      <strong>{{ currentYear }}-{{ currentMonth }}-{{ currentDay }}</strong>
+    </p>
     <div class="picker-group">
-      <VueScrollPicker :options="years" v-model="currentYear" />
-      <VueScrollPicker :options="months" v-model="currentMonth" />
-      <VueScrollPicker :options="days" v-model="currentDay" />
+      <VueScrollPicker v-model="currentYear" :options="years" />
+      <VueScrollPicker v-model="currentMonth" :options="months" />
+      <VueScrollPicker v-model="currentDay" :options="days" />
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { VueScrollPickerOption } from 'vue-scroll-picker'
-
 
 export default defineComponent({
   props: {
@@ -31,7 +33,10 @@ export default defineComponent({
     years() {
       const currYear = new Date().getFullYear()
       const lastYear = 1980
-      return Array.from({ length: currYear - lastYear + 1 }, (_, index) => lastYear + index).reverse()
+      return Array.from(
+        { length: currYear - lastYear + 1 },
+        (_, index) => lastYear + index,
+      ).reverse()
     },
     months() {
       return Array.from({ length: 12 }, (_, index) => index + 1)

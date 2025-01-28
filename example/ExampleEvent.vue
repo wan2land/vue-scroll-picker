@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { PropType, ref } from 'vue';
-import { VueScrollPicker, VueScrollPickerOption } from 'vue-scroll-picker';
+import { PropType, ref } from 'vue'
+import { VueScrollPicker, VueScrollPickerOption } from 'vue-scroll-picker'
 
 defineProps({
   options: {
@@ -14,28 +14,34 @@ const currentValue = ref<unknown>(null)
 const logMessages = ref<string[]>([])
 
 function log(event: string, ...args: unknown[]) {
-  logMessages.value.unshift(`@${event}(${args.map(arg => JSON.stringify(arg)).join(', ')})`)
+  logMessages.value.unshift(
+    `@${event}(${args.map((arg) => JSON.stringify(arg)).join(', ')})`,
+  )
   if (logMessages.value.length > 100) {
     logMessages.value.pop()
   }
 }
-
 </script>
 <template>
   <div class="container">
     <div class="example">
-      <p>currentValue = <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong></p>
+      <p>
+        currentValue =
+        <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
+      </p>
       <div class="button-group">
         <a
           class="button"
-          :class="{active: currentValue === null}"
+          :class="{ active: currentValue === null }"
           @click="currentValue = null"
-        >(null)</a>
+          >(null)</a
+        >
         <a
           class="button"
-          :class="{active: currentValue === 'unknown'}"
+          :class="{ active: currentValue === 'unknown' }"
           @click="currentValue = 'unknown'"
-        >(Unknown)</a>
+          >(Unknown)</a
+        >
         <a
           v-for="(option, index) in options"
           :key="index"
@@ -45,7 +51,8 @@ function log(event: string, ...args: unknown[]) {
             disabled: option.disabled,
           }"
           @click="currentValue = option.value"
-        >{{ option.name }}</a>
+          >{{ option.name }}</a
+        >
       </div>
       <VueScrollPicker
         v-model="currentValue"
@@ -61,7 +68,9 @@ function log(event: string, ...args: unknown[]) {
     </div>
     <div class="log-container">
       <div class="log">
-        <div v-for="(logMessage, index) in logMessages" :key="index">{{ logMessage }}</div>
+        <div v-for="(logMessage, index) in logMessages" :key="index">
+          {{ logMessage }}
+        </div>
       </div>
     </div>
   </div>
@@ -95,9 +104,8 @@ function log(event: string, ...args: unknown[]) {
   .container {
     flex-direction: row;
   }
-  .log-container{
+  .log-container {
     height: auto;
   }
 }
-
 </style>

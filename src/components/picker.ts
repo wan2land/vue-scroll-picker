@@ -1,17 +1,20 @@
 import { defineComponent, PropType, h, renderSlot, VNode } from 'vue'
 
-
-function debounce<TFunc extends Function>(handle: TFunc, delay = 83): TFunc { // eslint-disable-line @typescript-eslint/ban-types
-  let timeout = null as any
-  return function (this: any) {
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+function debounce<TFunc extends Function>(handle: TFunc, delay = 83): TFunc {
+  let timeout = null as ReturnType<typeof setTimeout> | null
+  return function (this: unknown) {
     if (timeout) {
       clearTimeout(timeout)
       timeout = null
     }
-    const self = this // eslint-disable-line no-invalid-this,@typescript-eslint/no-this-alias
+    const self = this // eslint-disable-line @typescript-eslint/no-this-alias
     const args = arguments // eslint-disable-line prefer-rest-params
-    timeout = setTimeout(() => handle.apply(self, args), delay)
-  } as any as TFunc
+    timeout = setTimeout(
+      () => handle.apply(self, args as unknown as unknown[]),
+      delay,
+    )
+  } as unknown as TFunc
 }
 
 function getBoundingClientCenterY(elem: HTMLElement) {
@@ -19,7 +22,9 @@ function getBoundingClientCenterY(elem: HTMLElement) {
   return (top + bottom) / 2
 }
 
-function normalizeOptions(options: ScrollPickerOptionable[]): ScrollPickerOption[] {
+function normalizeOptions(
+  options: ScrollPickerOptionable[],
+): ScrollPickerOption[] {
   return options.map((option) => {
     switch (typeof option) {
       case 'string': {
@@ -34,11 +39,15 @@ function normalizeOptions(options: ScrollPickerOptionable[]): ScrollPickerOption
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isTouchEvent(event: any): event is TouchEvent {
   return event.changedTouches || event.touches
 }
 
-function getEventXY(event: TouchEvent | MouseEvent): { clientX: number, clientY: number } {
+function getEventXY(event: TouchEvent | MouseEvent): {
+  clientX: number
+  clientY: number
+} {
   if (isTouchEvent(event)) {
     return event.changedTouches[0] || event.touches[0]
   }
@@ -49,11 +58,15 @@ type MouseWheelEvent = MouseEvent & { deltaY: number }
 
 export interface ScrollPickerOption {
   name: string
-  value: any
+  value: any // eslint-disable-line @typescript-eslint/no-explicit-any
   disabled?: boolean
 }
 
-export type ScrollPickerOptionable = string | number | boolean | ScrollPickerOption
+export type ScrollPickerOptionable =
+  | string
+  | number
+  | boolean
+  | ScrollPickerOption
 
 export default defineComponent({
   props: {
@@ -86,22 +99,29 @@ export default defineComponent({
   emits: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
     'update:modelValue': (value: any) => true,
-    'start': () => true,
+    start: () => true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
-    'move': (value: any) => true,
+    move: (value: any) => true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
-    'end': (value: any) => true,
-    'cancel': () => true,
+    end: (value: any) => true,
+    cancel: () => true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
-    'wheel': (value: any) => true,
+    wheel: (value: any) => true,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
-    'click': (newValue: any, oldValue: any) => true,
+    click: (newValue: any, oldValue: any) => true,
   },
   data() {
     const internalOptions = normalizeOptions(this.options)
 
-    let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
-    if (internalIndex === -1 && !this.placeholder && !this.$slots.placeholder && this.options.length > 0) {
+    let internalIndex = internalOptions.findIndex(
+      (option) => option.value == this.modelValue,
+    )
+    if (
+      internalIndex === -1 &&
+      !this.placeholder &&
+      !this.$slots.placeholder &&
+      this.options.length > 0
+    ) {
       internalIndex = 0
     }
     const internalValue = internalOptions[internalIndex]?.value ?? null
@@ -136,13 +156,16 @@ export default defineComponent({
     },
   },
   watch: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modelValue(value: any) {
       if ((value === null || value === undefined) && this.hasPlaceholder) {
         this.scrollTo(this.findScrollByIndex(-1))
         return
       }
 
-      const nextInternalIndex = this.internalOptions.findIndex((option) => option.value == value)
+      const nextInternalIndex = this.internalOptions.findIndex(
+        (option) => option.value == value,
+      )
       if (nextInternalIndex === -1) {
         this.$emit('update:modelValue', this.internalValue)
         return
@@ -155,10 +178,17 @@ export default defineComponent({
     },
     options: {
       handler(options: ScrollPickerOptionable[]) {
-        const internalOptions = this.internalOptions = normalizeOptions(options)
+        const internalOptions = (this.internalOptions =
+          normalizeOptions(options))
 
-        let internalIndex = internalOptions.findIndex(option => option.value == this.modelValue)
-        if (internalIndex === -1 && !this.hasPlaceholder && this.options.length > 0) {
+        let internalIndex = internalOptions.findIndex(
+          (option) => option.value == this.modelValue,
+        )
+        if (
+          internalIndex === -1 &&
+          !this.hasPlaceholder &&
+          this.options.length > 0
+        ) {
           internalIndex = 0
         }
         const internalValue = internalOptions[internalIndex]?.value ?? null
@@ -168,7 +198,10 @@ export default defineComponent({
           this.scroll = this.findScrollByIndex(internalIndex)
           this.internalIndex = internalIndex
           if (this.internalValue !== internalValue) {
-            this.$emit('update:modelValue', this.internalValue = internalValue)
+            this.$emit(
+              'update:modelValue',
+              (this.internalValue = internalValue),
+            )
           }
         })
       },
@@ -196,10 +229,16 @@ export default defineComponent({
       $el.addEventListener('wheel', this.onWheel)
     } else if ('onmousewheel' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/mousewheel_event
-      ($el as HTMLDivElement).addEventListener('mousewheel', this.onWheel as any)
+      ;($el as HTMLDivElement).addEventListener(
+        'mousewheel',
+        this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      )
     } else if ('onDOMMouseScroll' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/DOMMouseScroll_event
-      ($el as HTMLDivElement).addEventListener('DOMMouseScroll', this.onWheel as any)
+      ;($el as HTMLDivElement).addEventListener(
+        'DOMMouseScroll',
+        this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      )
     }
     $el.addEventListener('mousedown', this.onStart)
     document.addEventListener('mousemove', this.onMove)
@@ -207,7 +246,9 @@ export default defineComponent({
     document.addEventListener('mouseout', this.onDocumentMouseOut)
 
     if (typeof window.ResizeObserver !== 'undefined') {
-      const resizeObserver = this.resizeObserver = new window.ResizeObserver(() => this.resize())
+      const resizeObserver = (this.resizeObserver = new window.ResizeObserver(
+        () => this.resize(),
+      ))
       resizeObserver.observe($el)
     }
   },
@@ -222,9 +263,15 @@ export default defineComponent({
     if ('onwheel' in $el) {
       $el.removeEventListener('wheel', this.onWheel)
     } else if ('onmousewheel' in $el) {
-      ($el as HTMLDivElement).removeEventListener('mousewheel', this.onWheel as any)
+      ;($el as HTMLDivElement).removeEventListener(
+        'mousewheel',
+        this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      )
     } else if ('onDOMMouseScroll' in $el) {
-      ($el as HTMLDivElement).removeEventListener('DOMMouseScroll', this.onWheel as any)
+      ;($el as HTMLDivElement).removeEventListener(
+        'DOMMouseScroll',
+        this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      )
     }
     $el.removeEventListener('mousedown', this.onStart)
     document.removeEventListener('mousemove', this.onMove)
@@ -248,17 +295,23 @@ export default defineComponent({
       const $layerSelection = this.$refs.layerSelection as HTMLDivElement
 
       const rotatorTop = $rotator.getBoundingClientRect().top
-      const bounds = this.bounds = this.refItems.map((item) => getBoundingClientCenterY(item) - rotatorTop).sort((a, b) => a - b)
-      const boundMin = this.boundMin = Math.min(...bounds)
-      const boundMax = this.boundMax = Math.max(...bounds)
+      const bounds = (this.bounds = this.refItems
+        .map((item) => getBoundingClientCenterY(item) - rotatorTop)
+        .sort((a, b) => a - b))
+      const boundMin = (this.boundMin = Math.min(...bounds))
+      const boundMax = (this.boundMax = Math.max(...bounds))
 
-      const scrollOffsetTop = this.scrollOffsetTop = $layerSelection.offsetTop + $layerSelection.offsetHeight / 2
+      const scrollOffsetTop = (this.scrollOffsetTop =
+        $layerSelection.offsetTop + $layerSelection.offsetHeight / 2)
 
       this.scrollMin = scrollOffsetTop - boundMin
       this.scrollMax = scrollOffsetTop - boundMax
     },
     sanitizeInternalIndex(index: number): number {
-      return Math.min(Math.max(index, this.hasPlaceholder ? -1 : 0), this.internalOptions.length - 1)
+      return Math.min(
+        Math.max(index, this.hasPlaceholder ? -1 : 0),
+        this.internalOptions.length - 1,
+      )
     },
     findIndexFromScroll(scroll: number): number {
       let prevDiff = null as number | null
@@ -287,32 +340,53 @@ export default defineComponent({
         return this.scrollOffsetTop - this.boundMax
       }
       return this.scrollOffsetTop - this.boundMin
-
     },
     onWheel(event: MouseWheelEvent) {
-      if (this.scroll! >= this.scrollMin && event.deltaY < 0) { return }
-      if (this.scroll! <= this.scrollMax && event.deltaY > 0) { return }
-      if (this.bounds.length === 1) { return }
+      if (this.scroll! >= this.scrollMin && event.deltaY < 0) {
+        return
+      }
+      if (this.scroll! <= this.scrollMax && event.deltaY > 0) {
+        return
+      }
+      if (this.bounds.length === 1) {
+        return
+      }
 
       event.preventDefault()
 
-      const nextDirInternalIndex = this.sanitizeInternalIndex(this.internalIndex + (event.deltaY > 0 ? 1 : -1))
-      const deltaMax = event.deltaY > 0
-        ? this.findScrollByIndex(nextDirInternalIndex - 1) - this.findScrollByIndex(nextDirInternalIndex)
-        : this.findScrollByIndex(nextDirInternalIndex) - this.findScrollByIndex(nextDirInternalIndex + 1)
+      const nextDirInternalIndex = this.sanitizeInternalIndex(
+        this.internalIndex + (event.deltaY > 0 ? 1 : -1),
+      )
+      const deltaMax =
+        event.deltaY > 0
+          ? this.findScrollByIndex(nextDirInternalIndex - 1) -
+            this.findScrollByIndex(nextDirInternalIndex)
+          : this.findScrollByIndex(nextDirInternalIndex) -
+            this.findScrollByIndex(nextDirInternalIndex + 1)
 
       const deltaY = Math.max(Math.min(event.deltaY, deltaMax), deltaMax * -1)
 
-      this.scroll = Math.min(Math.max(this.scroll! - deltaY * this.scrollSensitivity, this.scrollMax), this.scrollMin)
+      this.scroll = Math.min(
+        Math.max(
+          this.scroll! - deltaY * this.scrollSensitivity,
+          this.scrollMax,
+        ),
+        this.scrollMin,
+      )
 
-      const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
+      const nextInternalIndex = this.sanitizeInternalIndex(
+        this.findIndexFromScroll(this.scroll),
+      )
       const nextOption = this.internalOptions[nextInternalIndex]
       const nextInternalValue = nextOption?.value ?? null
 
       this.internalIndex = nextInternalIndex
       this.$emit('wheel', nextInternalValue)
       if (this.internalValue !== nextInternalValue && !nextOption?.disabled) {
-        this.$emit('update:modelValue', this.internalValue = nextInternalValue)
+        this.$emit(
+          'update:modelValue',
+          (this.internalValue = nextInternalValue),
+        )
       }
 
       this.onAfterWheel(() => {
@@ -344,10 +418,16 @@ export default defineComponent({
       if (Math.abs(diff) > 1.5) {
         this.isDragging = true
       }
-      this.scroll = this.start[0] + diff * (isTouchEvent(event) ? this.touchSensitivity : this.dragSensitivity)
+      this.scroll =
+        this.start[0] +
+        diff *
+          (isTouchEvent(event) ? this.touchSensitivity : this.dragSensitivity)
 
-      const nextInternalIndex = this.sanitizeInternalIndex(this.findIndexFromScroll(this.scroll))
-      const nextInternalValue = this.internalOptions[nextInternalIndex]?.value ?? null
+      const nextInternalIndex = this.sanitizeInternalIndex(
+        this.findIndexFromScroll(this.scroll),
+      )
+      const nextInternalValue =
+        this.internalOptions[nextInternalIndex]?.value ?? null
       this.$emit('move', nextInternalValue)
     },
     onEnd(event: TouchEvent | MouseEvent) {
@@ -367,7 +447,10 @@ export default defineComponent({
       this.$emit('end', this.internalValue)
     },
     onDocumentMouseOut(event: MouseEvent) {
-      if (event.relatedTarget === null || (event.relatedTarget as Element)?.nodeName === 'HTML') {
+      if (
+        event.relatedTarget === null ||
+        (event.relatedTarget as Element)?.nodeName === 'HTML'
+      ) {
         this.onCancel(event)
       }
     },
@@ -388,20 +471,36 @@ export default defineComponent({
       const bottomRect = $layerBottom.getBoundingClientRect()
 
       let nextIndex = this.internalIndex
-      if (topRect.left <= x && x <= topRect.right && topRect.top <= y && y <= topRect.bottom) {
+      if (
+        topRect.left <= x &&
+        x <= topRect.right &&
+        topRect.top <= y &&
+        y <= topRect.bottom
+      ) {
         if (this.internalIndex === (this.hasPlaceholder ? -1 : 0)) {
           return // top
         }
         nextIndex--
-        while (this.internalOptions[nextIndex] && this.internalOptions[nextIndex].disabled) {
+        while (
+          this.internalOptions[nextIndex] &&
+          this.internalOptions[nextIndex].disabled
+        ) {
           nextIndex--
         }
-      } else if (bottomRect.left <= x && x <= bottomRect.right && bottomRect.top <= y && y <= bottomRect.bottom) {
+      } else if (
+        bottomRect.left <= x &&
+        x <= bottomRect.right &&
+        bottomRect.top <= y &&
+        y <= bottomRect.bottom
+      ) {
         if (this.internalIndex === this.internalOptions.length - 1) {
           return // bottom
         }
         nextIndex++
-        while (this.internalOptions[nextIndex] && this.internalOptions[nextIndex].disabled) {
+        while (
+          this.internalOptions[nextIndex] &&
+          this.internalOptions[nextIndex].disabled
+        ) {
           nextIndex++
         }
       }
@@ -416,23 +515,28 @@ export default defineComponent({
       }
     },
     correction(scroll: number) {
-      const indexOffset = this.hasPlaceholder || this.options.length === 0 ? 1 : 0
+      const indexOffset =
+        this.hasPlaceholder || this.options.length === 0 ? 1 : 0
       const indexes = this.bounds
-        .map((bound, i) => [i - indexOffset, bound + scroll - this.scrollOffsetTop]) // [index, diff]
+        .map((bound, i) => [
+          i - indexOffset,
+          bound + scroll - this.scrollOffsetTop,
+        ]) // [index, diff]
         .sort((a, b) => Math.abs(a[1]) - Math.abs(b[1])) // nearest diff
         .map(([i]) => i) // index
 
       let indexCursor = 0
       while (
-        indexes[indexCursor] != null
-        && this.internalOptions[indexes[indexCursor]]
-        && this.internalOptions[indexes[indexCursor]].disabled
+        indexes[indexCursor] != null &&
+        this.internalOptions[indexes[indexCursor]] &&
+        this.internalOptions[indexes[indexCursor]].disabled
       ) {
         indexCursor++
       }
       if (
-        indexes[indexCursor] === -1
-        || indexes[indexCursor] != null && this.internalOptions[indexes[indexCursor]]
+        indexes[indexCursor] === -1 ||
+        (indexes[indexCursor] != null &&
+          this.internalOptions[indexes[indexCursor]])
       ) {
         const nextIndex = indexes[indexCursor]
         const nextValue = this.internalOptions[nextIndex]?.value ?? null
@@ -456,73 +560,107 @@ export default defineComponent({
     },
     emitModalValue(value: unknown) {
       if (this.internalValue !== value) {
-        this.$emit('update:modelValue', this.internalValue = value)
+        this.$emit('update:modelValue', (this.internalValue = value))
       }
     },
   },
   render() {
     let nodes = [] as VNode[]
     if (this.hasPlaceholder) {
-      nodes.push(h('div', {
-        class: [
-          'vue-scroll-picker-item',
-          'vue-scroll-picker-item-placeholder',
+      nodes.push(
+        h(
+          'div',
           {
-            'vue-scroll-picker-item-selected': this.internalIndex === -1,
+            class: [
+              'vue-scroll-picker-item',
+              'vue-scroll-picker-item-placeholder',
+              {
+                'vue-scroll-picker-item-selected': this.internalIndex === -1,
+              },
+            ],
+            ref: (el) => el && this.setRefItem(el as HTMLDivElement),
           },
-        ],
-        ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-      }, renderSlot(this.$slots, 'placeholder', { text: this.placeholder }, () => [
-        this.placeholder,
-      ])))
+          renderSlot(
+            this.$slots,
+            'placeholder',
+            { text: this.placeholder },
+            () => [this.placeholder],
+          ),
+        ),
+      )
     } else if (this.internalOptions.length === 0) {
-      nodes.push(h('div', {
-        class: [
-          'vue-scroll-picker-item',
-          'vue-scroll-picker-item-empty',
-          'vue-scroll-picker-item-selected',
-        ],
-        ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-      }, renderSlot(this.$slots, 'empty', { text: this.empty }, () => [
-        this.empty,
-      ])))
+      nodes.push(
+        h(
+          'div',
+          {
+            class: [
+              'vue-scroll-picker-item',
+              'vue-scroll-picker-item-empty',
+              'vue-scroll-picker-item-selected',
+            ],
+            ref: (el) => el && this.setRefItem(el as HTMLDivElement),
+          },
+          renderSlot(this.$slots, 'empty', { text: this.empty }, () => [
+            this.empty,
+          ]),
+        ),
+      )
     }
 
-    nodes = nodes.concat(this.internalOptions.map((option, index) => {
-      return h('div', {
-        class: [
-          'vue-scroll-picker-item',
+    nodes = nodes.concat(
+      this.internalOptions.map((option, index) => {
+        return h(
+          'div',
           {
-            'vue-scroll-picker-item-selected': this.internalIndex === index,
-            'vue-scroll-picker-item-disabled': option.disabled,
+            class: [
+              'vue-scroll-picker-item',
+              {
+                'vue-scroll-picker-item-selected': this.internalIndex === index,
+                'vue-scroll-picker-item-disabled': option.disabled,
+              },
+            ],
+            key: option.value,
+            ref: (el) => el && this.setRefItem(el as HTMLDivElement),
           },
-        ],
-        key: option.value,
-        ref: (el) => el && this.setRefItem(el as HTMLDivElement),
-      }, renderSlot(this.$slots, 'default', { option }, () => [
-        option.name,
-      ]))
-    }))
-    return h('div', {
-      class: [
-        'vue-scroll-picker',
+          renderSlot(this.$slots, 'default', { option }, () => [option.name]),
+        )
+      }),
+    )
+    return h(
+      'div',
+      {
+        class: ['vue-scroll-picker'],
+      },
+      [
+        h(
+          'div',
+          {
+            ref: 'rotator',
+            class: [
+              'vue-scroll-picker-rotator',
+              {
+                'vue-scroll-picker-rotator-transition': this.transitionTimeout,
+              },
+            ],
+            style:
+              typeof this.scroll === 'number'
+                ? { top: `${this.scroll}px` }
+                : {},
+          },
+          nodes,
+        ),
+        h('div', { class: ['vue-scroll-picker-layer'] }, [
+          h('div', { class: ['vue-scroll-picker-layer-top'], ref: 'layerTop' }),
+          h('div', {
+            class: ['vue-scroll-picker-layer-selection'],
+            ref: 'layerSelection',
+          }),
+          h('div', {
+            class: ['vue-scroll-picker-layer-bottom'],
+            ref: 'layerBottom',
+          }),
+        ]),
       ],
-    }, [
-      h('div', {
-        ref: 'rotator',
-        class: [
-          'vue-scroll-picker-rotator',
-          {
-            'vue-scroll-picker-rotator-transition': this.transitionTimeout,
-          },
-        ],
-        style: typeof this.scroll === 'number' ? { top: `${this.scroll}px` } : {},
-      }, nodes),
-      h('div', { class: ['vue-scroll-picker-layer'] }, [
-        h('div', { class: ['vue-scroll-picker-layer-top'], ref: 'layerTop' }),
-        h('div', { class: ['vue-scroll-picker-layer-selection'], ref: 'layerSelection' }),
-        h('div', { class: ['vue-scroll-picker-layer-bottom'], ref: 'layerBottom' }),
-      ]),
-    ])
+    )
   },
 })

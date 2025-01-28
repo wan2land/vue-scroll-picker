@@ -6,7 +6,6 @@ import VueScrollPicker from 'vue-scroll-picker'
 
 import Example from './Example.vue'
 
-
 const app = createApp(Example)
 
 app.use(VueScrollPicker)
