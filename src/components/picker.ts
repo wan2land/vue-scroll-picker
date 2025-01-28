@@ -226,18 +226,20 @@ export default defineComponent({
     $el.addEventListener('touchcancel', this.onCancel)
 
     if ('onwheel' in $el) {
-      $el.addEventListener('wheel', this.onWheel)
+      $el.addEventListener('wheel', this.onWheel, { passive: false })
     } else if ('onmousewheel' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/mousewheel_event
       ;($el as HTMLDivElement).addEventListener(
         'mousewheel',
         this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        { passive: false },
       )
     } else if ('onDOMMouseScroll' in $el) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/DOMMouseScroll_event
       ;($el as HTMLDivElement).addEventListener(
         'DOMMouseScroll',
         this.onWheel as any, // eslint-disable-line @typescript-eslint/no-explicit-any
+        { passive: false },
       )
     }
     $el.addEventListener('mousedown', this.onStart)
