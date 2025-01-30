@@ -4,14 +4,13 @@
   height: 10em;
   overflow: hidden;
   user-select: none;
-  --scroll-offset: 0px;
 }
 
 .vue-scroll-picker-rotator {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(50% - .6em + var(--scroll-offset));
+  top: calc(50% - .6em);
 }
 
 .vue-scroll-picker-rotator-transition {

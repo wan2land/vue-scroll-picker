@@ -9,6 +9,7 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
+  shallowRef,
   VNode,
   watch,
 } from 'vue'
@@ -22,7 +23,7 @@ export interface ScrollPickerOption {
 
 export type ScrollPickerOptionable<T> = ScrollPickerValue | T
 
-type GestureState = [scrollOffset: number, clientY: number, isDragging: boolean]
+type GestureState = [scrollY: number, clientY: number, isDragging: boolean]
 
 const EVENT_OPTIONS: AddEventListenerOptions = { passive: false }
 
@@ -77,25 +78,31 @@ const internalOptions = computed<T[]>(() => {
   })
 })
 
-const wheelTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const transitionTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const internalIndex = ref(
-  internalOptions.value.findIndex((option) => option.value == props.modelValue),
+  Math.max(
+    internalOptions.value.findIndex(
+      (option) => option.value == props.modelValue,
+    ),
+    0,
+  ),
 )
 
-const itemOffsets = ref<number[]>([])
+let itemOffsets: number[] = []
 
-const scrollOffset = ref(0)
-const scrollOffsetMax = ref(0)
+let scrollOffset = 0
+let scrollY = 0
+let scrollYMax = 0
 
-const gestureState = ref<GestureState | null>(null)
+let gestureState: GestureState | null = null
 
-const el = ref<HTMLDivElement>()
+const el = shallowRef<HTMLDivElement>()
 
-const rotatorRef = ref<HTMLDivElement>()
-const layerTopRef = ref<HTMLDivElement>()
-const layerBottomRef = ref<HTMLDivElement>()
+const rotatorRef = shallowRef<HTMLDivElement>()
+const layerTopRef = shallowRef<HTMLDivElement>()
+const layerSelectionRef = shallowRef<HTMLDivElement>()
+const layerBottomRef = shallowRef<HTMLDivElement>()
 
 let resizeObserver: globalThis.ResizeObserver | null = null
 
@@ -106,19 +113,20 @@ watch(
       (option) => option.value == value,
     )
     if (internalIndex.value !== nextIndex) {
-      internalIndex.value = nextIndex
+      internalIndex.value = Math.max(nextIndex, 0)
       scrollTo(findScrollByIndex(nextIndex))
     }
   },
 )
 
 watch(internalOptions, (options) => {
-  internalIndex.value = options.findIndex(
-    (option) => option.value == props.modelValue,
+  internalIndex.value = Math.max(
+    options.findIndex((option) => option.value == props.modelValue),
+    0,
   )
-  scrollOffset.value = findScrollByIndex(internalIndex.value)
   nextTick(() => {
     updateItemOffsets()
+    setScroll(findScrollByIndex(internalIndex.value))
   })
 })
 
@@ -127,7 +135,6 @@ onMounted(() => {
     return
   }
 
-  updateItemOffsets()
   el.value.addEventListener('wheel', handleWheel, EVENT_OPTIONS)
   el.value.addEventListener('touchstart', handleTouchStart, EVENT_OPTIONS)
   el.value.addEventListener('mousedown', handleMouseDown, EVENT_OPTIONS)
@@ -144,6 +151,8 @@ onMounted(() => {
       })
     })
     resizeObserver.observe(el.value)
+  } else {
+    updateItemOffsets()
   }
 })
 
@@ -157,27 +166,38 @@ onBeforeUnmount(() => {
 
 function updateItemOffsets() {
   const rotatorEl = rotatorRef.value
-  if (!rotatorEl) {
+  const layerSelectionEl = layerSelectionRef.value
+  if (!rotatorEl || !layerSelectionEl) {
     return
   }
-  const rotatorTop = rotatorEl.getBoundingClientRect().top
+
+  // set scrollOffset
+  {
+    const { top, bottom } = layerSelectionEl.getBoundingClientRect()
+    const elTop = el.value?.getBoundingClientRect().top ?? 0
+    scrollOffset = (top + bottom) / 2 - elTop
+  }
+
+  // set itemOffsets
   let firstItemOffset = 0
-  itemOffsets.value = Array.from(rotatorEl.children).map((itemRef, index) => {
+  itemOffsets = Array.from(rotatorEl.children).map((itemRef, index) => {
     const { top, bottom } = itemRef.getBoundingClientRect()
-    const itemOffset = (top + bottom) / 2 - rotatorTop
+    const itemOffset = (top + bottom) / 2
     if (index === 0) {
+      scrollOffset -= itemOffset - top
       firstItemOffset = itemOffset
     }
     return itemOffset - firstItemOffset
   })
-  scrollOffsetMax.value = Math.max(...itemOffsets.value)
-  scrollOffset.value = findScrollByIndex(internalIndex.value)
+
+  scrollYMax = Math.max(...itemOffsets)
+  setScroll(findScrollByIndex(internalIndex.value))
 }
 
 function findIndexFromScroll(scroll: number, ignoreDisabled: boolean): number {
   let minDiff = Infinity
   let foundBoundIndex = 0
-  for (const [boundIndex, bound] of itemOffsets.value.entries()) {
+  for (const [boundIndex, bound] of itemOffsets.entries()) {
     if (!ignoreDisabled && internalOptions.value[boundIndex]?.disabled) {
       continue
     }
@@ -190,19 +210,30 @@ function findIndexFromScroll(scroll: number, ignoreDisabled: boolean): number {
 }
 
 function findScrollByIndex(index: number): number {
-  return itemOffsets.value[
-    Math.min(Math.max(index, 0), itemOffsets.value.length - 1)
-  ]
+  return itemOffsets[Math.min(Math.max(index, 0), itemOffsets.length - 1)]
 }
 
 function scrollTo(scroll: number) {
-  scrollOffset.value = scroll
+  setScroll(scroll)
   if (transitionTimeout.value) {
     clearTimeout(transitionTimeout.value)
   }
   transitionTimeout.value = setTimeout(() => {
     transitionTimeout.value = null
-  }, 100)
+  }, 150)
+}
+
+let scrollRaf = null as ReturnType<typeof requestAnimationFrame> | null
+function setScroll(scroll: number) {
+  scrollY = scroll
+  if (scrollRaf) {
+    cancelAnimationFrame(scrollRaf)
+  }
+  scrollRaf = requestAnimationFrame(() => {
+    rotatorRef.value!.style.top = `${scrollOffset - scroll}px`
+    scrollRaf = null
+  })
+  return scroll
 }
 
 function bounceEffect(value: number, min: number, max: number, tension = 0.2) {
@@ -215,29 +246,24 @@ function bounceEffect(value: number, min: number, max: number, tension = 0.2) {
   return value
 }
 
+let wheelTimeout: ReturnType<typeof setTimeout> | null = null
 function handleWheel(e: WheelEvent) {
-  if (!wheelTimeout.value && scrollOffset.value <= 0 && e.deltaY < 0) {
+  if (!wheelTimeout && scrollY <= 0 && e.deltaY < 0) {
     return
   }
-  if (
-    !wheelTimeout.value &&
-    scrollOffset.value >= scrollOffsetMax.value &&
-    e.deltaY > 0
-  ) {
+  if (!wheelTimeout && scrollY >= scrollYMax && e.deltaY > 0) {
     return
   }
 
-  if (itemOffsets.value.length === 1) {
+  if (itemOffsets.length === 1) {
     return
   }
   e.preventDefault()
-  const scrollOffsetValue = (scrollOffset.value = bounceEffect(
-    scrollOffset.value + e.deltaY * props.wheelSensitivity,
-    0,
-    scrollOffsetMax.value,
-  ))
+  const scrollYValue = setScroll(
+    bounceEffect(scrollY + e.deltaY * props.wheelSensitivity, 0, scrollYMax),
+  )
 
-  const nextIndex = findIndexFromScroll(scrollOffsetValue, true)
+  const nextIndex = findIndexFromScroll(scrollYValue, true)
   const nextOption: ScrollPickerOption | undefined =
     internalOptions.value[nextIndex]
   const nextValue = nextOption?.value
@@ -247,17 +273,17 @@ function handleWheel(e: WheelEvent) {
     emitUpdateModelValue(nextValue)
   }
 
-  if (wheelTimeout.value) {
-    clearTimeout(wheelTimeout.value)
+  if (wheelTimeout) {
+    clearTimeout(wheelTimeout)
   }
-  wheelTimeout.value = setTimeout(() => {
-    scrollTo(findScrollByIndex(findIndexFromScroll(scrollOffsetValue, false)))
-    wheelTimeout.value = null
+  wheelTimeout = setTimeout(() => {
+    scrollTo(findScrollByIndex(findIndexFromScroll(scrollYValue, false)))
+    wheelTimeout = null
   }, 100)
 }
 
 function handleTouchStart(e: TouchEvent) {
-  if (gestureState.value) {
+  if (gestureState) {
     return
   }
   if (e.cancelable) {
@@ -265,7 +291,7 @@ function handleTouchStart(e: TouchEvent) {
   }
 
   // TODO multitouch
-  gestureState.value = [scrollOffset.value, e.touches[0].clientY, false]
+  gestureState = [scrollY, e.touches[0].clientY, false]
   emit('start')
 
   document.addEventListener('touchmove', handleTouchMove, EVENT_OPTIONS)
@@ -274,14 +300,14 @@ function handleTouchStart(e: TouchEvent) {
 }
 
 function handleMouseDown(e: MouseEvent) {
-  if (gestureState.value) {
+  if (gestureState) {
     return
   }
   if (e.cancelable) {
     e.preventDefault()
   }
 
-  gestureState.value = [scrollOffset.value, e.clientY, false]
+  gestureState = [scrollY, e.clientY, false]
   emit('start')
 
   document.addEventListener('mousemove', handleMouseMove, EVENT_OPTIONS)
@@ -290,67 +316,71 @@ function handleMouseDown(e: MouseEvent) {
 }
 
 function handleTouchMove(e: TouchEvent) {
-  if (!gestureState.value) {
+  if (!gestureState) {
     return
   }
   if (e.cancelable) {
     e.preventDefault()
   }
-  const diff = gestureState.value[1] - e.touches[0].clientY // TODO multitouch
+  const diff = gestureState[1] - e.touches[0].clientY // TODO multitouch
   if (Math.abs(diff) > 1.5) {
-    const nextGestureState = gestureState.value.slice() as GestureState
+    const nextGestureState = gestureState.slice() as GestureState
     nextGestureState[2] = true
-    gestureState.value = nextGestureState
+    gestureState = nextGestureState
   }
   emitMove(
-    (scrollOffset.value = bounceEffect(
-      gestureState.value[0] + diff * props.touchSensitivity,
-      0,
-      scrollOffsetMax.value,
-    )),
+    setScroll(
+      bounceEffect(
+        gestureState[0] + diff * props.touchSensitivity,
+        0,
+        scrollYMax,
+      ),
+    ),
   )
 }
 
 function handleMouseMove(e: MouseEvent) {
-  if (!gestureState.value) {
+  if (!gestureState) {
     return
   }
   if (e.cancelable) {
     e.preventDefault()
   }
-  const diff = gestureState.value[1] - e.clientY
+  const diff = gestureState[1] - e.clientY
   if (Math.abs(diff) > 1.5) {
-    const nextGestureState = gestureState.value.slice() as GestureState
+    const nextGestureState = gestureState.slice() as GestureState
     nextGestureState[2] = true
-    gestureState.value = nextGestureState
+    gestureState = nextGestureState
   }
   emitMove(
-    (scrollOffset.value = bounceEffect(
-      gestureState.value[0] + diff * props.dragSensitivity,
-      0,
-      scrollOffsetMax.value,
-    )),
+    setScroll(
+      bounceEffect(
+        gestureState[0] + diff * props.dragSensitivity,
+        0,
+        scrollYMax,
+      ),
+    ),
   )
 }
 
-function emitMove(scrollOffset: number) {
+function emitMove(scrollY: number) {
   emit(
     'move',
-    internalOptions.value[findIndexFromScroll(scrollOffset, true)]?.value ??
+    internalOptions.value[findIndexFromScroll(scrollY, true)]?.value ??
       undefined,
   )
 }
 
 function handleMouseUp(e: MouseEvent) {
-  if (!gestureState.value) {
+  if (!gestureState) {
     return
   }
   if (e.cancelable) {
     e.preventDefault()
   }
 
-  endGesture(gestureState.value[2], e.clientX, e.clientY)
-  gestureState.value = null
+  endGesture(gestureState[2], e.clientX, e.clientY)
+  gestureState = null
 
   document.removeEventListener('mousemove', handleMouseMove)
   document.removeEventListener('mouseup', handleMouseUp)
@@ -358,18 +388,18 @@ function handleMouseUp(e: MouseEvent) {
 }
 
 function handleTouchEnd(e: TouchEvent) {
-  if (!gestureState.value) {
+  if (!gestureState) {
     return
   }
   if (e.cancelable) {
     e.preventDefault()
   }
   endGesture(
-    gestureState.value[2],
+    gestureState[2],
     e.changedTouches[0].clientX,
     e.changedTouches[0].clientY,
   )
-  gestureState.value = null
+  gestureState = null
 
   document.removeEventListener('touchmove', handleTouchMove)
   document.removeEventListener('touchend', handleTouchEnd)
@@ -378,7 +408,7 @@ function handleTouchEnd(e: TouchEvent) {
 
 function endGesture(isDragging: boolean, x: number, y: number) {
   if (isDragging) {
-    const nextIndex = findIndexFromScroll(scrollOffset.value, false)
+    const nextIndex = findIndexFromScroll(scrollY, false)
     const nextValue = internalOptions.value[nextIndex]?.value ?? null
     scrollTo(findScrollByIndex(nextIndex))
     internalIndex.value = nextIndex
@@ -447,10 +477,7 @@ function emitUpdateModelValue(value: ScrollPickerValue) {
 
 // <Cancel>
 function handleMouseOut(e: MouseEvent) {
-  if (
-    e.relatedTarget === null ||
-    (e.relatedTarget as Element)?.nodeName === 'HTML'
-  ) {
+  if (e.relatedTarget === null) {
     cancelGesture()
   }
 }
@@ -461,7 +488,7 @@ function handleTouchCancel() {
 
 function cancelGesture() {
   scrollTo(findScrollByIndex(internalIndex.value))
-  gestureState.value = null
+  gestureState = null
   emit('cancel')
 }
 // </Cancel>
@@ -477,7 +504,6 @@ function cancelGesture() {
           'vue-scroll-picker-rotator-transition': transitionTimeout,
         },
       ]"
-      :style="{ '--scroll-offset': `${scrollOffset * -1}px` }"
     >
       <template v-if="internalOptions.length === 0">
         <div
@@ -511,7 +537,10 @@ function cancelGesture() {
     </div>
     <div class="vue-scroll-picker-layer">
       <div ref="layerTopRef" class="vue-scroll-picker-layer-top"></div>
-      <div class="vue-scroll-picker-layer-selection"></div>
+      <div
+        ref="layerSelectionRef"
+        class="vue-scroll-picker-layer-selection"
+      ></div>
       <div ref="layerBottomRef" class="vue-scroll-picker-layer-bottom"></div>
     </div>
   </div>
