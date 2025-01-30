@@ -351,7 +351,11 @@ function handleTouchEnd(e: TouchEvent) {
   if (e.cancelable) {
     e.preventDefault()
   }
-  endGesture(gestureState.value[2], e.touches[0].clientX, e.touches[0].clientY)
+  endGesture(
+    gestureState.value[2],
+    e.changedTouches[0].clientX,
+    e.changedTouches[0].clientY,
+  )
   gestureState.value = null
 
   document.removeEventListener('touchmove', handleTouchMove)
