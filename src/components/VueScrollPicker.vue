@@ -257,6 +257,9 @@ function handleWheel(e: WheelEvent) {
 }
 
 function handleTouchStart(e: TouchEvent) {
+  if (gestureState.value) {
+    return
+  }
   if (e.cancelable) {
     e.preventDefault()
   }
@@ -271,6 +274,9 @@ function handleTouchStart(e: TouchEvent) {
 }
 
 function handleMouseDown(e: MouseEvent) {
+  if (gestureState.value) {
+    return
+  }
   if (e.cancelable) {
     e.preventDefault()
   }
@@ -297,8 +303,11 @@ function handleTouchMove(e: TouchEvent) {
     gestureState.value = nextGestureState
   }
   emitMove(
-    (scrollOffset.value =
-      gestureState.value[0] + diff * props.touchSensitivity),
+    (scrollOffset.value = bounceEffect(
+      gestureState.value[0] + diff * props.touchSensitivity,
+      0,
+      scrollOffsetMax.value,
+    )),
   )
 }
 
@@ -316,7 +325,11 @@ function handleMouseMove(e: MouseEvent) {
     gestureState.value = nextGestureState
   }
   emitMove(
-    (scrollOffset.value = gestureState.value[0] + diff * props.dragSensitivity),
+    (scrollOffset.value = bounceEffect(
+      gestureState.value[0] + diff * props.dragSensitivity,
+      0,
+      scrollOffsetMax.value,
+    )),
   )
 }
 
