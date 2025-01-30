@@ -39,7 +39,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string | number | boolean | null | undefined
+    modelValue: ScrollPickerValue | undefined
     options?: ScrollPickerOptionable<T>[]
     dragSensitivity?: number
     touchSensitivity?: number

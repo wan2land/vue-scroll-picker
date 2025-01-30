@@ -9,23 +9,31 @@
   <img alt="Language Typescript" src="https://img.shields.io/badge/language-Typescript-007acc.svg?style=flat-square" />
 </p>
 
-iOS Style Scroll Picker Component for Vue 3. Support All Gestures of Mouse(also
-MouseWheel) and Touch.
+Vue Scroll Picker is an iOS-style scroll picker component for Vue 3. It supports all gestures, including mouse and touch interactions, ensuring a smooth and intuitive user experience.
 
-If you are using vue 2, please refer to the
-[v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
+If you are using Vue 2, please refer to the [v0.x branch](https://github.com/wan2land/vue-scroll-picker/tree/0.x-vue2).
 
-[See Example](http://vue-scroll-picker.dist.be) ([sources](./example))
+[Live Demo](http://vue-scroll-picker.dist.be) ([source](./example))
+
+## Features
+
+- **TypeScript Support**: Uses generics for strict type checking and improved developer experience.
+- **Native-like Behavior**: Mimics `<select>` element behavior for consistency.
+- **Lightweight & Performant**: Minimal dependencies with optimized rendering.
 
 ## Installation
 
 ```bash
-npm i vue-scroll-picker
+npm install vue-scroll-picker
 ```
 
 ## Usage
 
-**Global Registration**
+Vue Scroll Picker can be used both globally and locally in your Vue application. Below are examples of how to set it up.
+
+### Global Registration
+
+To register Vue Scroll Picker globally in your Vue application, import it in your main file and apply it as a plugin:
 
 [Vue3 Global Registration Guide](https://v3.vuejs.org/guide/component-registration.html#global-registration)
 
@@ -40,23 +48,20 @@ const app = createApp(); /* */
 app.use(VueScrollPicker); // export default is plugin
 ```
 
-**Local Registration**
+### Local Registration
+
+To use Vue Scroll Picker in a specific component, import it and register it locally:
 
 [Vue3 Local Registration Guide](https://v3.vuejs.org/guide/component-registration.html#local-registration)
 
 ```vue
+<script setup>
+import { VueScrollPicker } from 'vue-scroll-picker'
+
+</script>
 <template>
   <VueScrollPicker :options="options" />
 </template>
-<script>
-import { VueScrollPicker } from 'vue-scroll-picker'
-
-export default {
-  components: {
-    VueScrollPicker, // export VueScrollPicker is component
-  },
-}
-</script>
 <style src="vue-scroll-picker/dist/style.css"></style>
 ```
 
@@ -64,32 +69,36 @@ export default {
 
 ### Props
 
-| Name              | Type                                              | Default      | Example                                                                                   |
-| ----------------- | :------------------------------------------------ | ------------ | ----------------------------------------------------------------------------------------- |
-| modelValue        | `any`                                             | `null`       |                                                                                           |
-| placeholder       | `string`                                          | `null`       |                                                                                           |
-| empty             | `string`                                          | `'No Items'` |                                                                                           |
-| options           | `string[]`<br /> `{ name: string, value: any, disabled: boolean }[]` | `[]`         | `["10KG", "20KG", "30KG"]`<br /> `[{value: 10, name: "10KG"}, {value: 20, name: "20KG"}]` |
-| dragSensitivity   | `number`                                          | `1.7`        |                                                                                           |
-| touchSensitivity  | `number`                                          | `1.7`        |                                                                                           |
-| scrollSensitivity | `number`                                          | `1`          |                                                                                           |
+Vue Scroll Picker accepts several props to customize its behavior:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `modelValue` | `string \| number \| boolean \| null` | `undefined` | The selected value of the picker. |
+| `options` | `Array<{ name: string; value: any; disabled?: boolean }>` | `[]` | The list of options displayed in the picker. |
+| `emptyText` | `string` | `'No options available'` | Text displayed when there are no options available. |
+| `dragSensitivity` | `number` | `1.7` | Sensitivity of dragging interaction. |
+| `touchSensitivity` | `number` | `1.7` | Sensitivity of touch interaction. |
+| `wheelSensitivity` | `number` | `1` | Sensitivity of mouse wheel scrolling. |
 
 ### Events
 
-| Name              | Type                                  |
-| ----------------- | :------------------------------------ |
-| update:modelValue | `(value: any) => void`                |
-| start             | `() => void`                          |
-| move              | `(value: any) => void`                |
-| end               | `(value: any) => void`                |
-| cancel            | `() => void`                          |
-| wheel             | `(value: any) => void`                |
-| click             | `(value: any, oldValue: any) => void` |
+Vue Scroll Picker emits several events to notify changes:
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `update:modelValue` | `string \| number \| boolean \| null` | Fired when the selected value changes. |
+| `start` | `void` | Fired when interaction starts. |
+| `move` | `string \| number \| boolean \| null` | Fired when the selection moves. |
+| `end` | `string \| number \| boolean \| null` | Fired when interaction ends. |
+| `cancel` | `void` | Fired when interaction is canceled. |
+| `wheel` | `string \| number \| boolean \| null` | Fired when using the mouse wheel. |
+| `click` | `string \| number \| boolean \| null` | Fired when the picker is clicked. |
 
 ### Slots
 
-| Name        | Prop                                       | Default             |
-| ----------- | :----------------------------------------- | ------------------- |
-| default     | `{ option: { name: string, value: any } }` | `{{ option.name }}` |
-| placeholder | `{ text: string }`                         | `{{ placeholder }}` |
-| empty       | `{ text: string }`                         | `No Items`          |
+Vue Scroll Picker provides slots for custom rendering:
+
+| Slot | Props | Description |
+|------|-------|-------------|
+| `default` | `{ option: { name: string; value: any; disabled?: boolean } }` | Custom rendering for each option. |
+| `empty` | `{ text: string }` | Custom rendering when no options are available. |
