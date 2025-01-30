@@ -10,14 +10,15 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "test": "npm run test:lint && npm run test:build",
-    "test:lint": "eslint",
+    "test": "npm run test:eslint && npm run test:vitest && npm run test:build",
+    "test:eslint": "eslint",
+    "test:vitest": "vitest run",
     "test:build": "npm run build:production && node scripts/test-build.mjs",
     "dev:example": "vite serve example --host 0.0.0.0",
     "dev": "concurrently \"npm run dev:example\" \"npm run build:watch\"",
     "build": "npm run build:production && npm run build:example",
     "build:watch": "vite build --watch",
-    "build:production": "vite build && tsc -p tsconfig.build.json",
+    "build:production": "vite build",
     "build:example": "vite build example && cp example/CNAME example-dist/",
     "deploy:example": "npm run build:example && gh-pages -d example-dist"
   },
@@ -36,6 +37,7 @@
     "@commitlint/config-conventional": "13.2.0",
     "@types/node": "18.19.74",
     "@vitejs/plugin-vue": "^4.6.2",
+    "@vitest/browser": "^3.0.4",
     "@vue/compiler-sfc": "3.5.13",
     "@vue/eslint-config-typescript": "^14.3.0",
     "@vue/test-utils": "^2.4.6",
@@ -48,12 +50,14 @@
     "gh-pages": "5.0.0",
     "happy-dom": "^16.7.3",
     "husky": "7.0.4",
+    "playwright": "^1.50.0",
     "prettier": "^3.4.2",
     "simple-icons": "7.21.0",
     "typescript": "^5.7.3",
     "vite": "^4.5.2",
     "vite-plugin-dts": "^4.5.0",
     "vitest": "^3.0.4",
+    "vitest-browser-vue": "^0.1.0",
     "vue": "3.5.13"
   }
 }

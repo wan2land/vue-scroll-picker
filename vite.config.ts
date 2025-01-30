@@ -8,7 +8,9 @@ export default defineConfig({
     drop: process.env.BUILD_TARGET === 'npm' ? ['console', 'debugger'] : [],
   },
   plugins: [
-    vue(),
+    vue({
+      exclude: ['src/**/*.spec.ts'],
+    }),
     dts({
       outDir: 'dist',
       include: ['src/**/*.ts', 'src/**/*.vue'],
