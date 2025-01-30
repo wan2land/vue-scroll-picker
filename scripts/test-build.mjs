@@ -6,23 +6,34 @@ const __dirname = new URL('.', import.meta.url).pathname
 
 const pkg = JSON.parse(await readFile(`${__dirname}/../package.json`))
 
-const files = [pkg.main, pkg.module, pkg.types]
+const files = [pkg.main, pkg.module, pkg.types, pkg.typings, pkg.exports]
 
-const fileStats = await Promise.all(
-  files.map(async (file) => {
+const wrongFiles = []
+async function traverse(obj) {
+  if (Array.isArray(obj)) {
+    return Promise.all(obj.map((item) => traverse(item)))
+  }
+
+  if (typeof obj === 'object' && obj !== null) {
+    return Promise.all(Object.values(obj).map((item) => traverse(item)))
+  }
+
+  if (typeof obj === 'string') {
+    console.log('check', obj)
     try {
-      await stat(`${__dirname}/../${file}`)
-      return true
+      await stat(`${__dirname}/../${obj}`)
     } catch {
       console.warn(`file(${file}) not found`)
-      return false
+      wrongFiles.push(file)
     }
-  }),
-)
-
-if (fileStats.some((file) => !file)) {
-  console.error('Build failed')
-  process.exit(1)
+  }
 }
 
-console.log('Build succeeded')
+traverse(files).then(() => {
+  if (wrongFiles.length > 0) {
+    console.error('Build failed')
+    process.exit(1)
+  }
+
+  console.log('Build succeeded')
+})

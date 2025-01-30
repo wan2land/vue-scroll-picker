@@ -10,27 +10,32 @@
   },
   "scripts": {
     "prepack": "npm run build",
-    "test": "npm run test:eslint && npm run test:vitest && npm run test:build",
+    "test": "npm run test:eslint && npm run test:vitest && npm run build",
     "test:eslint": "eslint",
     "test:vitest": "vitest run",
     "test:build": "npm run build:production && node scripts/test-build.mjs",
-    "dev:example": "vite serve example --host 0.0.0.0",
     "dev": "concurrently \"npm run dev:example\" \"npm run build:watch\"",
-    "build": "npm run build:production && npm run build:example",
+    "dev:example": "vite serve example --host 0.0.0.0",
+    "build": "npm run build:production && node scripts/test-build.mjs",
     "build:watch": "vite build --watch",
     "build:production": "vite build",
     "build:example": "vite build example && cp example/CNAME example-dist/",
     "deploy:example": "npm run build:example && gh-pages -d example-dist"
   },
-  "module": "dist/index.es.js",
-  "main": "dist/index.cjs.js",
+  "type": "module",
   "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.cjs.js"
-    }
+      "default": "./dist/index.mjs",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
   },
   "devDependencies": {
     "@commitlint/cli": "17.8.1",

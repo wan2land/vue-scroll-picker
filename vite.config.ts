@@ -22,8 +22,13 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'VueScrollPicker',
-      formats: ['es', 'umd', 'cjs'],
-      fileName: (format) => `index.${format}.js`,
+      formats: ['es', 'cjs'],
+      fileName: (format, entryName) =>
+        format === 'es'
+          ? `${entryName}.mjs`
+          : format === 'cjs'
+            ? `${entryName}.cjs`
+            : `${entryName}.js`,
     },
     rollupOptions: {
       external: ['vue'],
