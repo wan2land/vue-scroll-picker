@@ -251,7 +251,7 @@ function handleWheel(e: WheelEvent) {
     clearTimeout(wheelTimeout.value)
   }
   wheelTimeout.value = setTimeout(() => {
-    scrollTo(findScrollByIndex(findIndexFromScroll(scrollOffsetValue, true)))
+    scrollTo(findScrollByIndex(findIndexFromScroll(scrollOffsetValue, false)))
     wheelTimeout.value = null
   }, 100)
 }
