@@ -1,12 +1,15 @@
-import { App, Plugin } from 'vue'
+import { App, Component, Plugin } from 'vue'
 
 import VueScrollPicker, {
+  type ScrollPickerValue,
   type ScrollPickerOption,
   type ScrollPickerOptionable,
-} from './components/picker'
+} from './components/VueScrollPicker.vue'
+
+import './style.css'
 
 export function install(app: App) {
-  app.component('VueScrollPicker', VueScrollPicker)
+  app.component('VueScrollPicker', VueScrollPicker as unknown as Component)
 }
 
 if (typeof window !== 'undefined' && 'Vue' in window) {
@@ -21,5 +24,6 @@ export default plugin
 
 export { VueScrollPicker }
 
+export type VueScrollPickerValue = ScrollPickerValue
 export type VueScrollPickerOption = ScrollPickerOption
-export type VueScrollPickerOptionable = ScrollPickerOptionable
+export type VueScrollPickerOptionable<T> = ScrollPickerOptionable<T>

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "outDir": "lib",
+    "outDir": "dist",
     "baseUrl": "./",
     "paths": {
       "vue-scroll-picker": ["./src"]
@@ -19,7 +19,8 @@
     "strict": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vite/client", "@vue/runtime-dom"]
   },
   "include": [
     "example/**/*.ts",

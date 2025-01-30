@@ -1,15 +1,18 @@
 <script lang="ts" setup>
-import { PropType, ref } from 'vue'
-import { VueScrollPicker, VueScrollPickerOption } from 'vue-scroll-picker'
+import { ref } from 'vue'
+import {
+  VueScrollPicker,
+  VueScrollPickerOption,
+  VueScrollPickerValue,
+} from 'vue-scroll-picker'
+import CurrentValue from './CurrentValue.vue'
+import DefaultController from './DefaultController.vue'
 
-defineProps({
-  options: {
-    type: Array as PropType<VueScrollPickerOption[]>,
-    default: () => [],
-  },
-})
+defineProps<{
+  options: VueScrollPickerOption[]
+}>()
 
-const currentValue = ref<unknown>(null)
+const currentValue = ref<VueScrollPickerValue>(null)
 
 const logMessages = ref<string[]>([])
 
@@ -25,34 +28,9 @@ function log(event: string, ...args: unknown[]) {
 <template>
   <div class="container">
     <div class="example">
-      <p>
-        currentValue =
-        <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
-      </p>
-      <div class="button-group">
-        <a
-          class="button"
-          :class="{ active: currentValue === null }"
-          @click="currentValue = null"
-          >(null)</a
-        >
-        <a
-          class="button"
-          :class="{ active: currentValue === 'unknown' }"
-          @click="currentValue = 'unknown'"
-          >(Unknown)</a
-        >
-        <a
-          v-for="(option, index) in options"
-          :key="index"
-          class="button"
-          :class="{
-            active: currentValue == option.value,
-            disabled: option.disabled,
-          }"
-          @click="currentValue = option.value"
-          >{{ option.name }}</a
-        >
+      <div class="controller">
+        <CurrentValue :value="currentValue" />
+        <DefaultController v-model="currentValue" :options="options" />
       </div>
       <VueScrollPicker
         v-model="currentValue"

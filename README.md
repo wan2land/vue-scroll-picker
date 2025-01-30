@@ -33,7 +33,7 @@ npm i vue-scroll-picker
 import { createApp } from "vue";
 import VueScrollPicker from "vue-scroll-picker";
 
-import "vue-scroll-picker/lib/style.css";
+import "vue-scroll-picker/dist/style.css";
 
 const app = createApp(); /* */
 
@@ -57,7 +57,7 @@ export default {
   },
 }
 </script>
-<style src="vue-scroll-picker/lib/style.css"></style>
+<style src="vue-scroll-picker/dist/style.css"></style>
 ```
 
 ## Options

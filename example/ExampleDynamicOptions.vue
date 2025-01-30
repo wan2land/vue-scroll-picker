@@ -1,45 +1,43 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  VueScrollPicker,
+  VueScrollPickerOptionable,
+  VueScrollPickerValue,
+} from 'vue-scroll-picker'
+import CurrentValue from './CurrentValue.vue'
+
+const options = ref<VueScrollPickerOptionable<number>[]>([])
+const currentValue = ref<VueScrollPickerValue>(null)
+
+function pushItem() {
+  options.value.push(~~(Math.random() * 100000))
+}
+function popItem() {
+  options.value.pop()
+}
+function unshiftItem() {
+  options.value.unshift(~~(Math.random() * 100000))
+}
+function shiftItem() {
+  options.value.shift()
+}
+function replaceItems() {
+  options.value = [...new Array(10)].map(() => ~~(Math.random() * 100000))
+}
+</script>
 <template>
   <div>
-    <p>
-      currentValue =
-      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
-    </p>
-    <div class="button-group">
-      <a class="button" @click="pushItem">Push Random Item</a>
-      <a class="button" @click="popItem">Pop Item</a>
-      <a class="button" @click="unshiftItem">Unshift Random Item</a>
-      <a class="button" @click="shiftItem">Shift Item</a>
-      <a class="button" @click="replaceItems">Replace 10 Items</a>
+    <div class="controller">
+      <CurrentValue :value="currentValue" />
+      <div class="button-group">
+        <a class="button" @click="pushItem">Push Random Item</a>
+        <a class="button" @click="popItem">Pop Item</a>
+        <a class="button" @click="unshiftItem">Unshift Random Item</a>
+        <a class="button" @click="shiftItem">Shift Item</a>
+        <a class="button" @click="replaceItems">Replace 10 Items</a>
+      </div>
     </div>
     <VueScrollPicker v-model="currentValue" :options="options" />
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  data() {
-    return {
-      options: [] as number[],
-      currentValue: null,
-    }
-  },
-  methods: {
-    pushItem() {
-      this.options.push(~~(Math.random() * 100000))
-    },
-    popItem() {
-      this.options.pop()
-    },
-    unshiftItem() {
-      this.options.unshift(~~(Math.random() * 100000))
-    },
-    shiftItem() {
-      this.options.shift()
-    },
-    replaceItems() {
-      this.options = [...new Array(10)].map(() => ~~(Math.random() * 100000))
-    },
-  },
-})
-</script>

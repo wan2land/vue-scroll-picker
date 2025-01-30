@@ -1,47 +1,65 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  VueScrollPicker,
+  VueScrollPickerOption,
+  VueScrollPickerValue,
+} from 'vue-scroll-picker'
+import CurrentValue from './CurrentValue.vue'
+
+defineProps<{
+  options: VueScrollPickerOption[]
+}>()
+
+const currentValue = ref<VueScrollPickerValue>(null)
+
+const dragSensitivity = ref(1.7)
+const touchSensitivity = ref(1.7)
+const scrollSensitivity = ref(1)
+</script>
 <template>
   <div>
-    <p>
-      currentValue =
-      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
-    </p>
-    <div class="nobs">
-      <div class="nob">
-        <label>Drag Sensitivity (default = 1.7)</label>
-        <div>
-          <input
-            v-model.number="dragSensitivity"
-            type="range"
-            min="0.5"
-            max="10"
-            step="0.1"
-          />
-          {{ dragSensitivity }}
+    <div class="controller">
+      <CurrentValue :value="currentValue" />
+      <div class="nobs">
+        <div class="nob">
+          <label>Drag Sensitivity (default = 1.7)</label>
+          <div>
+            <input
+              v-model.number="dragSensitivity"
+              type="range"
+              min="0.5"
+              max="10"
+              step="0.1"
+            />
+            {{ dragSensitivity }}
+          </div>
         </div>
-      </div>
-      <div class="nob">
-        <label>Touch Sensitivity (default = 1.7)</label>
-        <div>
-          <input
-            v-model.number="touchSensitivity"
-            type="range"
-            min="0.5"
-            max="10"
-            step="0.1"
-          />
-          {{ touchSensitivity }}
+        <div class="nob">
+          <label>Touch Sensitivity (default = 1.7)</label>
+          <div>
+            <input
+              v-model.number="touchSensitivity"
+              type="range"
+              min="0.5"
+              max="10"
+              step="0.1"
+            />
+            {{ touchSensitivity }}
+          </div>
         </div>
-      </div>
-      <div class="nob">
-        <label>Scroll Sensitivity (default = 1)</label>
-        <div>
-          <input
-            v-model.number="scrollSensitivity"
-            type="range"
-            min="0.5"
-            max="10"
-            step="0.1"
-          />
-          {{ scrollSensitivity }}
+        <div class="nob">
+          <label>Scroll Sensitivity (default = 1)</label>
+          <div>
+            <input
+              v-model.number="scrollSensitivity"
+              type="range"
+              min="0.5"
+              max="10"
+              step="0.1"
+            />
+            {{ scrollSensitivity }}
+          </div>
         </div>
       </div>
     </div>
@@ -54,27 +72,6 @@
     />
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { VueScrollPickerOption } from 'vue-scroll-picker'
-
-export default defineComponent({
-  props: {
-    options: {
-      type: Array as PropType<VueScrollPickerOption[]>,
-      default: () => [],
-    },
-  },
-  data() {
-    return {
-      currentValue: null,
-      dragSensitivity: 1.7,
-      touchSensitivity: 1.7,
-      scrollSensitivity: 1,
-    }
-  },
-})
-</script>
 <style scoped>
 .nobs {
   display: flex;

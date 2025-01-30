@@ -1,13 +1,29 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  VueScrollPicker,
+  VueScrollPickerOption,
+  VueScrollPickerValue,
+} from 'vue-scroll-picker'
+import CurrentValue from './CurrentValue.vue'
+
+defineProps<{
+  options: VueScrollPickerOption[]
+}>()
+
+const currentValue = ref<VueScrollPickerValue>(null)
+
+const isVisible = ref(false)
+</script>
 <template>
   <div>
-    <p>
-      currentValue =
-      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
-    </p>
-    <div class="button-group">
-      <a class="button" @click="isVisible = !isVisible">{{
-        isVisible ? 'Hide' : 'Show'
-      }}</a>
+    <div class="controller">
+      <CurrentValue :value="currentValue" />
+      <div class="button-group">
+        <a class="button" @click="isVisible = !isVisible">{{
+          isVisible ? 'Hide' : 'Show'
+        }}</a>
+      </div>
     </div>
     <transition name="fade">
       <VueScrollPicker
@@ -18,25 +34,6 @@
     </transition>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { VueScrollPickerOption } from 'vue-scroll-picker'
-
-export default defineComponent({
-  props: {
-    options: {
-      type: Array as PropType<VueScrollPickerOption[]>,
-      default: () => [],
-    },
-  },
-  data() {
-    return {
-      isVisible: false,
-      currentValue: 0,
-    }
-  },
-})
-</script>
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {

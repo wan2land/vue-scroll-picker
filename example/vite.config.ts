@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      'vue-scroll-picker': resolve(__dirname, '../src'),
+      'vue-scroll-picker': resolve(__dirname, '..'),
     },
   },
   build: {

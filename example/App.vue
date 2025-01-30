@@ -1,4 +1,33 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+<script setup lang="ts">
+import { siGithub } from 'simple-icons/icons'
+
+import { VueScrollPickerOption } from 'vue-scroll-picker'
+import ExampleDialog from './ExampleDialog.vue'
+import ExampleDisabledItems from './ExampleDisabledItems.vue'
+import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
+import ExampleEvent from './ExampleEvent.vue'
+import ExampleFullBinding from './ExampleFullBinding.vue'
+import ExampleMultiple from './ExampleMultiple.vue'
+import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
+import ExampleSensitivity from './ExampleSensitivity.vue'
+import ExampleSlot from './ExampleSlot.vue'
+import ExampleTransition from './ExampleTransition.vue'
+
+const defaultOptions: VueScrollPickerOption[] = [
+  { value: null, name: 'Select an option' },
+  { value: 0, name: '0KG' },
+  { value: 10, name: '10KG' },
+  { value: 20, name: '20KG' },
+  { value: 30, name: '30KG' },
+  { value: 40, name: '40KG' },
+  { value: 50, name: '50KG' },
+  { value: 60, name: '60KG' },
+  { value: 70, name: '70KG' },
+  { value: 80, name: '80KG' },
+  { value: 90, name: '90KG' },
+  { value: 100, name: '100KG' },
+]
+</script>
 <template>
   <div>
     <div class="hero">
@@ -11,7 +40,7 @@
         class="github"
         href="https://github.com/wan2land/vue-scroll-picker"
         target="_blank"
-        v-html="iconGithub"
+        v-html="siGithub.svg"
       />
     </div>
     <div class="section">
@@ -38,17 +67,6 @@
           >
         </p>
         <ExampleDisabledItems />
-
-        <h2 id="placeholder"><a href="#placeholder">Placeholder</a></h2>
-        <p>
-          Vue Scroll Picker provides a placeholder option. When setting a
-          placeholder, you can use null as the value.
-          <a
-            href="https://github.com/wan2land/vue-scroll-picker/blob/main/example/ExamplePlaceholder.vue"
-            >[Source]</a
-          >
-        </p>
-        <ExamplePlaceholder :options="defaultOptions" />
 
         <h2 id="slot_support"><a href="#slot_support">Slot Support</a></h2>
         <p>
@@ -129,54 +147,3 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { siGithub } from 'simple-icons/icons'
-import { defineComponent } from 'vue'
-
-import { VueScrollPickerOption } from 'vue-scroll-picker'
-import ExampleDisabledItems from './ExampleDisabledItems.vue'
-import ExampleDynamicOptions from './ExampleDynamicOptions.vue'
-import ExampleEvent from './ExampleEvent.vue'
-import ExampleFullBinding from './ExampleFullBinding.vue'
-import ExampleMultiple from './ExampleMultiple.vue'
-import ExamplePlaceholder from './ExamplePlaceholder.vue'
-import ExampleDialog from './ExampleDialog.vue'
-import ExampleReactiveStyle from './ExampleReactiveStyle.vue'
-import ExampleSensitivity from './ExampleSensitivity.vue'
-import ExampleSlot from './ExampleSlot.vue'
-import ExampleTransition from './ExampleTransition.vue'
-
-export default defineComponent({
-  components: {
-    ExampleFullBinding,
-    ExampleDialog,
-    ExampleDisabledItems,
-    ExamplePlaceholder,
-    ExampleSlot,
-    ExampleEvent,
-    ExampleSensitivity,
-    ExampleTransition,
-    ExampleDynamicOptions,
-    ExampleReactiveStyle,
-    ExampleMultiple,
-  },
-  data() {
-    return {
-      iconGithub: siGithub.svg,
-      defaultOptions: [
-        { value: 0, name: '0KG' },
-        { value: 10, name: '10KG' },
-        { value: 20, name: '20KG' },
-        { value: 30, name: '30KG' },
-        { value: 40, name: '40KG' },
-        { value: 50, name: '50KG' },
-        { value: 60, name: '60KG' },
-        { value: 70, name: '70KG' },
-        { value: 80, name: '80KG' },
-        { value: 90, name: '90KG' },
-        { value: 100, name: '100KG' },
-      ] satisfies VueScrollPickerOption[],
-    }
-  },
-})
-</script>

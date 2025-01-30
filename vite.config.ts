@@ -1,15 +1,27 @@
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import * as path from 'path'
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  esbuild: {
+    drop: process.env.BUILD_TARGET === 'npm' ? ['console', 'debugger'] : [],
+  },
+  plugins: [
+    vue(),
+    dts({
+      outDir: 'dist',
+      include: ['src/**/*.ts', 'src/**/*.vue'],
+      exclude: ['src/**/*.spec.ts'],
+    }),
+  ],
   build: {
-    outDir: path.resolve(__dirname, 'lib'),
+    outDir: 'dist',
     lib: {
-      entry: path.resolve(__dirname, 'entry.ts'),
+      entry: 'src/index.ts',
       name: 'VueScrollPicker',
+      formats: ['es', 'umd', 'cjs'],
+      fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],

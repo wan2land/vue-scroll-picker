@@ -167,11 +167,24 @@ h6 a:hover::after {
   color: #fff;
 }
 
-.button-group {
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
+code {
+  display: inline-block;
+  background-color: #f0f0f0;
+  padding: 0.25rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  border: 1px solid #e0e0e0;
 }
 
-.button-group .button {
-  margin: 0.25rem;
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.controller {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  user-select: none;
 }

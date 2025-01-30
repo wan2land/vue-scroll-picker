@@ -1,13 +1,10 @@
 import './example.css'
-import 'vue-scroll-picker/vue-scroll-picker.css'
+import 'vue-scroll-picker/dist/style.css'
 
 import { createApp } from 'vue'
-import VueScrollPicker from 'vue-scroll-picker'
 
-import Example from './Example.vue'
+import App from './App.vue'
 
-const app = createApp(Example)
-
-app.use(VueScrollPicker)
+const app = createApp(App)
 
 app.mount('#app')

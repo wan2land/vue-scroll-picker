@@ -7,7 +7,7 @@ import {
 
 export default defineConfigWithVueTs(
   {
-    ignores: ['example-dist/*'],
+    ignores: ['example-dist/*', 'dist/*'],
   },
   eslintPluginVue.configs['flat/recommended'],
   vueTsConfigs.recommended,

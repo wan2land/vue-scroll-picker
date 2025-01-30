@@ -1,16 +1,17 @@
-
 .vue-scroll-picker {
   position: relative;
   width: 100%;
   height: 10em;
   overflow: hidden;
+  user-select: none;
+  --scroll-offset: 0px;
 }
 
 .vue-scroll-picker-rotator {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(50% - .6em);
+  top: calc(50% - .6em + var(--scroll-offset));
 }
 
 .vue-scroll-picker-rotator-transition {
@@ -23,19 +24,17 @@
   color: #333;
 }
 
-.vue-scroll-picker-item-selected {
+.vue-scroll-picker-item[aria-selected='true'] {
   color: #007bff;
 }
 
-.vue-scroll-picker-item-empty,
-.vue-scroll-picker-item-placeholder,
-.vue-scroll-picker-item-disabled {
+.vue-scroll-picker-item[data-value=''],
+.vue-scroll-picker-item[aria-disabled='true'] {
   color: #ccc;
 }
 
-.vue-scroll-picker-item-empty.vue-scroll-picker-item-selected,
-.vue-scroll-picker-item-placeholder.vue-scroll-picker-item-selected,
-.vue-scroll-picker-item-disabled.vue-scroll-picker-item-selected {
+.vue-scroll-picker-item[data-value=''][aria-selected='true'],
+.vue-scroll-picker-item[aria-disabled='true'][aria-selected='true'] {
   color: #aaa;
 }
 

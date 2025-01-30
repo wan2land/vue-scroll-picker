@@ -1,35 +1,40 @@
+<script setup lang="ts">
+import {
+  siFacebook,
+  siInstagram,
+  siLine,
+  siTwitter,
+  siYoutube,
+} from 'simple-icons/icons'
+import { ref } from 'vue'
+import {
+  VueScrollPicker,
+  VueScrollPickerOption,
+  VueScrollPickerValue,
+} from 'vue-scroll-picker'
+import CurrentValue from './CurrentValue.vue'
+import DefaultController from './DefaultController.vue'
+
+const options: (VueScrollPickerOption & { icon?: string })[] = [
+  { value: null, name: 'Select an option' },
+  { value: 'instagram', name: ' Instagram', icon: siInstagram.svg },
+  { value: 'facebook', name: 'Facebook', icon: siFacebook.svg },
+  { value: 'youtube', name: 'Youtube', icon: siYoutube.svg },
+  { value: 'twitter', name: 'Twitter', icon: siTwitter.svg },
+  { value: 'line', name: 'Line', icon: siLine.svg },
+]
+const currentValue = ref<VueScrollPickerValue>(null)
+</script>
 <template>
   <div>
-    <p>
-      currentValue =
-      <strong>{{ currentValue === null ? '(null)' : currentValue }}</strong>
-    </p>
-    <div class="button-group">
-      <a
-        class="button"
-        :class="{ active: currentValue === null }"
-        @click="currentValue = null"
-        >(null)</a
-      >
-      <a
-        class="button"
-        :class="{ active: currentValue === 'unknown' }"
-        @click="currentValue = 'unknown'"
-        >(Unknown)</a
-      >
-      <a
-        v-for="(option, index) in options"
-        :key="index"
-        class="button"
-        :class="{ active: currentValue == option.value }"
-        @click="currentValue = option.value"
-        v-html="option.name"
-      ></a>
+    <div class="controller">
+      <CurrentValue :value="currentValue" />
+      <DefaultController v-model="currentValue" :options="options" />
     </div>
     <VueScrollPicker v-model="currentValue" :options="options">
-      <template #placeholder> Select One 🥲 </template>
       <template #default="{ option }">
         <div class="custom-option">
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="custom-option-icon" v-html="option.icon" />
           <span>{{ option.name }}</span>
         </div>
@@ -37,31 +42,6 @@
     </VueScrollPicker>
   </div>
 </template>
-<script lang="ts">
-import {
-  siInstagram,
-  siFacebook,
-  siYoutube,
-  siTwitter,
-  siLine,
-} from 'simple-icons/icons'
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  data() {
-    return {
-      options: [
-        { value: 'instagram', name: ' Instagram', icon: siInstagram.svg },
-        { value: 'facebook', name: 'Facebook', icon: siFacebook.svg },
-        { value: 'youtube', name: 'Youtube', icon: siYoutube.svg },
-        { value: 'twitter', name: 'Twitter', icon: siTwitter.svg },
-        { value: 'line', name: 'Line', icon: siLine.svg },
-      ],
-      currentValue: null as string | null,
-    }
-  },
-})
-</script>
 <style scoped>
 .custom-option {
   padding: 2px 0;
