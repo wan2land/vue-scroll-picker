@@ -39,9 +39,9 @@ To register Vue Scroll Picker globally in your Vue application, import it in you
 
 ```js
 import { createApp } from "vue";
-import VueScrollPicker from "vue-scroll-picker";
 
-import "vue-scroll-picker/dist/style.css";
+import VueScrollPicker from "vue-scroll-picker";
+import "vue-scroll-picker/style.css";
 
 const app = createApp(); /* */
 
@@ -57,12 +57,31 @@ To use Vue Scroll Picker in a specific component, import it and register it loca
 ```vue
 <script setup>
 import { VueScrollPicker } from 'vue-scroll-picker'
+import "vue-scroll-picker/style.css";
 
+const options = [
+  { name: 'Option 1', value: 1 },
+  { name: 'Option 2', value: 2 },
+  { name: 'Option 3', value: 3 },
+]
+const modelValue = ref(1)
 </script>
 <template>
-  <VueScrollPicker :options="options" />
+  <VueScrollPicker :options="options" v-model="modelValue" />
 </template>
-<style src="vue-scroll-picker/dist/style.css"></style>
+```
+
+### Nuxt
+
+```ts
+import VueScrollPicker from "vue-scroll-picker" // export default is plugin
+import 'vue-scroll-picker/style.css'
+
+export default defineNuxtPlugin({
+  async setup({ vueApp }) {
+    vueApp.use(VueScrollPicker)
+  }
+})
 ```
 
 ## Options
