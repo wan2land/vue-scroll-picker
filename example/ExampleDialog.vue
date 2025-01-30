@@ -17,6 +17,11 @@ function handleClick() {
   const dialog = document.querySelector('dialog')
   dialog?.showModal()
 }
+
+function handleClose() {
+  const dialog = document.querySelector('dialog')
+  dialog?.close()
+}
 </script>
 <template>
   <div>
@@ -28,6 +33,9 @@ function handleClick() {
     </div>
     <dialog>
       <VueScrollPicker v-model="currentValue" :options="options" />
+      <button type="button" class="button" @click="handleClose">
+        Close Dialog
+      </button>
     </dialog>
   </div>
 </template>
