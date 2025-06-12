@@ -230,7 +230,9 @@ function setScroll(scroll: number) {
     cancelAnimationFrame(scrollRaf)
   }
   scrollRaf = requestAnimationFrame(() => {
-    rotatorRef.value!.style.top = `${scrollOffset - scroll}px`
+    if (rotatorRef.value) {
+      rotatorRef.value.style.top = `${scrollOffset - scroll}px`
+    }
     scrollRaf = null
   })
   return scroll
