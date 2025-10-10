@@ -40,7 +40,7 @@
   "devDependencies": {
     "@commitlint/cli": "17.8.1",
     "@commitlint/config-conventional": "13.2.0",
-    "@types/node": "18.19.129",
+    "@types/node": "18.19.130",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vitest/browser": "^3.0.4",
     "@vue/compiler-sfc": "3.5.22",
